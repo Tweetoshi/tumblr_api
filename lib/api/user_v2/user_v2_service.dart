@@ -16,7 +16,7 @@ class _UserService extends BaseService implements UserService {
     try {
       final response = await super.get('user/info');
 
-      return TumblrUser.fromJson(response.data);
+      return TumblrUser.fromJson(response.data['response']['user']);
     } catch (e) {
       throw Exception('Failed to get user profile');
     }
