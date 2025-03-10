@@ -1,4 +1,4 @@
-import 'package:tumblr/api/user_v2/user_v2_service.dart';
+import 'package:tumblr_api/api/user_v2/user_v2_service.dart';
 
 abstract class TumblrApi {
   factory TumblrApi(String accessToken) => _TumblrApi(accessToken);

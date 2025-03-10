@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:oauth1/oauth1.dart' as oauth1;
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'package:tumblr/api/models/tumblr_post_model.dart';
-import 'package:tumblr/api/models/user_model.dart';
+import 'package:tumblr_api/api/models/tumblr_post_model.dart';
+import 'package:tumblr_api/api/models/user_model.dart';
+
 
 class TumblrOAuth1Client {
   static const String _requestTokenUrl =

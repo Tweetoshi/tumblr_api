@@ -14,7 +14,7 @@ class _UserService extends BaseService implements UserService {
   @override
   Future<TumblrUser> getUserProfile() async {
     try {
-      final response = await super.get('user/info');
+      final response = await super.get('https://api.tumblr.com/v2/user/info');
 
       return TumblrUser.fromJson(response.data);
     } catch (e) {

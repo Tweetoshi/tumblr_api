@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'package:tumblr/auth/token_response.dart';
+import 'package:tumblr_api/auth/token_response.dart';
 
 /// Generic OAuth client that can be used for any OAuth 2.0 API
 class TumblrOAuth2Client {
