@@ -342,7 +342,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.3"
-  tumblr:
+  tumblr_api:
     dependency: "direct main"
     description:
       path: ".."

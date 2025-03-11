@@ -6,7 +6,7 @@ abstract class BaseApi {
 
   /// Access to various services provided by the API
   Map<String, BaseService> get services;
-  
+
   /// Get a specific service by name
   T getService<T extends BaseService>(String serviceName);
 }
@@ -27,7 +27,7 @@ class _BaseApiImpl implements BaseApi {
     }
     return _services[serviceName] as T;
   }
-  
+
   /// Register a service with the API
   void registerService(String name, BaseService service) {
     _services[name] = service;
@@ -77,7 +77,7 @@ class ServiceHelper {
     try {
       final dio = Dio();
       dio.options.headers['Authorization'] = 'Bearer $accessToken';
-      
+
       final response = await dio.get(
         '$baseUrl$unencodedPath',
         queryParameters: queryParameters,
@@ -97,7 +97,7 @@ class ServiceHelper {
     try {
       final dio = Dio();
       dio.options.headers['Authorization'] = 'Bearer $accessToken';
-      
+
       final response = await dio.post(
         '$baseUrl$unencodedPath',
         queryParameters: queryParameters,
