@@ -20,12 +20,14 @@ class _PostsService extends BaseService implements PostsService {
     int? limit = 20,
     bool? reblog_info = false,
     bool? notes_info = false,
+    bool npf = true,
   }) async {
     try {
       final dashboard = await super.get('user/dashboard', queryParameters: {
         'limit': limit,
         'reblog_info': reblog_info,
         'notes_info': notes_info,
+        'npf': npf,
       });
       final posts = dashboard.data['response']['posts'] as List<dynamic>;
       final postsList = posts
