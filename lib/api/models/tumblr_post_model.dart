@@ -4,7 +4,7 @@ class TumblrPost {
   final TumblrBlog blog;
   final List<ContentBlock> content;
   final List<LayoutBlock>? layout;
-  final List<Map<String, dynamic>>? trail;
+  final List<dynamic>? trail;
   final DateTime timestamp;
   final String postUrl;
   final List<String>? tags;
@@ -36,7 +36,7 @@ class TumblrPost {
               ?.map((layout) => LayoutBlockFactory.createFromJson(layout))
               .toList() ??
           [],
-      trail: json['trail'] as List<Map<String, dynamic>>?,
+      trail: json['trail'] as List<dynamic>?,
       timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] * 1000),
       postUrl: json['post_url'] ?? '',
       tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
