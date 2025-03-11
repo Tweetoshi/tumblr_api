@@ -33,9 +33,9 @@ class _PostsService extends BaseService implements PostsService {
       final postsList = posts
           .map((post) => TumblrPost.fromJson(post as Map<String, dynamic>))
           .toList();
-      return postsList as List<TumblrPost>;
-    } catch (e) {
-      throw Exception('Failed to get dashboard posts');
+      return postsList;
+    } catch (e, stackTrace) {
+      throw Exception('Failed to get dashboard posts $e $stackTrace');
     }
   }
 }
