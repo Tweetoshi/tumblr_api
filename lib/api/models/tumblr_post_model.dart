@@ -1,4 +1,3 @@
-
 /// Represents a Tumblr post in NPF (Neue Post Format)
 class TumblrPost {
   final String id;
@@ -29,19 +28,18 @@ class TumblrPost {
     return TumblrPost(
       id: json['id'].toString(),
       blog: TumblrBlog.fromJson(json['blog']),
-      content: (json['content'] as List)
-          .map((block) => ContentBlockFactory.createFromJson(block))
-          .toList(),
-      layout: json['layout'] != null
-          ? (json['layout'] as List)
-              .map((layout) => LayoutBlockFactory.createFromJson(layout))
-              .toList()
-          : null,
-      trail: json['trail'] != null
-          ? (json['trail'] as List)
-              .map((item) => TrailItem.fromJson(item))
-              .toList()
-          : null,
+      content: (json['content'] as List?)
+              ?.map((block) => ContentBlockFactory.createFromJson(block))
+              .toList() ??
+          [],
+      layout: (json['layout'] as List?)
+              ?.map((layout) => LayoutBlockFactory.createFromJson(layout))
+              .toList() ??
+          [],
+      trail: (json['trail'] as List?)
+              ?.map((item) => TrailItem.fromJson(item))
+              .toList() ??
+          [],
       timestamp: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] * 1000),
       postUrl: json['post_url'] ?? '',
       tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
@@ -113,7 +111,7 @@ abstract class ContentBlock {
 class ContentBlockFactory {
   static ContentBlock createFromJson(Map<String, dynamic> json) {
     final type = json['type'];
-    
+
     switch (type) {
       case 'text':
         return TextBlock.fromJson(json);
@@ -224,8 +222,11 @@ class MediaObject {
       originalDimensionsMissing: json['original_dimensions_missing'],
       cropped: json['cropped'],
       hasOriginalDimensions: json['has_original_dimensions'],
-      poster: json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
-      colors: json['colors'] != null ? Map<String, String>.from(json['colors']) : null,
+      poster:
+          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      colors: json['colors'] != null
+          ? Map<String, String>.from(json['colors'])
+          : null,
     );
   }
 }
@@ -255,10 +256,15 @@ class ImageBlock extends ContentBlock {
       media: (json['media'] as List)
           .map((media) => MediaObject.fromJson(media))
           .toList(),
-      colors: json['colors'] != null ? Map<String, String>.from(json['colors']) : null,
+      colors: json['colors'] != null
+          ? Map<String, String>.from(json['colors'])
+          : null,
       feedbackToken: json['feedback_token'],
-      poster: json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
-      attribution: json['attribution'] != null ? Attribution.fromJson(json['attribution']) : null,
+      poster:
+          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      attribution: json['attribution'] != null
+          ? Attribution.fromJson(json['attribution'])
+          : null,
       altText: json['alt_text'],
       caption: json['caption'],
     );
@@ -295,7 +301,9 @@ class LinkBlock extends ContentBlock {
       displayUrl: json['display_url'],
       poster: json['poster'] != null
           ? (json['poster'] is List
-              ? (json['poster'] as List).map((p) => MediaObject.fromJson(p)).toList()
+              ? (json['poster'] as List)
+                  .map((p) => MediaObject.fromJson(p))
+                  .toList()
               : [MediaObject.fromJson(json['poster'])])
           : null,
     );
@@ -340,13 +348,17 @@ class AudioBlock extends ContentBlock {
       album: json['album'],
       poster: json['poster'] != null
           ? (json['poster'] is List
-              ? (json['poster'] as List).map((p) => MediaObject.fromJson(p)).toList()
+              ? (json['poster'] as List)
+                  .map((p) => MediaObject.fromJson(p))
+                  .toList()
               : [MediaObject.fromJson(json['poster'])])
           : null,
       embedHtml: json['embed_html'],
       embedUrl: json['embed_url'],
       metadata: json['metadata'],
-      attribution: json['attribution'] != null ? Attribution.fromJson(json['attribution']) : null,
+      attribution: json['attribution'] != null
+          ? Attribution.fromJson(json['attribution'])
+          : null,
     );
   }
 }
@@ -384,14 +396,18 @@ class VideoBlock extends ContentBlock {
       provider: json['provider'],
       poster: json['poster'] != null
           ? (json['poster'] is List
-              ? (json['poster'] as List).map((p) => MediaObject.fromJson(p)).toList()
+              ? (json['poster'] as List)
+                  .map((p) => MediaObject.fromJson(p))
+                  .toList()
               : [MediaObject.fromJson(json['poster'])])
           : null,
       embedHtml: json['embed_html'],
       embedUrl: json['embed_url'],
       embedIframe: json['embed_iframe'],
       metadata: json['metadata'],
-      attribution: json['attribution'] != null ? Attribution.fromJson(json['attribution']) : null,
+      attribution: json['attribution'] != null
+          ? Attribution.fromJson(json['attribution'])
+          : null,
       canAutoplayOnCellular: json['can_autoplay_on_cellular'],
     );
   }
@@ -440,7 +456,7 @@ abstract class LayoutBlock {
 class LayoutBlockFactory {
   static LayoutBlock createFromJson(Map<String, dynamic> json) {
     final type = json['type'];
-    
+
     switch (type) {
       case 'rows':
         return RowsLayout.fromJson(json);
@@ -538,7 +554,9 @@ class AskLayout extends LayoutBlock {
   factory AskLayout.fromJson(Map<String, dynamic> json) {
     return AskLayout(
       blocks: List<int>.from(json['blocks']),
-      attribution: json['attribution'] != null ? Attribution.fromJson(json['attribution']) : null,
+      attribution: json['attribution'] != null
+          ? Attribution.fromJson(json['attribution'])
+          : null,
     );
   }
 }
@@ -612,4 +630,4 @@ class TrailItem {
       brokenBlogName: json['broken_blog_name'],
     );
   }
-} 
+}
