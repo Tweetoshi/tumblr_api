@@ -5,14 +5,14 @@ import 'package:tumblr_api/auth/token_response.dart';
 /// Generic OAuth client that can be used for any OAuth 2.0 API
 class TumblrOAuth2Client {
   final Dio _dio = Dio();
-  
+
   final String clientId;
   final String clientSecret;
   final String redirectUri;
   final String authorizationEndpoint;
   final String tokenEndpoint;
   final String? refreshTokenEndpoint;
-  
+
   TumblrOAuth2Client({
     required this.clientId,
     required this.clientSecret,
@@ -23,7 +23,8 @@ class TumblrOAuth2Client {
   });
 
   /// Build the authorization URL for OAuth flow
-  String getAuthorizationUrl(List<String> scopes, {String? state, Map<String, String>? additionalParams}) {
+  String getAuthorizationUrl(List<String> scopes,
+      {String? state, Map<String, String>? additionalParams}) {
     final queryParams = {
       'response_type': 'code',
       'client_id': clientId,
@@ -33,18 +34,20 @@ class TumblrOAuth2Client {
       if (additionalParams != null) ...additionalParams,
     };
 
-    final uri = Uri.parse(authorizationEndpoint).replace(queryParameters: queryParams);
+    final uri =
+        Uri.parse(authorizationEndpoint).replace(queryParameters: queryParams);
     return uri.toString();
   }
 
   /// Handle user authentication via browser
-  Future<String> authenticate({
+  Future<TokenResponse> authenticate({
     required String callbackUrlScheme,
     required List<String> scopes,
     bool? preferEphemeral = false,
     Map<String, String>? additionalAuthParams,
   }) async {
-    final authUrl = getAuthorizationUrl(scopes, additionalParams: additionalAuthParams);
+    final authUrl =
+        getAuthorizationUrl(scopes, additionalParams: additionalAuthParams);
 
     final result = await FlutterWebAuth2.authenticate(
       url: authUrl,
@@ -64,7 +67,7 @@ class TumblrOAuth2Client {
   }
 
   /// Exchange authorization code for access token
-  Future<String> getAccessToken(String authorizationCode) async {
+  Future<TokenResponse> getAccessToken(String authorizationCode) async {
     try {
       final response = await _dio.post(
         tokenEndpoint,
@@ -78,14 +81,14 @@ class TumblrOAuth2Client {
       );
 
       if (response.statusCode == 200) {
-        return response.data['access_token'];
+        return TokenResponse.fromJson(response.data);
       } else {
-        throw Exception('Failed to exchange code for token: ${response.statusCode}');
+        throw Exception(
+            'Failed to exchange code for token: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Failed to exchange code for token: $e');
     }
-
   }
 
   /// Refresh an access token using a refresh token
@@ -93,7 +96,7 @@ class TumblrOAuth2Client {
     if (refreshTokenEndpoint == null) {
       throw Exception('Refresh token endpoint not configured');
     }
-    
+
     try {
       final response = await _dio.post(
         refreshTokenEndpoint!,
