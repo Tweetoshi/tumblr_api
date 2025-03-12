@@ -102,9 +102,10 @@ class TumblrBlog {
   final String? title;
   final String? description;
   final int? followers;
-  final String url;
+  final String? url;
   final bool? followed;
   final List<AvatarImage>? avatar;
+  final bool? primary;
 
   TumblrBlog({
     required this.uuid,
@@ -115,6 +116,7 @@ class TumblrBlog {
     this.description,
     this.followers,
     this.followed,
+    this.primary = false,
   });
 
   factory TumblrBlog.fromJson(Map<String, dynamic> json) {
@@ -131,6 +133,7 @@ class TumblrBlog {
               .map((img) => AvatarImage.fromJson(img))
               .toList()
           : null,
+      primary: json['primary'] ?? false,
     );
   }
 
@@ -147,6 +150,7 @@ class TumblrBlog {
     if (description != null) data['description'] = description;
     if (followers != null) data['followers'] = followers;
     if (followed != null) data['followed'] = followed;
+    if (primary != null) data['primary'] = primary;
 
     return data;
   }
