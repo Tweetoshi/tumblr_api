@@ -48,6 +48,7 @@ class _BlogService extends BaseService implements BlogService {
     int limit = 20,
     int offset = 0,
     String? filter,
+    bool npf = true,
   }) async {
     try {
       // Validate limit is within allowed range
@@ -63,6 +64,8 @@ class _BlogService extends BaseService implements BlogService {
     if (type != null) queryParams['type'] = type;
     if (tag != null) queryParams['tag'] = tag;
     if (filter != null) queryParams['filter'] = filter;
+    queryParams['npf'] = npf;
+
 
     final response = await get(
       'blog/$blogIdentifier/posts',
