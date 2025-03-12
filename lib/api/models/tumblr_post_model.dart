@@ -947,14 +947,16 @@ class ReblogTrailItem {
     return ReblogTrailItem(
       post: json['post'] != null ? PostInfo.fromJson(json['post']) : null,
       blog: json['blog'] != null ? TumblrBlog.fromJson(json['blog']) : null,
-      content: (json['content'] as List?)
-              ?.map((block) => ContentBlockFactory.createFromJson(block))
-              .toList() ??
-          [],
-      layout: (json['layout'] as List?)
-              ?.map((layout) => LayoutBlockFactory.createFromJson(layout))
-              .toList() ??
-          null,
+      content: json['content'] is List
+          ? (json['content'] as List)
+              .map((block) => ContentBlockFactory.createFromJson(block))
+              .toList()
+          : [],
+      layout: json['layout'] is List
+          ? (json['layout'] as List)
+              .map((layout) => LayoutBlockFactory.createFromJson(layout))
+              .toList()
+          : null,
       brokenBlogName: json['broken_blog_name'],
     );
   }
