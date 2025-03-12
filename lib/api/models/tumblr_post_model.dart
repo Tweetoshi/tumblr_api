@@ -38,7 +38,7 @@ class TumblrPost {
       blog: TumblrBlog.fromJson(json['blog']),
       content: (json['content'] as List?)
               ?.map((block) => ContentBlockFactory.createFromJson(block))
-              .toList() ?? 
+              .toList() ??
           [],
       layout: (json['layout'] as List?)
               ?.map((layout) => LayoutBlockFactory.createFromJson(layout))
@@ -100,7 +100,10 @@ class TumblrBlog {
   final String uuid;
   final String name;
   final String? title;
+  final String? description;
+  final int? followers;
   final String url;
+  final bool? followed;
   final List<AvatarImage>? avatar;
 
   TumblrBlog({
@@ -109,6 +112,9 @@ class TumblrBlog {
     this.title,
     required this.url,
     this.avatar,
+    this.description,
+    this.followers,
+    this.followed,
   });
 
   factory TumblrBlog.fromJson(Map<String, dynamic> json) {
@@ -117,6 +123,9 @@ class TumblrBlog {
       name: json['name'] ?? '',
       title: json['title'],
       url: json['url'] ?? '',
+      followed: json['followed'],
+      description: json['description'],
+      followers: json['followers'] ?? 0,
       avatar: json['avatar'] != null
           ? (json['avatar'] as List)
               .map((img) => AvatarImage.fromJson(img))
@@ -130,11 +139,15 @@ class TumblrBlog {
       'uuid': uuid,
       'name': name,
     };
-    
+
     if (title != null) data['title'] = title;
     if (url != null) data['url'] = url;
-    if (avatar != null) data['avatar'] = avatar!.map((img) => img.toJson()).toList();
-    
+    if (avatar != null)
+      data['avatar'] = avatar!.map((img) => img.toJson()).toList();
+    if (description != null) data['description'] = description;
+    if (followers != null) data['followers'] = followers;
+    if (followed != null) data['followed'] = followed;
+
     return data;
   }
 }
@@ -162,10 +175,10 @@ class AvatarImage {
     final Map<String, dynamic> data = {
       'url': url,
     };
-    
+
     if (width != null) data['width'] = width;
     if (height != null) data['height'] = height;
-    
+
     return data;
   }
 }
@@ -183,7 +196,7 @@ abstract class ContentBlock {
 class ContentBlockFactory {
   static ContentBlock createFromJson(Map<String, dynamic> json) {
     final String type = json['type'];
-    
+
     switch (type) {
       case 'text':
         return TextContentBlock.fromJson(json);
@@ -235,11 +248,12 @@ class TextContentBlock extends ContentBlock {
       'type': type,
       'text': text,
     };
-    
+
     if (subtype != null) data['subtype'] = subtype;
     if (indentLevel != null) data['indent_level'] = indentLevel;
-    if (formatting != null) data['formatting'] = formatting!.map((f) => f.toJson()).toList();
-    
+    if (formatting != null)
+      data['formatting'] = formatting!.map((f) => f.toJson()).toList();
+
     return data;
   }
 }
@@ -279,11 +293,11 @@ class TextFormatting {
       'end': end,
       'type': type,
     };
-    
+
     if (url != null) data['url'] = url;
     if (blog != null) data['blog'] = blog;
     if (hex != null) data['hex'] = hex;
-    
+
     return data;
   }
 }
@@ -321,8 +335,11 @@ class MediaObject {
       originalDimensionsMissing: json['original_dimensions_missing'],
       cropped: json['cropped'],
       hasOriginalDimensions: json['has_original_dimensions'],
-      poster: json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
-      colors: json['colors'] != null ? Map<String, String>.from(json['colors']) : null,
+      poster:
+          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      colors: json['colors'] != null
+          ? Map<String, String>.from(json['colors'])
+          : null,
     );
   }
 
@@ -330,16 +347,18 @@ class MediaObject {
     final Map<String, dynamic> data = {
       'url': url,
     };
-    
+
     if (type != null) data['type'] = type;
     if (width != null) data['width'] = width;
     if (height != null) data['height'] = height;
-    if (originalDimensionsMissing != null) data['original_dimensions_missing'] = originalDimensionsMissing;
+    if (originalDimensionsMissing != null)
+      data['original_dimensions_missing'] = originalDimensionsMissing;
     if (cropped != null) data['cropped'] = cropped;
-    if (hasOriginalDimensions != null) data['has_original_dimensions'] = hasOriginalDimensions;
+    if (hasOriginalDimensions != null)
+      data['has_original_dimensions'] = hasOriginalDimensions;
     if (poster != null) data['poster'] = poster!.toJson();
     if (colors != null) data['colors'] = colors;
-    
+
     return data;
   }
 }
@@ -366,11 +385,17 @@ class ImageContentBlock extends ContentBlock {
 
   factory ImageContentBlock.fromJson(Map<String, dynamic> json) {
     return ImageContentBlock(
-      media: (json['media'] as List).map((m) => MediaObject.fromJson(m)).toList(),
-      colors: json['colors'] != null ? Map<String, String>.from(json['colors']) : null,
+      media:
+          (json['media'] as List).map((m) => MediaObject.fromJson(m)).toList(),
+      colors: json['colors'] != null
+          ? Map<String, String>.from(json['colors'])
+          : null,
       feedbackToken: json['feedback_token'],
-      poster: json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
-      attribution: json['attribution'] != null ? AttributionObject.fromJson(json['attribution']) : null,
+      poster:
+          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      attribution: json['attribution'] != null
+          ? AttributionObject.fromJson(json['attribution'])
+          : null,
       altText: json['alt_text'],
       caption: json['caption'],
     );
@@ -382,14 +407,14 @@ class ImageContentBlock extends ContentBlock {
       'type': type,
       'media': media.map((m) => m.toJson()).toList(),
     };
-    
+
     if (colors != null) data['colors'] = colors;
     if (feedbackToken != null) data['feedback_token'] = feedbackToken;
     if (poster != null) data['poster'] = poster!.toJson();
     if (attribution != null) data['attribution'] = attribution!.toJson();
     if (altText != null) data['alt_text'] = altText;
     if (caption != null) data['caption'] = caption;
-    
+
     return data;
   }
 }
@@ -422,7 +447,8 @@ class LinkContentBlock extends ContentBlock {
       author: json['author'],
       siteName: json['site_name'],
       displayUrl: json['display_url'],
-      poster: json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      poster:
+          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
     );
   }
 
@@ -432,14 +458,14 @@ class LinkContentBlock extends ContentBlock {
       'type': type,
       'url': url,
     };
-    
+
     if (title != null) data['title'] = title;
     if (description != null) data['description'] = description;
     if (author != null) data['author'] = author;
     if (siteName != null) data['site_name'] = siteName;
     if (displayUrl != null) data['display_url'] = displayUrl;
     if (poster != null) data['poster'] = poster!.toJson();
-    
+
     return data;
   }
 }
@@ -480,11 +506,14 @@ class AudioContentBlock extends ContentBlock {
       title: json['title'],
       artist: json['artist'],
       album: json['album'],
-      poster: json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      poster:
+          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
       embedHtml: json['embed_html'],
       embedUrl: json['embed_url'],
       metadata: json['metadata'],
-      attribution: json['attribution'] != null ? AttributionObject.fromJson(json['attribution']) : null,
+      attribution: json['attribution'] != null
+          ? AttributionObject.fromJson(json['attribution'])
+          : null,
     );
   }
 
@@ -493,7 +522,7 @@ class AudioContentBlock extends ContentBlock {
     final Map<String, dynamic> data = {
       'type': type,
     };
-    
+
     if (url != null) data['url'] = url;
     if (media != null) data['media'] = media!.toJson();
     if (provider != null) data['provider'] = provider;
@@ -505,7 +534,7 @@ class AudioContentBlock extends ContentBlock {
     if (embedUrl != null) data['embed_url'] = embedUrl;
     if (metadata != null) data['metadata'] = metadata;
     if (attribution != null) data['attribution'] = attribution!.toJson();
-    
+
     return data;
   }
 }
@@ -544,15 +573,19 @@ class VideoContentBlock extends ContentBlock {
       media: json['media'] != null ? MediaObject.fromJson(json['media']) : null,
       provider: json['provider'],
       embedHtml: json['embed_html'],
-      embedIframe: json['embed_iframe'] != null ? EmbedIframeObject.fromJson(json['embed_iframe']) : null,
+      embedIframe: json['embed_iframe'] != null
+          ? EmbedIframeObject.fromJson(json['embed_iframe'])
+          : null,
       embedUrl: json['embed_url'],
-      poster: json['poster'] != null ? 
-              (json['poster'] is List ? 
-                MediaObject.fromJson(json['poster'][0]) : 
-                MediaObject.fromJson(json['poster'])) : 
-              null,
+      poster: json['poster'] != null
+          ? (json['poster'] is List
+              ? MediaObject.fromJson(json['poster'][0])
+              : MediaObject.fromJson(json['poster']))
+          : null,
       metadata: json['metadata'],
-      attribution: json['attribution'] != null ? AttributionObject.fromJson(json['attribution']) : null,
+      attribution: json['attribution'] != null
+          ? AttributionObject.fromJson(json['attribution'])
+          : null,
       canAutoplayOnCellular: json['can_autoplay_on_cellular'],
       duration: json['duration'],
     );
@@ -563,7 +596,7 @@ class VideoContentBlock extends ContentBlock {
     final Map<String, dynamic> data = {
       'type': type,
     };
-    
+
     if (url != null) data['url'] = url;
     if (media != null) data['media'] = media!.toJson();
     if (provider != null) data['provider'] = provider;
@@ -573,9 +606,10 @@ class VideoContentBlock extends ContentBlock {
     if (poster != null) data['poster'] = poster!.toJson();
     if (metadata != null) data['metadata'] = metadata;
     if (attribution != null) data['attribution'] = attribution!.toJson();
-    if (canAutoplayOnCellular != null) data['can_autoplay_on_cellular'] = canAutoplayOnCellular;
+    if (canAutoplayOnCellular != null)
+      data['can_autoplay_on_cellular'] = canAutoplayOnCellular;
     if (duration != null) data['duration'] = duration;
-    
+
     return data;
   }
 }
@@ -617,11 +651,11 @@ class PaywallContentBlock extends ContentBlock {
       'url': url,
       'text': text,
     };
-    
+
     if (title != null) data['title'] = title;
     if (color != null) data['color'] = color;
     if (isVisible != null) data['is_visible'] = isVisible;
-    
+
     return data;
   }
 }
@@ -661,7 +695,7 @@ abstract class LayoutBlock {
 class LayoutBlockFactory {
   static LayoutBlock createFromJson(Map<String, dynamic> json) {
     final String type = json['type'];
-    
+
     switch (type) {
       case 'rows':
         return RowsLayoutBlock.fromJson(json);
@@ -701,9 +735,9 @@ class RowsLayoutBlock extends LayoutBlock {
       'type': type,
       'display': display.map((d) => d.toJson()).toList(),
     };
-    
+
     if (truncateAfter != null) data['truncate_after'] = truncateAfter;
-    
+
     return data;
   }
 }
@@ -729,9 +763,9 @@ class DisplayObject {
     final Map<String, dynamic> data = {
       'blocks': blocks,
     };
-    
+
     if (mode != null) data['mode'] = mode!.toJson();
-    
+
     return data;
   }
 }
@@ -779,10 +813,10 @@ class CondensedLayoutBlock extends LayoutBlock {
     final Map<String, dynamic> data = {
       'type': type,
     };
-    
+
     if (truncateAfter != null) data['truncate_after'] = truncateAfter;
     if (blocks != null) data['blocks'] = blocks;
-    
+
     return data;
   }
 }
@@ -800,7 +834,9 @@ class AskLayoutBlock extends LayoutBlock {
   factory AskLayoutBlock.fromJson(Map<String, dynamic> json) {
     return AskLayoutBlock(
       blocks: List<int>.from(json['blocks']),
-      attribution: json['attribution'] != null ? AttributionObject.fromJson(json['attribution']) : null,
+      attribution: json['attribution'] != null
+          ? AttributionObject.fromJson(json['attribution'])
+          : null,
     );
   }
 
@@ -810,9 +846,9 @@ class AskLayoutBlock extends LayoutBlock {
       'type': type,
       'blocks': blocks,
     };
-    
+
     if (attribution != null) data['attribution'] = attribution!.toJson();
-    
+
     return data;
   }
 }
@@ -875,14 +911,14 @@ class AttributionObject {
     final Map<String, dynamic> data = {
       'type': type,
     };
-    
+
     if (url != null) data['url'] = url;
     if (post != null) data['post'] = post!.toJson();
     if (blog != null) data['blog'] = blog!.toJson();
     if (appName != null) data['app_name'] = appName;
     if (displayText != null) data['display_text'] = displayText;
     if (logo != null) data['logo'] = logo!.toJson();
-    
+
     return data;
   }
 }
@@ -923,12 +959,13 @@ class ReblogTrailItem {
     final Map<String, dynamic> data = {
       'content': content.map((block) => block.toJson()).toList(),
     };
-    
+
     if (post != null) data['post'] = post!.toJson();
     if (blog != null) data['blog'] = blog!.toJson();
-    if (layout != null) data['layout'] = layout!.map((block) => block.toJson()).toList();
+    if (layout != null)
+      data['layout'] = layout!.map((block) => block.toJson()).toList();
     if (brokenBlogName != null) data['broken_blog_name'] = brokenBlogName;
-    
+
     return data;
   }
 }
@@ -961,13 +998,13 @@ class PostInfo {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    
+
     if (id != null) data['id'] = id;
     if (timestamp != null) data['timestamp'] = timestamp;
     if (isCommercial != null) data['is_commercial'] = isCommercial;
     if (isPaywalled != null) data['is_paywalled'] = isPaywalled;
     if (paywallAccess != null) data['paywall_access'] = paywallAccess;
-    
+
     return data;
   }
 }

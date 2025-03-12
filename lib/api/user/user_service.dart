@@ -1,9 +1,12 @@
 import 'package:tumblr_api/api/models/tumblr_post_model.dart';
+import 'package:tumblr_api/api/models/user_model.dart';
 import 'package:tumblr_api/base_api.dart';
 
-abstract class PostsService {
-  factory PostsService({required String accessToken}) =>
-      _PostsService(accessToken: accessToken);
+abstract class UserService {
+  factory UserService({required String accessToken}) =>
+      _UserService(accessToken: accessToken);
+
+  Future<TumblrUser> getUserProfile();
 
   Future<List<TumblrPost>> getDashboardPosts({
     int? limit = 20,
@@ -16,8 +19,19 @@ abstract class PostsService {
   });
 }
 
-class _PostsService extends BaseService implements PostsService {
-  _PostsService({required super.accessToken});
+class _UserService extends BaseService implements UserService {
+  _UserService({required super.accessToken});
+
+  @override
+  Future<TumblrUser> getUserProfile() async {
+    try {
+      final response = await super.get('user/info');
+
+      return TumblrUser.fromJson(response.data['response']['user']);
+    } catch (e) {
+      throw Exception('Failed to get user profile');
+    }
+  }
 
   /// Request Parameters for dashboard posts
   /// - limit: Number (1-20) - The number of results to return (default: 20)
