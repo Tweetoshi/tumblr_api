@@ -31,8 +31,13 @@ class _BlogService extends BaseService implements BlogService {
 
   @override
   Future<TumblrBlog> getInfo(String blogIdentifier) async {
-    final response = await get('/v2/blog/$blogIdentifier/info');
-    return TumblrBlog.fromJson(response.data['response']['blog'] as Map<String, dynamic>);
+    try {
+      final response = await get('/v2/blog/$blogIdentifier/info');
+      return TumblrBlog.fromJson(
+          response.data['response']['blog'] as Map<String, dynamic>);
+    } catch (e) {
+      throw Exception('Failed to get blog info $e');
+    }
   }
 
   @override
@@ -44,8 +49,9 @@ class _BlogService extends BaseService implements BlogService {
     int offset = 0,
     String? filter,
   }) async {
-    // Validate limit is within allowed range
-    if (limit < 1 || limit > 20) {
+    try {
+      // Validate limit is within allowed range
+      if (limit < 1 || limit > 20) {
       throw ArgumentError('Limit must be between 1 and 20');
     }
 
@@ -64,8 +70,11 @@ class _BlogService extends BaseService implements BlogService {
     );
     final posts = response.data['response']['posts'] as List<dynamic>;
     final postsList = posts
-        .map((post) => TumblrPost.fromJson(post as Map<String, dynamic>))
-        .toList();
-    return postsList;
+          .map((post) => TumblrPost.fromJson(post as Map<String, dynamic>))
+          .toList();
+      return postsList;
+    } catch (e) {
+      throw Exception('Failed to get blog posts $e');
+    }
   }
 }
