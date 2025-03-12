@@ -32,7 +32,7 @@ class _BlogService extends BaseService implements BlogService {
   @override
   Future<TumblrBlog> getInfo(String blogIdentifier) async {
     try {
-      final response = await get('/v2/blog/$blogIdentifier/info');
+      final response = await get('blog/$blogIdentifier/info');
       return TumblrBlog.fromJson(
           response.data['response']['blog'] as Map<String, dynamic>);
     } catch (e) {
@@ -65,7 +65,7 @@ class _BlogService extends BaseService implements BlogService {
     if (filter != null) queryParams['filter'] = filter;
 
     final response = await get(
-      '/v2/blog/$blogIdentifier/posts',
+      'blog/$blogIdentifier/posts',
       queryParameters: queryParams,
     );
     final posts = response.data['response']['posts'] as List<dynamic>;
