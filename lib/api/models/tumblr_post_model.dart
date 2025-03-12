@@ -38,7 +38,7 @@ class TumblrPost {
       blog: TumblrBlog.fromJson(json['blog']),
       content: (json['content'] as List?)
               ?.map((block) => ContentBlockFactory.createFromJson(block))
-              .toList() ??
+              .toList() ?? 
           [],
       layout: (json['layout'] as List?)
               ?.map((layout) => LayoutBlockFactory.createFromJson(layout))

@@ -1,38 +1,46 @@
 /// Generic token response model for OAuth flows
 class TokenResponse {
   final String accessToken;
-  final String tokenType;
   final int expiresIn;
   final String? refreshToken;
-  final List<String>? scope;
+  final String scope;
+  final String tokenType;
 
   TokenResponse({
     required this.accessToken,
-    required this.tokenType,
     required this.expiresIn,
     this.refreshToken,
-    this.scope,
+    required this.scope,
+    required this.tokenType,
   });
 
+  /// Create an expiration DateTime based on current time and expiresIn
+  DateTime get expirationTime => 
+      DateTime.now().add(Duration(seconds: expiresIn));
+      
+  /// Check if the token is expired
+  bool get isExpired =>
+      DateTime.now().isAfter(expirationTime);
+
+  /// Creates a TokenResponse from JSON data
   factory TokenResponse.fromJson(Map<String, dynamic> json) {
     return TokenResponse(
       accessToken: json['access_token'],
-      tokenType: json['token_type'],
       expiresIn: json['expires_in'],
       refreshToken: json['refresh_token'],
-      scope: json['scope'] != null 
-          ? (json['scope'] as String).split(',') 
-          : null,
+      scope: json['scope'],
+      tokenType: json['token_type'],
     );
   }
 
+  /// Converts the TokenResponse to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'access_token': accessToken,
-      'token_type': tokenType,
       'expires_in': expiresIn,
-      if (refreshToken != null) 'refresh_token': refreshToken,
-      if (scope != null) 'scope': scope!.join(','),
+      'refresh_token': refreshToken,
+      'scope': scope,
+      'token_type': tokenType,
     };
   }
 }
