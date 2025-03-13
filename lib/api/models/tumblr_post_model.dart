@@ -315,7 +315,7 @@ class MediaObject {
   final bool? originalDimensionsMissing;
   final bool? cropped;
   final bool? hasOriginalDimensions;
-  final MediaObject? poster;
+  final List<MediaObject>? poster;
   final Map<String, String>? colors;
 
   MediaObject({
@@ -339,8 +339,11 @@ class MediaObject {
       originalDimensionsMissing: json['original_dimensions_missing'],
       cropped: json['cropped'],
       hasOriginalDimensions: json['has_original_dimensions'],
-      poster:
-          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      poster: json['poster'] != null
+          ? (json['poster'] as List)
+              .map((m) => MediaObject.fromJson(m))
+              .toList()
+          : null,
       colors: json['colors'] != null
           ? Map<String, String>.from(json['colors'])
           : null,
@@ -360,7 +363,8 @@ class MediaObject {
     if (cropped != null) data['cropped'] = cropped;
     if (hasOriginalDimensions != null)
       data['has_original_dimensions'] = hasOriginalDimensions;
-    if (poster != null) data['poster'] = poster!.toJson();
+    if (poster != null)
+      data['poster'] = poster!.map((m) => m.toJson()).toList();
     if (colors != null) data['colors'] = colors;
 
     return data;
@@ -372,7 +376,7 @@ class ImageContentBlock extends ContentBlock {
   final List<MediaObject> media;
   final Map<String, String>? colors;
   final String? feedbackToken;
-  final MediaObject? poster;
+  final List<MediaObject>? poster;
   final AttributionObject? attribution;
   final String? altText;
   final String? caption;
@@ -395,8 +399,11 @@ class ImageContentBlock extends ContentBlock {
           ? Map<String, String>.from(json['colors'])
           : null,
       feedbackToken: json['feedback_token'],
-      poster:
-          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      poster: json['poster'] != null
+          ? (json['poster'] as List)
+              .map((m) => MediaObject.fromJson(m))
+              .toList()
+          : null,
       attribution: json['attribution'] != null
           ? AttributionObject.fromJson(json['attribution'])
           : null,
@@ -414,7 +421,7 @@ class ImageContentBlock extends ContentBlock {
 
     if (colors != null) data['colors'] = colors;
     if (feedbackToken != null) data['feedback_token'] = feedbackToken;
-    if (poster != null) data['poster'] = poster!.toJson();
+    if (poster != null) data['poster'] = poster!.map((m) => m.toJson()).toList();
     if (attribution != null) data['attribution'] = attribution!.toJson();
     if (altText != null) data['alt_text'] = altText;
     if (caption != null) data['caption'] = caption;
@@ -431,7 +438,7 @@ class LinkContentBlock extends ContentBlock {
   final String? author;
   final String? siteName;
   final String? displayUrl;
-  final MediaObject? poster;
+  final List<MediaObject>? poster;
 
   LinkContentBlock({
     required this.url,
@@ -451,8 +458,11 @@ class LinkContentBlock extends ContentBlock {
       author: json['author'],
       siteName: json['site_name'],
       displayUrl: json['display_url'],
-      poster:
-          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      poster: json['poster'] != null
+          ? (json['poster'] as List)
+              .map((m) => MediaObject.fromJson(m))
+              .toList()
+          : null,
     );
   }
 
@@ -468,7 +478,7 @@ class LinkContentBlock extends ContentBlock {
     if (author != null) data['author'] = author;
     if (siteName != null) data['site_name'] = siteName;
     if (displayUrl != null) data['display_url'] = displayUrl;
-    if (poster != null) data['poster'] = poster!.toJson();
+    if (poster != null) data['poster'] = poster!.map((m) => m.toJson()).toList();
 
     return data;
   }
@@ -482,7 +492,7 @@ class AudioContentBlock extends ContentBlock {
   final String? title;
   final String? artist;
   final String? album;
-  final MediaObject? poster;
+  final List<MediaObject>? poster;
   final String? embedHtml;
   final String? embedUrl;
   final Map<String, dynamic>? metadata;
@@ -510,8 +520,11 @@ class AudioContentBlock extends ContentBlock {
       title: json['title'],
       artist: json['artist'],
       album: json['album'],
-      poster:
-          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
+      poster: json['poster'] != null
+          ? (json['poster'] as List)
+              .map((m) => MediaObject.fromJson(m))
+              .toList()
+          : null,
       embedHtml: json['embed_html'],
       embedUrl: json['embed_url'],
       metadata: json['metadata'],
@@ -533,7 +546,8 @@ class AudioContentBlock extends ContentBlock {
     if (title != null) data['title'] = title;
     if (artist != null) data['artist'] = artist;
     if (album != null) data['album'] = album;
-    if (poster != null) data['poster'] = poster!.toJson();
+    if (poster != null)
+      data['poster'] = poster!.map((m) => m.toJson()).toList();
     if (embedHtml != null) data['embed_html'] = embedHtml;
     if (embedUrl != null) data['embed_url'] = embedUrl;
     if (metadata != null) data['metadata'] = metadata;
@@ -551,7 +565,7 @@ class VideoContentBlock extends ContentBlock {
   final String? embedHtml;
   final EmbedIframeObject? embedIframe;
   final String? embedUrl;
-  final MediaObject? poster;
+  final List<MediaObject>? poster;
   final Map<String, dynamic>? metadata;
   final AttributionObject? attribution;
   final bool? canAutoplayOnCellular;
@@ -582,9 +596,9 @@ class VideoContentBlock extends ContentBlock {
           : null,
       embedUrl: json['embed_url'],
       poster: json['poster'] != null
-          ? (json['poster'] is List
-              ? MediaObject.fromJson(json['poster'][0])
-              : MediaObject.fromJson(json['poster']))
+          ? (json['poster'] as List)
+              .map((m) => MediaObject.fromJson(m))
+              .toList()
           : null,
       metadata: json['metadata'],
       attribution: json['attribution'] != null
@@ -607,7 +621,8 @@ class VideoContentBlock extends ContentBlock {
     if (embedHtml != null) data['embed_html'] = embedHtml;
     if (embedIframe != null) data['embed_iframe'] = embedIframe!.toJson();
     if (embedUrl != null) data['embed_url'] = embedUrl;
-    if (poster != null) data['poster'] = poster!.toJson();
+    if (poster != null)
+      data['poster'] = poster!.map((m) => m.toJson()).toList();
     if (metadata != null) data['metadata'] = metadata;
     if (attribution != null) data['attribution'] = attribution!.toJson();
     if (canAutoplayOnCellular != null)
