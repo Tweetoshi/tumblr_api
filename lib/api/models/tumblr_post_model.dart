@@ -315,7 +315,7 @@ class MediaObject {
   final bool? originalDimensionsMissing;
   final bool? cropped;
   final bool? hasOriginalDimensions;
-  final List<MediaObject>? poster;
+  final MediaObject? poster;
   final Map<String, String>? colors;
 
   MediaObject({
@@ -340,9 +340,7 @@ class MediaObject {
       cropped: json['cropped'],
       hasOriginalDimensions: json['has_original_dimensions'],
       poster: json['poster'] != null
-          ? (json['poster'] as List)
-              .map((m) => MediaObject.fromJson(m))
-              .toList()
+          ? MediaObject.fromJson(json['poster'])
           : null,
       colors: json['colors'] != null
           ? Map<String, String>.from(json['colors'])
@@ -363,8 +361,7 @@ class MediaObject {
     if (cropped != null) data['cropped'] = cropped;
     if (hasOriginalDimensions != null)
       data['has_original_dimensions'] = hasOriginalDimensions;
-    if (poster != null)
-      data['poster'] = poster!.map((m) => m.toJson()).toList();
+    if (poster != null) data['poster'] = poster!.toJson();
     if (colors != null) data['colors'] = colors;
 
     return data;
