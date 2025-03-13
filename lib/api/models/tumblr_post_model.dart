@@ -11,7 +11,8 @@ class TumblrPost {
   final bool isReblog;
   final String? summary;
   final bool? isPaywalled;
-  final String? paywallAccess; // "creator", "member", "non-member", "disabled"
+  final String? paywallAccess;
+  final int? noteCount;
   final Map<String, dynamic>? paywallReblogView;
   final Map<String, dynamic>? subscriptionPlan;
 
@@ -28,6 +29,7 @@ class TumblrPost {
     this.summary,
     this.isPaywalled,
     this.paywallAccess,
+    this.noteCount,
     this.paywallReblogView,
     this.subscriptionPlan,
   });
@@ -57,6 +59,7 @@ class TumblrPost {
       paywallAccess: json['paywall_access'],
       paywallReblogView: json['paywall_reblog_view'],
       subscriptionPlan: json['blog']?['subscription_plan'],
+      noteCount: json['note_count'],
     );
   }
 
@@ -339,9 +342,8 @@ class MediaObject {
       originalDimensionsMissing: json['original_dimensions_missing'],
       cropped: json['cropped'],
       hasOriginalDimensions: json['has_original_dimensions'],
-      poster: json['poster'] != null
-          ? MediaObject.fromJson(json['poster'])
-          : null,
+      poster:
+          json['poster'] != null ? MediaObject.fromJson(json['poster']) : null,
       colors: json['colors'] != null
           ? Map<String, String>.from(json['colors'])
           : null,
@@ -418,7 +420,8 @@ class ImageContentBlock extends ContentBlock {
 
     if (colors != null) data['colors'] = colors;
     if (feedbackToken != null) data['feedback_token'] = feedbackToken;
-    if (poster != null) data['poster'] = poster!.map((m) => m.toJson()).toList();
+    if (poster != null)
+      data['poster'] = poster!.map((m) => m.toJson()).toList();
     if (attribution != null) data['attribution'] = attribution!.toJson();
     if (altText != null) data['alt_text'] = altText;
     if (caption != null) data['caption'] = caption;
@@ -475,7 +478,8 @@ class LinkContentBlock extends ContentBlock {
     if (author != null) data['author'] = author;
     if (siteName != null) data['site_name'] = siteName;
     if (displayUrl != null) data['display_url'] = displayUrl;
-    if (poster != null) data['poster'] = poster!.map((m) => m.toJson()).toList();
+    if (poster != null)
+      data['poster'] = poster!.map((m) => m.toJson()).toList();
 
     return data;
   }
