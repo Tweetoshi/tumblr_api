@@ -8,6 +8,14 @@ abstract class UserService {
 
   Future<TumblrUser> getUserProfile();
 
+  /// Request Parameters for dashboard posts
+  /// - limit: Number (1-20) - The number of results to return (default: 20)
+  /// - offset: Number - Post number to start at (default: 0/first post)
+  /// - type: String - Filter by post type (text, photo, quote, link, chat, audio, video, answer)
+  /// - since_id: Number - Return posts that appeared after this ID (for pagination)
+  /// - reblog_info: Boolean - Whether to return reblog information
+  /// - notes_info: Boolean - Whether to return notes information
+  /// - npf: Boolean - Returns posts' content in NPF format instead of legacy format
   Future<List<TumblrPost>> getDashboardPosts({
     int? limit = 20,
     bool? reblogInfo = false,
@@ -17,6 +25,22 @@ abstract class UserService {
     int? offset,
     String? type,
   });
+
+  /// Follow a blog
+  ///
+  /// This method allows the user to follow a blog.
+  /// - blogIdentifier: The blog to follow (any blog identifier format)
+  ///
+  /// Returns a Map containing the response data
+  Future<Map<String, dynamic>> followBlog(String blogIdentifier);
+
+  /// Unfollow a blog
+  ///
+  /// This method allows the user to unfollow a blog.
+  /// - blogIdentifier: The blog to unfollow (any blog identifier format)
+  ///
+  /// Returns a Map containing the response data
+  Future<Map<String, dynamic>> unfollowBlog(String blogIdentifier);
 }
 
 class _UserService extends BaseService implements UserService {
@@ -33,14 +57,6 @@ class _UserService extends BaseService implements UserService {
     }
   }
 
-  /// Request Parameters for dashboard posts
-  /// - limit: Number (1-20) - The number of results to return (default: 20)
-  /// - offset: Number - Post number to start at (default: 0/first post)
-  /// - type: String - Filter by post type (text, photo, quote, link, chat, audio, video, answer)
-  /// - since_id: Number - Return posts that appeared after this ID (for pagination)
-  /// - reblog_info: Boolean - Whether to return reblog information
-  /// - notes_info: Boolean - Whether to return notes information
-  /// - npf: Boolean - Returns posts' content in NPF format instead of legacy format
   @override
   Future<List<TumblrPost>> getDashboardPosts({
     int? limit = 20,
@@ -68,6 +84,32 @@ class _UserService extends BaseService implements UserService {
       return postsList;
     } catch (e, stackTrace) {
       throw Exception('Failed to get dashboard posts $e $stackTrace');
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> followBlog(String blogIdentifier) async {
+    try {
+      final response = await super.post('user/follow', queryParameters: {
+        'url': blogIdentifier,
+      });
+
+      return response.data['response'] as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> unfollowBlog(String blogIdentifier) async {
+    try {
+      final response = await super.post('user/unfollow', queryParameters: {
+        'url': blogIdentifier,
+      });
+
+      return response.data['response'] as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
     }
   }
 }
