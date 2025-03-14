@@ -1,3 +1,4 @@
+import 'package:tumblr_api/api/models/blog_model.dart';
 import 'package:tumblr_api/api/models/tumblr_post_model.dart';
 import 'package:tumblr_api/base_api.dart';
 
@@ -53,26 +54,25 @@ class _BlogService extends BaseService implements BlogService {
     try {
       // Validate limit is within allowed range
       if (limit < 1 || limit > 20) {
-      throw ArgumentError('Limit must be between 1 and 20');
-    }
+        throw ArgumentError('Limit must be between 1 and 20');
+      }
 
-    final queryParams = <String, dynamic>{
-      'limit': limit,
-      'offset': offset,
-    };
+      final queryParams = <String, dynamic>{
+        'limit': limit,
+        'offset': offset,
+      };
 
-    if (type != null) queryParams['type'] = type;
-    if (tag != null) queryParams['tag'] = tag;
-    if (filter != null) queryParams['filter'] = filter;
-    queryParams['npf'] = npf;
+      if (type != null) queryParams['type'] = type;
+      if (tag != null) queryParams['tag'] = tag;
+      if (filter != null) queryParams['filter'] = filter;
+      queryParams['npf'] = npf;
 
-
-    final response = await get(
-      'blog/$blogIdentifier/posts',
-      queryParameters: queryParams,
-    );
-    final posts = response.data['response']['posts'] as List<dynamic>;
-    final postsList = posts
+      final response = await get(
+        'blog/$blogIdentifier/posts',
+        queryParameters: queryParams,
+      );
+      final posts = response.data['response']['posts'] as List<dynamic>;
+      final postsList = posts
           .map((post) => TumblrPost.fromJson(post as Map<String, dynamic>))
           .toList();
       return postsList;

@@ -1,5 +1,6 @@
-import 'package:tumblr_api/api/models/tumblr_post_model.dart';
+import 'package:tumblr_api/api/models/blog_model.dart';
 
+/// Represents a Tumblr user
 class TumblrUser {
   final int? following;
   final String? defaultPostFormat;
