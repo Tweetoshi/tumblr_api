@@ -154,7 +154,7 @@ class ImageContentBlock extends ContentBlock {
               .map((m) => MediaObject.fromJson(m))
               .toList()
           : null,
-      attribution: json['attribution'] != null
+      attribution: json['attribution'] != null && json['attribution'] is Map
           ? AttributionObject.fromJson(json['attribution'])
           : null,
       altText: json['alt_text'],
@@ -280,7 +280,7 @@ class AudioContentBlock extends ContentBlock {
       embedHtml: json['embed_html'],
       embedUrl: json['embed_url'],
       metadata: json['metadata'],
-      attribution: json['attribution'] != null
+      attribution: json['attribution'] != null && json['attribution'] is Map
           ? AttributionObject.fromJson(json['attribution'])
           : null,
     );
@@ -353,7 +353,7 @@ class VideoContentBlock extends ContentBlock {
               .toList()
           : null,
       metadata: json['metadata'],
-      attribution: json['attribution'] != null
+      attribution: json['attribution'] != null && json['attribution'] is Map
           ? AttributionObject.fromJson(json['attribution'])
           : null,
       canAutoplayOnCellular: json['can_autoplay_on_cellular'],
@@ -605,7 +605,7 @@ class AskLayoutBlock extends LayoutBlock {
   factory AskLayoutBlock.fromJson(Map<String, dynamic> json) {
     return AskLayoutBlock(
       blocks: List<int>.from(json['blocks']),
-      attribution: json['attribution'] != null
+      attribution: json['attribution'] != null && json['attribution'] is Map
           ? AttributionObject.fromJson(json['attribution'])
           : null,
     );
