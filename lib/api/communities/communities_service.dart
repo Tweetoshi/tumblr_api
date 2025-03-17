@@ -29,9 +29,13 @@ class _CommunitiesService extends BaseService implements CommunitiesService {
   }
 
   @override
-  Future<List<TumblrPost>> getCommunityTimeline(String communityHandle) async {
+  Future<List<TumblrPost>> getCommunityTimeline(
+    String communityHandle, {
+    bool npf = true,
+  }) async {
     try {
-      final response = await get('communities/$communityHandle/timeline');
+      final response = await get('communities/$communityHandle/timeline',
+          queryParameters: {'npf': npf});
 
       final posts =
           response.data['response']['timeline']['elements'] as List<dynamic>;
