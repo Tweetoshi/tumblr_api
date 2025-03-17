@@ -1,5 +1,5 @@
 import 'package:tumblr_api/api/models/community_model.dart';
-import 'package:tumblr_api/api/models/tumblr_post_model.dart';
+import 'package:tumblr_api/api/models/community_timeline_response.dart';
 import 'package:tumblr_api/base_api.dart';
 
 abstract class CommunitiesService {
@@ -8,7 +8,7 @@ abstract class CommunitiesService {
 
   Future<List<Community>> getCommunities();
 
-  Future<List<TumblrPost>> getCommunityTimeline(String communityHandle);
+  Future<CommunityTimelineResponse> getCommunityTimeline(String communityHandle);
 }
 
 class _CommunitiesService extends BaseService implements CommunitiesService {
@@ -29,7 +29,7 @@ class _CommunitiesService extends BaseService implements CommunitiesService {
   }
 
   @override
-  Future<List<TumblrPost>> getCommunityTimeline(
+  Future<CommunityTimelineResponse> getCommunityTimeline(
     String communityHandle, {
     bool npf = true,
   }) async {
@@ -37,9 +37,9 @@ class _CommunitiesService extends BaseService implements CommunitiesService {
       final response = await get('communities/$communityHandle/timeline',
           queryParameters: {'npf': npf});
 
-      final posts =
-          response.data['response']['timeline']['elements'] as List<dynamic>;
-      return posts.map((post) => TumblrPost.fromJson(post)).toList();
+      final processedResponse =
+          CommunityTimelineResponse.fromJson(response.data);
+      return processedResponse;
     } catch (e) {
       throw Exception('Failed to get communities $e');
     }
