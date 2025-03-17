@@ -7,6 +7,7 @@ import 'package:tumblr_api/api/models/reblog_trail_item_model.dart';
 class TumblrPost {
   final String id;
   final TumblrBlog blog;
+  final TumblrBlog? authorBlog;
   final List<ContentBlock> content;
   final List<LayoutBlock>? layout;
   final List<ReblogTrailItem>? trail;
@@ -24,6 +25,7 @@ class TumblrPost {
   TumblrPost({
     required this.id,
     required this.blog,
+    required this.authorBlog,
     required this.content,
     this.layout,
     this.trail,
@@ -55,6 +57,9 @@ class TumblrPost {
               ?.map((item) => ReblogTrailItem.fromJson(item))
               .toList() ??
           null,
+      authorBlog: json['author_blog'] != null
+          ? TumblrBlog.fromJson(json['author_blog'])
+          : null,
       timestamp: json['timestamp'] ?? 0,
       postUrl: json['post_url'] ?? '',
       tags: (json['tags'] as List?)?.map((tag) => tag.toString()).toList(),
