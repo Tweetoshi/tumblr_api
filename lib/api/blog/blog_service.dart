@@ -1,5 +1,6 @@
 import 'package:tumblr_api/api/models/blog_model.dart';
 import 'package:tumblr_api/api/models/content_block_model.dart';
+import 'package:tumblr_api/api/models/notes_model.dart';
 import 'package:tumblr_api/api/models/tumblr_post_model.dart';
 import 'package:tumblr_api/base_api.dart';
 
@@ -25,6 +26,19 @@ abstract class BlogService {
     int limit = 20,
     int offset = 0,
     String? filter,
+  });
+
+  /// Retrieves a single post by its ID using the Neue Post Format
+  /// Required parameters:
+  /// - blogIdentifier: The blog identifier (name, hostname, or UUID)
+  /// - postId: The ID of the post to retrieve
+  ///
+  /// Optional parameters:
+  /// - fields: Fields to include in the response
+  Future<TumblrPost> getPostById(
+    String blogIdentifier,
+    String postId, {
+    List<String>? fields,
   });
 
   /// Creates a new post or reblogs an existing post using the Neue Post Format
@@ -54,6 +68,24 @@ abstract class BlogService {
     List<String>? tags,
     String? publishOn,
     String? date,
+  });
+
+  /// Retrieves notes for a specific post
+  /// Required parameters:
+  /// - blogIdentifier: The blog identifier
+  /// - postId: The ID of the post to get notes for
+  ///
+  /// Optional parameters:
+  /// - beforeTimestamp: Return notes created before this timestamp
+  /// - mode: Response mode (conversation, regular, rollup)
+  /// - types: Types of notes to include (like, reblog, reply, etc.)
+  /// - limit: Number of notes to return (default 20, max 50)
+  Future<NotesResponse> getNotes(
+    String blogIdentifier,
+    String postId, {
+    int? beforeTimestamp,
+    NoteMode? mode,
+    List<String>? types,
   });
 }
 
@@ -159,6 +191,66 @@ class _BlogService extends BaseService implements BlogService {
       return postData['id'];
     } catch (e) {
       throw Exception('Failed to create post: $e');
+    }
+  }
+
+  @override
+  Future<TumblrPost> getPostById(
+    String blogIdentifier,
+    String postId, {
+    List<String>? fields,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{};
+
+      // Add fields parameter if provided
+      if (fields != null && fields.isNotEmpty) {
+        queryParams['fields'] = fields.join(',');
+      }
+
+      final response = await get(
+        'blog/$blogIdentifier/posts/$postId',
+        queryParameters: queryParams,
+      );
+
+      final postData = response.data['response'] as Map<String, dynamic>;
+      return TumblrPost.fromJson(postData);
+    } catch (e) {
+      throw Exception('Failed to get post by ID: $e');
+    }
+  }
+
+  @override
+  Future<NotesResponse> getNotes(
+    String blogIdentifier,
+    String postId, {
+    int? beforeTimestamp,
+    NoteMode? mode,
+    List<String>? types,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{};
+
+      if (beforeTimestamp != null) {
+        queryParams['before_timestamp'] = beforeTimestamp;
+      }
+      if (mode != null) queryParams['mode'] = mode.name;
+      if (types != null && types.isNotEmpty) {
+        queryParams['types'] = types.join(',');
+      }
+
+      final response = await get(
+        'blog/$blogIdentifier/notes',
+        queryParameters: {
+          'id': postId,
+          ...queryParams,
+        },
+      );
+
+      final responseData = response.data['response'] as Map<String, dynamic>;
+      return NotesResponse.fromJson(responseData);
+    } catch (e) {
+      throw Exception('Failed to get notes for post: $e');
     }
   }
 }

@@ -6,6 +6,11 @@ abstract class UserService {
   factory UserService({required String accessToken}) =>
       _UserService(accessToken: accessToken);
 
+  /// Get the user profile
+  /// 
+  /// This method returns the user profile of the authenticated user.
+  /// 
+  /// Returns a [TumblrUser] object.
   Future<TumblrUser> getUserProfile();
 
   /// Request Parameters for dashboard posts
