@@ -2,7 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:tumblr_api/auth/token_response.dart';
 
-/// Generic OAuth client that can be used for any OAuth 2.0 API
+/// Tumblr OAuth2 Client
+/// 
+/// This class is used to authenticate with the Tumblr API using OAuth2.
+/// It is used to get the access token for the user and to refresh the access token.
+/// 
+/// 
 class TumblrOAuth2Client {
   final Dio _dio = Dio();
 

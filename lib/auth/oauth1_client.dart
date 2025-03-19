@@ -1,11 +1,15 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:oauth1/oauth1.dart' as oauth1;
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'package:tumblr_api/api/models/tumblr_post_model.dart';
-import 'package:tumblr_api/api/models/user_model.dart';
 
-
+/// Tumblr OAuth1 Client
+/// 
+/// This class is used to authenticate with the Tumblr API using OAuth1.
+/// It is used to get the credentials for the user and to make requests to the API.
+/// 
+/// This approach is no recommended to use, use [TumblrOAuth2Client] instead.
+/// 
+/// 
 class TumblrOAuth1Client {
   static const String _requestTokenUrl =
       'https://www.tumblr.com/oauth/request_token';
@@ -133,73 +137,5 @@ class TumblrOAuth1Client {
       throw Exception(
           'API request failed with status: ${response.statusCode}, body: ${response.body}');
     }
-  }
-
-  /// Helper method to get user info
-  Future<TumblrUser> getUserInfo() async {
-    final response = await get('user/info');
-    return TumblrUser.fromJson(response);
-  }
-
-  /// Helper method to get a user's dashboard
-  Future<Map<String, dynamic>> getDashboard({
-    int? limit = 20,
-    bool? npf = true,
-    bool? reblog_info = false,
-    bool? notes_info = false,
-  }) async {
-    String endpoint = 'user/dashboard';
-
-    final queryParams = <String, String>{};
-    if (limit != null) queryParams['limit'] = limit.toString();
-    if (npf != null) queryParams['npf'] = npf.toString();
-    if (reblog_info != null)
-      queryParams['reblog_info'] = reblog_info.toString();
-    if (notes_info != null) queryParams['notes_info'] = notes_info.toString();
-
-    if (queryParams.isNotEmpty) {
-      final queryString = queryParams.entries
-          .map((e) => '${e.key}=${Uri.encodeComponent(e.value)}')
-          .join('&');
-      endpoint = '$endpoint?$queryString';
-    }
-
-    return await get(endpoint);
-  }
-
-  Future<List<TumblrPost>> getDashboardPosts({
-    int? limit = 20,
-    bool? reblog_info = false,
-    bool? notes_info = false,
-  }) async {
-    final dashboard = await getDashboard(
-        limit: limit, reblog_info: reblog_info, notes_info: notes_info);
-    final posts = dashboard['response']['posts'] as List<dynamic>;
-    final postsList = posts.map((post) => TumblrPost.fromJson(post as Map<String, dynamic>)).toList();
-    return postsList as List<TumblrPost>;
-  }
-
-  /// Helper method to get a blog's posts
-  Future<Map<String, dynamic>> getBlogPosts(
-    String blogIdentifier, {
-    int? limit,
-    int? offset,
-    String? type,
-  }) async {
-    String endpoint = 'blog/$blogIdentifier/posts';
-
-    final queryParams = <String, String>{};
-    if (limit != null) queryParams['limit'] = limit.toString();
-    if (offset != null) queryParams['offset'] = offset.toString();
-    if (type != null) queryParams['type'] = type;
-
-    if (queryParams.isNotEmpty) {
-      final queryString = queryParams.entries
-          .map((e) => '${e.key}=${Uri.encodeComponent(e.value)}')
-          .join('&');
-      endpoint = '$endpoint?$queryString';
-    }
-
-    return await get(endpoint);
   }
 }
