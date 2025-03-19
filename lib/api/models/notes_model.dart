@@ -33,7 +33,6 @@ class NotesResponse with _$NotesResponse {
     int? totalLikes,
     int? totalReblogs,
     int? startedFrom,
-    int? rollupNotes,
   }) = _NotesResponse;
 
   factory NotesResponse.fromJson(Map<String, dynamic> json) {
@@ -47,14 +46,13 @@ class NotesResponse with _$NotesResponse {
       totalNotes: json['total_notes'] as int?,
       totalLikes: json['total_likes'] as int?,
       totalReblogs: json['total_reblogs'] as int?,
-      rollupNotes: json['rollup_notes'] as int?,
     );
   }
 }
 
 @JsonSerializable(explicitToJson: true)
 class Note {
-  final int timestamp;
+  final int? timestamp;
 
   @JsonKey(name: 'blog_name')
   final String blogName;
