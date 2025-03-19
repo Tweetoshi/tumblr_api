@@ -21,7 +21,6 @@ mixin _$NotesResponse {
   int? get totalLikes => throw _privateConstructorUsedError;
   int? get totalReblogs => throw _privateConstructorUsedError;
   int? get startedFrom => throw _privateConstructorUsedError;
-  int? get rollupNotes => throw _privateConstructorUsedError;
 
   /// Create a copy of NotesResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -41,8 +40,7 @@ abstract class $NotesResponseCopyWith<$Res> {
       int? totalNotes,
       int? totalLikes,
       int? totalReblogs,
-      int? startedFrom,
-      int? rollupNotes});
+      int? startedFrom});
 }
 
 /// @nodoc
@@ -65,7 +63,6 @@ class _$NotesResponseCopyWithImpl<$Res, $Val extends NotesResponse>
     Object? totalLikes = freezed,
     Object? totalReblogs = freezed,
     Object? startedFrom = freezed,
-    Object? rollupNotes = freezed,
   }) {
     return _then(_value.copyWith(
       notes: null == notes
@@ -88,10 +85,6 @@ class _$NotesResponseCopyWithImpl<$Res, $Val extends NotesResponse>
           ? _value.startedFrom
           : startedFrom // ignore: cast_nullable_to_non_nullable
               as int?,
-      rollupNotes: freezed == rollupNotes
-          ? _value.rollupNotes
-          : rollupNotes // ignore: cast_nullable_to_non_nullable
-              as int?,
     ) as $Val);
   }
 }
@@ -109,8 +102,7 @@ abstract class _$$NotesResponseImplCopyWith<$Res>
       int? totalNotes,
       int? totalLikes,
       int? totalReblogs,
-      int? startedFrom,
-      int? rollupNotes});
+      int? startedFrom});
 }
 
 /// @nodoc
@@ -131,7 +123,6 @@ class __$$NotesResponseImplCopyWithImpl<$Res>
     Object? totalLikes = freezed,
     Object? totalReblogs = freezed,
     Object? startedFrom = freezed,
-    Object? rollupNotes = freezed,
   }) {
     return _then(_$NotesResponseImpl(
       notes: null == notes
@@ -154,10 +145,6 @@ class __$$NotesResponseImplCopyWithImpl<$Res>
           ? _value.startedFrom
           : startedFrom // ignore: cast_nullable_to_non_nullable
               as int?,
-      rollupNotes: freezed == rollupNotes
-          ? _value.rollupNotes
-          : rollupNotes // ignore: cast_nullable_to_non_nullable
-              as int?,
     ));
   }
 }
@@ -170,8 +157,7 @@ class _$NotesResponseImpl implements _NotesResponse {
       this.totalNotes,
       this.totalLikes,
       this.totalReblogs,
-      this.startedFrom,
-      this.rollupNotes})
+      this.startedFrom})
       : _notes = notes;
 
   final List<Note> _notes;
@@ -190,12 +176,10 @@ class _$NotesResponseImpl implements _NotesResponse {
   final int? totalReblogs;
   @override
   final int? startedFrom;
-  @override
-  final int? rollupNotes;
 
   @override
   String toString() {
-    return 'NotesResponse(notes: $notes, totalNotes: $totalNotes, totalLikes: $totalLikes, totalReblogs: $totalReblogs, startedFrom: $startedFrom, rollupNotes: $rollupNotes)';
+    return 'NotesResponse(notes: $notes, totalNotes: $totalNotes, totalLikes: $totalLikes, totalReblogs: $totalReblogs, startedFrom: $startedFrom)';
   }
 
   @override
@@ -211,9 +195,7 @@ class _$NotesResponseImpl implements _NotesResponse {
             (identical(other.totalReblogs, totalReblogs) ||
                 other.totalReblogs == totalReblogs) &&
             (identical(other.startedFrom, startedFrom) ||
-                other.startedFrom == startedFrom) &&
-            (identical(other.rollupNotes, rollupNotes) ||
-                other.rollupNotes == rollupNotes));
+                other.startedFrom == startedFrom));
   }
 
   @override
@@ -223,8 +205,7 @@ class _$NotesResponseImpl implements _NotesResponse {
       totalNotes,
       totalLikes,
       totalReblogs,
-      startedFrom,
-      rollupNotes);
+      startedFrom);
 
   /// Create a copy of NotesResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -241,8 +222,7 @@ abstract class _NotesResponse implements NotesResponse {
       final int? totalNotes,
       final int? totalLikes,
       final int? totalReblogs,
-      final int? startedFrom,
-      final int? rollupNotes}) = _$NotesResponseImpl;
+      final int? startedFrom}) = _$NotesResponseImpl;
 
   @override
   List<Note> get notes;
@@ -254,8 +234,6 @@ abstract class _NotesResponse implements NotesResponse {
   int? get totalReblogs;
   @override
   int? get startedFrom;
-  @override
-  int? get rollupNotes;
 
   /// Create a copy of NotesResponse
   /// with the given fields replaced by the non-null parameter values.

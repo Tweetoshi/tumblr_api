@@ -7,7 +7,7 @@ part of 'notes_model.dart';
 // **************************************************************************
 
 Note _$NoteFromJson(Map<String, dynamic> json) => Note(
-      timestamp: (json['timestamp'] as num).toInt(),
+      timestamp: (json['timestamp'] as num?)?.toInt(),
       blogName: json['blog_name'] as String,
       blogUuid: json['blog_uuid'] as String,
       blogUrl: json['blog_url'] as String,
