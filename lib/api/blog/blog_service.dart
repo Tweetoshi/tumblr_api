@@ -1,4 +1,5 @@
 import 'package:tumblr_api/api/models/blog_model.dart';
+import 'package:tumblr_api/api/models/content_block_model.dart';
 import 'package:tumblr_api/api/models/tumblr_post_model.dart';
 import 'package:tumblr_api/base_api.dart';
 
@@ -24,6 +25,35 @@ abstract class BlogService {
     int limit = 20,
     int offset = 0,
     String? filter,
+  });
+
+  /// Creates a new post or reblogs an existing post using the Neue Post Format
+  /// Required parameters for creating a new post:
+  /// - blogIdentifier: The blog to post to
+  /// - content: The content blocks for the post
+  ///
+  /// Required parameters for reblogging:
+  /// - blogIdentifier: The blog to post to
+  /// - parentPostId: ID of the post being reblogged
+  /// - parentBlogUuid: UUID of the blog being reblogged from
+  /// - content: Optional additional content blocks to add
+  ///
+  /// Optional parameters for both:
+  /// - layout: Layout blocks for the post
+  /// - state: Post state (published, draft, queue, private)
+  /// - tags: Tags to associate with the post
+  /// - publishOn: Schedule post at specified date (for queued posts)
+  /// - date: Override the post's creation date
+  Future<String> createPost({
+    required String blogIdentifier,
+    required List<ContentBlock> content,
+    String? parentPostId,
+    String? parentBlogUuid,
+    List<LayoutBlock>? layout,
+    String state = 'published',
+    List<String>? tags,
+    String? publishOn,
+    String? date,
   });
 }
 
@@ -78,6 +108,57 @@ class _BlogService extends BaseService implements BlogService {
       return postsList;
     } catch (e) {
       throw Exception('Failed to get blog posts $e');
+    }
+  }
+
+  @override
+  Future<String> createPost({
+    required String blogIdentifier,
+    required List<ContentBlock> content,
+    String? parentPostId,
+    String? parentBlogUuid,
+    List<LayoutBlock>? layout,
+    String state = 'published',
+    List<String>? tags,
+    String? publishOn,
+    String? date,
+  }) async {
+    try {
+      // Convert content blocks to JSON
+      final contentJson = content.map((block) => block.toJson()).toList();
+
+      // Prepare the request body
+      final Map<String, dynamic> body = {
+        'content': contentJson,
+      };
+
+      // Add optional parameters if present
+      if (layout != null) {
+        body['layout'] = layout.map((block) => block.toJson()).toList();
+      }
+      if (tags != null && tags.isNotEmpty) body['tags'] = tags;
+      if (publishOn != null) body['publish_on'] = publishOn;
+      if (date != null) body['date'] = date;
+      if (state != 'published') body['state'] = state;
+
+      // Handle reblog vs new post
+      if (parentPostId != null && parentBlogUuid != null) {
+        body['parent_post_id'] = parentPostId;
+        body['parent_blog_uuid'] = parentBlogUuid;
+        body['reblog_key'] = 'reblog'; // This is a fixed value for NPF
+      }
+
+      // Make the POST request
+      final response = await post(
+        'blog/$blogIdentifier/posts',
+        body: body,
+      );
+
+      // Parse the response
+      final postData = response.data['response'] as Map<String, dynamic>;
+      return postData['id'];
+    } catch (e) {
+      throw Exception('Failed to create post: $e');
     }
   }
 }
