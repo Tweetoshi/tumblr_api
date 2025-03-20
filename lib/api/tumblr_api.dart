@@ -1,5 +1,6 @@
 import 'package:tumblr_api/api/blog/blog_service.dart';
 import 'package:tumblr_api/api/communities/communities_service.dart';
+import 'package:tumblr_api/api/tag/tag_service.dart';
 import 'package:tumblr_api/api/user/user_service.dart';
 
 abstract class TumblrApi {
@@ -10,6 +11,8 @@ abstract class TumblrApi {
   BlogService get blog;
 
   CommunitiesService get communities;
+
+  TagService get tag;
 }
 
 class _TumblrApi implements TumblrApi {
@@ -18,7 +21,8 @@ class _TumblrApi implements TumblrApi {
   _TumblrApi(this.accessToken)
       : user = UserService(accessToken: accessToken),
         blog = BlogService(accessToken: accessToken),
-        communities = CommunitiesService(accessToken: accessToken);
+        communities = CommunitiesService(accessToken: accessToken),
+        tag = TagService(accessToken: accessToken);
 
   @override
   @override
@@ -29,4 +33,7 @@ class _TumblrApi implements TumblrApi {
 
   @override
   final CommunitiesService communities;
+
+  @override
+  final TagService tag;
 }
