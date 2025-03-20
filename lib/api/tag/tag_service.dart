@@ -30,6 +30,7 @@ class _TagService extends BaseService implements TagService {
     int? before,
     int limit = 20,
     String? filter,
+    bool npf = true,
   }) async {
     try {
       // Validate limit is within allowed range
@@ -40,6 +41,7 @@ class _TagService extends BaseService implements TagService {
       final queryParams = <String, dynamic>{
         'tag': tag,
         'limit': limit,
+        'npf': npf
       };
 
       if (before != null) queryParams['before'] = before;
