@@ -46,11 +46,11 @@ class TumblrPost {
       id: json['id'].toString(),
       blog: TumblrBlog.fromJson(json['blog']),
       content: (json['content'] as List?)
-              ?.map((block) => ContentBlockFactory.createFromJson(block))
+              ?.map((block) => ContentBlock.fromJson(block as Map<String, dynamic>))
               .toList() ??
           [],
       layout: (json['layout'] as List?)
-              ?.map((layout) => LayoutBlockFactory.createFromJson(layout))
+              ?.map((layout) => LayoutBlock.fromJson(layout as Map<String, dynamic>))
               .toList() ??
           null,
       trail: (json['trail'] as List?)
