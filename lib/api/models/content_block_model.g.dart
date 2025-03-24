@@ -11,7 +11,7 @@ _$TextContentBlockImpl _$$TextContentBlockImplFromJson(
     _$TextContentBlockImpl(
       text: json['text'] as String,
       subtype: json['subtype'] as String?,
-      indentLevel: (json['indentLevel'] as num?)?.toInt(),
+      indentLevel: (json['indent_level'] as num?)?.toInt(),
       formatting: (json['formatting'] as List<dynamic>?)
           ?.map((e) => TextFormatting.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -23,7 +23,7 @@ Map<String, dynamic> _$$TextContentBlockImplToJson(
     <String, dynamic>{
       'text': instance.text,
       'subtype': instance.subtype,
-      'indentLevel': instance.indentLevel,
+      'indent_level': instance.indentLevel,
       'formatting': instance.formatting,
       'type': instance.$type,
     };
@@ -37,7 +37,7 @@ _$ImageContentBlockImpl _$$ImageContentBlockImplFromJson(
       colors: (json['colors'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      feedbackToken: json['feedbackToken'] as String?,
+      feedbackToken: json['feedback_token'] as String?,
       poster: (json['poster'] as List<dynamic>?)
           ?.map((e) => MediaObject.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -45,7 +45,7 @@ _$ImageContentBlockImpl _$$ImageContentBlockImplFromJson(
           ? null
           : AttributionObject.fromJson(
               json['attribution'] as Map<String, dynamic>),
-      altText: json['altText'] as String?,
+      altText: json['alt_text'] as String?,
       caption: json['caption'] as String?,
       $type: json['type'] as String?,
     );
@@ -55,10 +55,10 @@ Map<String, dynamic> _$$ImageContentBlockImplToJson(
     <String, dynamic>{
       'media': instance.media,
       'colors': instance.colors,
-      'feedbackToken': instance.feedbackToken,
+      'feedback_token': instance.feedbackToken,
       'poster': instance.poster,
       'attribution': instance.attribution,
-      'altText': instance.altText,
+      'alt_text': instance.altText,
       'caption': instance.caption,
       'type': instance.$type,
     };
@@ -70,8 +70,8 @@ _$LinkContentBlockImpl _$$LinkContentBlockImplFromJson(
       title: json['title'] as String?,
       description: json['description'] as String?,
       author: json['author'] as String?,
-      siteName: json['siteName'] as String?,
-      displayUrl: json['displayUrl'] as String?,
+      siteName: json['site_name'] as String?,
+      displayUrl: json['display_url'] as String?,
       poster: (json['poster'] as List<dynamic>?)
           ?.map((e) => MediaObject.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -85,8 +85,8 @@ Map<String, dynamic> _$$LinkContentBlockImplToJson(
       'title': instance.title,
       'description': instance.description,
       'author': instance.author,
-      'siteName': instance.siteName,
-      'displayUrl': instance.displayUrl,
+      'site_name': instance.siteName,
+      'display_url': instance.displayUrl,
       'poster': instance.poster,
       'type': instance.$type,
     };
@@ -105,8 +105,8 @@ _$AudioContentBlockImpl _$$AudioContentBlockImplFromJson(
       poster: (json['poster'] as List<dynamic>?)
           ?.map((e) => MediaObject.fromJson(e as Map<String, dynamic>))
           .toList(),
-      embedHtml: json['embedHtml'] as String?,
-      embedUrl: json['embedUrl'] as String?,
+      embedHtml: json['embed_html'] as String?,
+      embedUrl: json['embed_url'] as String?,
       metadata: json['metadata'] as Map<String, dynamic>?,
       attribution: json['attribution'] == null
           ? null
@@ -125,8 +125,8 @@ Map<String, dynamic> _$$AudioContentBlockImplToJson(
       'artist': instance.artist,
       'album': instance.album,
       'poster': instance.poster,
-      'embedHtml': instance.embedHtml,
-      'embedUrl': instance.embedUrl,
+      'embed_html': instance.embedHtml,
+      'embed_url': instance.embedUrl,
       'metadata': instance.metadata,
       'attribution': instance.attribution,
       'type': instance.$type,
@@ -140,12 +140,12 @@ _$VideoContentBlockImpl _$$VideoContentBlockImplFromJson(
           ? null
           : MediaObject.fromJson(json['media'] as Map<String, dynamic>),
       provider: json['provider'] as String?,
-      embedHtml: json['embedHtml'] as String?,
-      embedIframe: json['embedIframe'] == null
+      embedHtml: json['embed_html'] as String?,
+      embedIframe: json['embed_iframe'] == null
           ? null
           : EmbedIframeObject.fromJson(
-              json['embedIframe'] as Map<String, dynamic>),
-      embedUrl: json['embedUrl'] as String?,
+              json['embed_iframe'] as Map<String, dynamic>),
+      embedUrl: json['embed_url'] as String?,
       poster: (json['poster'] as List<dynamic>?)
           ?.map((e) => MediaObject.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -154,7 +154,7 @@ _$VideoContentBlockImpl _$$VideoContentBlockImplFromJson(
           ? null
           : AttributionObject.fromJson(
               json['attribution'] as Map<String, dynamic>),
-      canAutoplayOnCellular: json['canAutoplayOnCellular'] as bool?,
+      canAutoplayOnCellular: json['can_autoplay_on_cellular'] as bool?,
       duration: (json['duration'] as num?)?.toInt(),
       $type: json['type'] as String?,
     );
@@ -165,13 +165,13 @@ Map<String, dynamic> _$$VideoContentBlockImplToJson(
       'url': instance.url,
       'media': instance.media,
       'provider': instance.provider,
-      'embedHtml': instance.embedHtml,
-      'embedIframe': instance.embedIframe,
-      'embedUrl': instance.embedUrl,
+      'embed_html': instance.embedHtml,
+      'embed_iframe': instance.embedIframe,
+      'embed_url': instance.embedUrl,
       'poster': instance.poster,
       'metadata': instance.metadata,
       'attribution': instance.attribution,
-      'canAutoplayOnCellular': instance.canAutoplayOnCellular,
+      'can_autoplay_on_cellular': instance.canAutoplayOnCellular,
       'duration': instance.duration,
       'type': instance.$type,
     };
@@ -184,7 +184,7 @@ _$PaywallContentBlockImpl _$$PaywallContentBlockImplFromJson(
       title: json['title'] as String?,
       text: json['text'] as String,
       color: json['color'] as String?,
-      isVisible: json['isVisible'] as bool?,
+      isVisible: json['is_visible'] as bool?,
       $type: json['type'] as String?,
     );
 
@@ -196,7 +196,7 @@ Map<String, dynamic> _$$PaywallContentBlockImplToJson(
       'title': instance.title,
       'text': instance.text,
       'color': instance.color,
-      'isVisible': instance.isVisible,
+      'is_visible': instance.isVisible,
       'type': instance.$type,
     };
 
@@ -204,14 +204,14 @@ _$GenericContentBlockImpl _$$GenericContentBlockImplFromJson(
         Map<String, dynamic> json) =>
     _$GenericContentBlockImpl(
       type: json['type'] as String,
-      originalJson: json['originalJson'] as Map<String, dynamic>?,
+      originalJson: json['original_json'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$GenericContentBlockImplToJson(
         _$GenericContentBlockImpl instance) =>
     <String, dynamic>{
       'type': instance.type,
-      'originalJson': instance.originalJson,
+      'original_json': instance.originalJson,
     };
 
 _$TextFormattingImpl _$$TextFormattingImplFromJson(Map<String, dynamic> json) =>
@@ -237,7 +237,7 @@ _$RowsLayoutBlockImpl _$$RowsLayoutBlockImplFromJson(
       display: (json['display'] as List<dynamic>)
           .map((e) => DisplayObject.fromJson(e as Map<String, dynamic>))
           .toList(),
-      truncateAfter: (json['truncateAfter'] as num?)?.toInt(),
+      truncateAfter: (json['truncate_after'] as num?)?.toInt(),
       $type: json['type'] as String?,
     );
 
@@ -245,14 +245,14 @@ Map<String, dynamic> _$$RowsLayoutBlockImplToJson(
         _$RowsLayoutBlockImpl instance) =>
     <String, dynamic>{
       'display': instance.display,
-      'truncateAfter': instance.truncateAfter,
+      'truncate_after': instance.truncateAfter,
       'type': instance.$type,
     };
 
 _$CondensedLayoutBlockImpl _$$CondensedLayoutBlockImplFromJson(
         Map<String, dynamic> json) =>
     _$CondensedLayoutBlockImpl(
-      truncateAfter: (json['truncateAfter'] as num?)?.toInt(),
+      truncateAfter: (json['truncate_after'] as num?)?.toInt(),
       blocks: (json['blocks'] as List<dynamic>?)
           ?.map((e) => (e as num).toInt())
           .toList(),
@@ -262,7 +262,7 @@ _$CondensedLayoutBlockImpl _$$CondensedLayoutBlockImplFromJson(
 Map<String, dynamic> _$$CondensedLayoutBlockImplToJson(
         _$CondensedLayoutBlockImpl instance) =>
     <String, dynamic>{
-      'truncateAfter': instance.truncateAfter,
+      'truncate_after': instance.truncateAfter,
       'blocks': instance.blocks,
       'type': instance.$type,
     };
@@ -291,14 +291,14 @@ _$GenericLayoutBlockImpl _$$GenericLayoutBlockImplFromJson(
         Map<String, dynamic> json) =>
     _$GenericLayoutBlockImpl(
       type: json['type'] as String,
-      originalJson: json['originalJson'] as Map<String, dynamic>,
+      originalJson: json['original_json'] as Map<String, dynamic>,
     );
 
 Map<String, dynamic> _$$GenericLayoutBlockImplToJson(
         _$GenericLayoutBlockImpl instance) =>
     <String, dynamic>{
       'type': instance.type,
-      'originalJson': instance.originalJson,
+      'original_json': instance.originalJson,
     };
 
 _$DisplayObjectImpl _$$DisplayObjectImplFromJson(Map<String, dynamic> json) =>

@@ -19,7 +19,7 @@ Community _$CommunityFromJson(Map<String, dynamic> json) => Community(
           ?.map((e) => e as String)
           .toList(),
       visibility: json['visibility'] as String?,
-      membersOnlineCount: (json['membersOnlineCount'] as num?)?.toInt(),
+      membersOnlineCount: (json['members_online_count'] as num?)?.toInt(),
       isMember: json['is_member'] as bool?,
       canPost: json['can_post'] as bool?,
       canEdit: json['can_edit'] as bool?,
@@ -60,7 +60,7 @@ Map<String, dynamic> _$CommunityToJson(Community instance) => <String, dynamic>{
       'guidelines': instance.guidelines,
       'visibility': instance.visibility,
       'member_count': instance.memberCount,
-      'membersOnlineCount': instance.membersOnlineCount,
+      'members_online_count': instance.membersOnlineCount,
       'mention_tag': instance.mentionTag,
       'is_member': instance.isMember,
       'can_view': instance.canView,

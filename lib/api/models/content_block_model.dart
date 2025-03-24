@@ -7,7 +7,10 @@ part 'content_block_model.freezed.dart';
 part 'content_block_model.g.dart';
 
 /// Base class for all content blocks
-@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.snake, fallbackUnion: 'generic')
+@Freezed(
+    unionKey: 'type',
+    unionValueCase: FreezedUnionCase.snake,
+    fallbackUnion: 'generic')
 class ContentBlock with _$ContentBlock {
   const ContentBlock._();
 
@@ -94,7 +97,8 @@ class ContentBlock with _$ContentBlock {
     required Map<String, dynamic>? originalJson,
   }) = GenericContentBlock;
 
-  factory ContentBlock.fromJson(Map<String, dynamic> json) => _$ContentBlockFromJson(json);
+  factory ContentBlock.fromJson(Map<String, dynamic> json) =>
+      _$ContentBlockFromJson(json);
 }
 
 /// Text formatting for inline styles
@@ -112,7 +116,10 @@ class TextFormatting with _$TextFormatting {
 }
 
 /// Base class for layout blocks
-@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.snake, fallbackUnion: 'generic')
+@Freezed(
+    unionKey: 'type',
+    unionValueCase: FreezedUnionCase.snake,
+    fallbackUnion: 'generic')
 class LayoutBlock with _$LayoutBlock {
   const LayoutBlock._();
 
@@ -144,7 +151,8 @@ class LayoutBlock with _$LayoutBlock {
     required Map<String, dynamic> originalJson,
   }) = GenericLayoutBlock;
 
-  factory LayoutBlock.fromJson(Map<String, dynamic> json) => _$LayoutBlockFromJson(json);
+  factory LayoutBlock.fromJson(Map<String, dynamic> json) =>
+      _$LayoutBlockFromJson(json);
 }
 
 /// Display object for RowsLayoutBlock

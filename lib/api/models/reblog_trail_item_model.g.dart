@@ -21,7 +21,7 @@ _$ReblogTrailItemImpl _$$ReblogTrailItemImplFromJson(
       layout: (json['layout'] as List<dynamic>?)
           ?.map((e) => LayoutBlock.fromJson(e as Map<String, dynamic>))
           .toList(),
-      brokenBlogName: json['brokenBlogName'] as String?,
+      brokenBlogName: json['broken_blog_name'] as String?,
     );
 
 Map<String, dynamic> _$$ReblogTrailItemImplToJson(
@@ -31,5 +31,5 @@ Map<String, dynamic> _$$ReblogTrailItemImplToJson(
       'blog': instance.blog,
       'content': instance.content,
       'layout': instance.layout,
-      'brokenBlogName': instance.brokenBlogName,
+      'broken_blog_name': instance.brokenBlogName,
     };
