@@ -48,6 +48,8 @@ abstract class $ReblogTrailItemCopyWith<$Res> {
       List<ContentBlock> content,
       List<LayoutBlock>? layout,
       String? brokenBlogName});
+
+  $TumblrBlogCopyWith<$Res>? get blog;
 }
 
 /// @nodoc
@@ -94,6 +96,20 @@ class _$ReblogTrailItemCopyWithImpl<$Res, $Val extends ReblogTrailItem>
               as String?,
     ) as $Val);
   }
+
+  /// Create a copy of ReblogTrailItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TumblrBlogCopyWith<$Res>? get blog {
+    if (_value.blog == null) {
+      return null;
+    }
+
+    return $TumblrBlogCopyWith<$Res>(_value.blog!, (value) {
+      return _then(_value.copyWith(blog: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -110,6 +126,9 @@ abstract class _$$ReblogTrailItemImplCopyWith<$Res>
       List<ContentBlock> content,
       List<LayoutBlock>? layout,
       String? brokenBlogName});
+
+  @override
+  $TumblrBlogCopyWith<$Res>? get blog;
 }
 
 /// @nodoc
