@@ -1,30 +1,19 @@
-class AvatarImage {
-  final String url;
-  final int? width;
-  final int? height;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  AvatarImage({
-    required this.url,
-    this.width,
-    this.height,
-  });
+part 'avatar_image_model.freezed.dart';
+part 'avatar_image_model.g.dart';
 
-  factory AvatarImage.fromJson(Map<String, dynamic> json) {
-    return AvatarImage(
-      url: json['url'],
-      width: json['width'],
-      height: json['height'],
-    );
-  }
+/// Represents an avatar image with various sizes
+@freezed
+class AvatarImage with _$AvatarImage {
+  const AvatarImage._();
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
-      'url': url,
-    };
+  const factory AvatarImage({
+    required String url,
+    int? width,
+    int? height,
+  }) = _AvatarImage;
 
-    if (width != null) data['width'] = width;
-    if (height != null) data['height'] = height;
-
-    return data;
-  }
+  factory AvatarImage.fromJson(Map<String, dynamic> json) =>
+      _$AvatarImageFromJson(json);
 }

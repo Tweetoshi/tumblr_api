@@ -1508,6 +1508,8 @@ abstract class _$$AudioContentBlockImplCopyWith<$Res> {
       String? embedUrl,
       Map<String, dynamic>? metadata,
       AttributionObject? attribution});
+
+  $MediaObjectCopyWith<$Res>? get media;
 }
 
 /// @nodoc
@@ -1581,6 +1583,20 @@ class __$$AudioContentBlockImplCopyWithImpl<$Res>
           : attribution // ignore: cast_nullable_to_non_nullable
               as AttributionObject?,
     ));
+  }
+
+  /// Create a copy of ContentBlock
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MediaObjectCopyWith<$Res>? get media {
+    if (_value.media == null) {
+      return null;
+    }
+
+    return $MediaObjectCopyWith<$Res>(_value.media!, (value) {
+      return _then(_value.copyWith(media: value));
+    });
   }
 }
 
@@ -1993,6 +2009,9 @@ abstract class _$$VideoContentBlockImplCopyWith<$Res> {
       AttributionObject? attribution,
       bool? canAutoplayOnCellular,
       int? duration});
+
+  $MediaObjectCopyWith<$Res>? get media;
+  $EmbedIframeObjectCopyWith<$Res>? get embedIframe;
 }
 
 /// @nodoc
@@ -2066,6 +2085,34 @@ class __$$VideoContentBlockImplCopyWithImpl<$Res>
           : duration // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
+  }
+
+  /// Create a copy of ContentBlock
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MediaObjectCopyWith<$Res>? get media {
+    if (_value.media == null) {
+      return null;
+    }
+
+    return $MediaObjectCopyWith<$Res>(_value.media!, (value) {
+      return _then(_value.copyWith(media: value));
+    });
+  }
+
+  /// Create a copy of ContentBlock
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $EmbedIframeObjectCopyWith<$Res>? get embedIframe {
+    if (_value.embedIframe == null) {
+      return null;
+    }
+
+    return $EmbedIframeObjectCopyWith<$Res>(_value.embedIframe!, (value) {
+      return _then(_value.copyWith(embedIframe: value));
+    });
   }
 }
 
