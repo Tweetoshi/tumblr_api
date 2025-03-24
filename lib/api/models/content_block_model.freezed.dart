@@ -14,6 +14,26 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+ContentBlock _$ContentBlockFromJson(Map<String, dynamic> json) {
+  switch (json['type']) {
+    case 'text':
+      return TextContentBlock.fromJson(json);
+    case 'image':
+      return ImageContentBlock.fromJson(json);
+    case 'link':
+      return LinkContentBlock.fromJson(json);
+    case 'audio':
+      return AudioContentBlock.fromJson(json);
+    case 'video':
+      return VideoContentBlock.fromJson(json);
+    case 'paywall':
+      return PaywallContentBlock.fromJson(json);
+
+    default:
+      return GenericContentBlock.fromJson(json);
+  }
+}
+
 /// @nodoc
 mixin _$ContentBlock {
   @optionalTypeArgs
@@ -68,7 +88,7 @@ mixin _$ContentBlock {
     required TResult Function(String subtype, String url, String? title,
             String text, String? color, bool? isVisible)
         paywall,
-    required TResult Function(String type, Map<String, dynamic> originalJson)
+    required TResult Function(String type, Map<String, dynamic>? originalJson)
         generic,
   }) =>
       throw _privateConstructorUsedError;
@@ -124,7 +144,7 @@ mixin _$ContentBlock {
     TResult? Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult? Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult? Function(String type, Map<String, dynamic>? originalJson)? generic,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -179,7 +199,7 @@ mixin _$ContentBlock {
     TResult Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult Function(String type, Map<String, dynamic>? originalJson)? generic,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -217,6 +237,9 @@ mixin _$ContentBlock {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this ContentBlock to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -293,15 +316,20 @@ class __$$TextContentBlockImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$TextContentBlockImpl extends TextContentBlock {
   const _$TextContentBlockImpl(
       {required this.text,
       this.subtype,
       this.indentLevel,
-      final List<TextFormatting>? formatting})
+      final List<TextFormatting>? formatting,
+      final String? $type})
       : _formatting = formatting,
+        $type = $type ?? 'text',
         super._();
+
+  factory _$TextContentBlockImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TextContentBlockImplFromJson(json);
 
   @override
   final String text;
@@ -318,6 +346,9 @@ class _$TextContentBlockImpl extends TextContentBlock {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -337,6 +368,7 @@ class _$TextContentBlockImpl extends TextContentBlock {
                 .equals(other._formatting, _formatting));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, text, subtype, indentLevel,
       const DeepCollectionEquality().hash(_formatting));
@@ -403,7 +435,7 @@ class _$TextContentBlockImpl extends TextContentBlock {
     required TResult Function(String subtype, String url, String? title,
             String text, String? color, bool? isVisible)
         paywall,
-    required TResult Function(String type, Map<String, dynamic> originalJson)
+    required TResult Function(String type, Map<String, dynamic>? originalJson)
         generic,
   }) {
     return text(this.text, subtype, indentLevel, formatting);
@@ -462,7 +494,7 @@ class _$TextContentBlockImpl extends TextContentBlock {
     TResult? Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult? Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult? Function(String type, Map<String, dynamic>? originalJson)? generic,
   }) {
     return text?.call(this.text, subtype, indentLevel, formatting);
   }
@@ -520,7 +552,7 @@ class _$TextContentBlockImpl extends TextContentBlock {
     TResult Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult Function(String type, Map<String, dynamic>? originalJson)? generic,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -574,6 +606,13 @@ class _$TextContentBlockImpl extends TextContentBlock {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$TextContentBlockImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class TextContentBlock extends ContentBlock {
@@ -583,6 +622,9 @@ abstract class TextContentBlock extends ContentBlock {
       final int? indentLevel,
       final List<TextFormatting>? formatting}) = _$TextContentBlockImpl;
   const TextContentBlock._() : super._();
+
+  factory TextContentBlock.fromJson(Map<String, dynamic> json) =
+      _$TextContentBlockImpl.fromJson;
 
   String get text;
   String? get subtype;
@@ -667,7 +709,7 @@ class __$$ImageContentBlockImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ImageContentBlockImpl extends ImageContentBlock {
   const _$ImageContentBlockImpl(
       {required final List<MediaObject> media,
@@ -676,11 +718,16 @@ class _$ImageContentBlockImpl extends ImageContentBlock {
       final List<MediaObject>? poster,
       this.attribution,
       this.altText,
-      this.caption})
+      this.caption,
+      final String? $type})
       : _media = media,
         _colors = colors,
         _poster = poster,
+        $type = $type ?? 'image',
         super._();
+
+  factory _$ImageContentBlockImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ImageContentBlockImplFromJson(json);
 
   final List<MediaObject> _media;
   @override
@@ -719,6 +766,9 @@ class _$ImageContentBlockImpl extends ImageContentBlock {
   @override
   final String? caption;
 
+  @JsonKey(name: 'type')
+  final String $type;
+
   @override
   String toString() {
     return 'ContentBlock.image(media: $media, colors: $colors, feedbackToken: $feedbackToken, poster: $poster, attribution: $attribution, altText: $altText, caption: $caption)';
@@ -740,6 +790,7 @@ class _$ImageContentBlockImpl extends ImageContentBlock {
             (identical(other.caption, caption) || other.caption == caption));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -813,7 +864,7 @@ class _$ImageContentBlockImpl extends ImageContentBlock {
     required TResult Function(String subtype, String url, String? title,
             String text, String? color, bool? isVisible)
         paywall,
-    required TResult Function(String type, Map<String, dynamic> originalJson)
+    required TResult Function(String type, Map<String, dynamic>? originalJson)
         generic,
   }) {
     return image(
@@ -873,7 +924,7 @@ class _$ImageContentBlockImpl extends ImageContentBlock {
     TResult? Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult? Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult? Function(String type, Map<String, dynamic>? originalJson)? generic,
   }) {
     return image?.call(
         media, colors, feedbackToken, poster, attribution, altText, caption);
@@ -932,7 +983,7 @@ class _$ImageContentBlockImpl extends ImageContentBlock {
     TResult Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult Function(String type, Map<String, dynamic>? originalJson)? generic,
     required TResult orElse(),
   }) {
     if (image != null) {
@@ -987,6 +1038,13 @@ class _$ImageContentBlockImpl extends ImageContentBlock {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ImageContentBlockImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class ImageContentBlock extends ContentBlock {
@@ -999,6 +1057,9 @@ abstract class ImageContentBlock extends ContentBlock {
       final String? altText,
       final String? caption}) = _$ImageContentBlockImpl;
   const ImageContentBlock._() : super._();
+
+  factory ImageContentBlock.fromJson(Map<String, dynamic> json) =
+      _$ImageContentBlockImpl.fromJson;
 
   List<MediaObject> get media;
   Map<String, String>? get colors;
@@ -1086,7 +1147,7 @@ class __$$LinkContentBlockImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$LinkContentBlockImpl extends LinkContentBlock {
   const _$LinkContentBlockImpl(
       {required this.url,
@@ -1095,9 +1156,14 @@ class _$LinkContentBlockImpl extends LinkContentBlock {
       this.author,
       this.siteName,
       this.displayUrl,
-      final List<MediaObject>? poster})
+      final List<MediaObject>? poster,
+      final String? $type})
       : _poster = poster,
+        $type = $type ?? 'link',
         super._();
+
+  factory _$LinkContentBlockImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LinkContentBlockImplFromJson(json);
 
   @override
   final String url;
@@ -1121,6 +1187,9 @@ class _$LinkContentBlockImpl extends LinkContentBlock {
     return EqualUnmodifiableListView(value);
   }
 
+  @JsonKey(name: 'type')
+  final String $type;
+
   @override
   String toString() {
     return 'ContentBlock.link(url: $url, title: $title, description: $description, author: $author, siteName: $siteName, displayUrl: $displayUrl, poster: $poster)';
@@ -1143,6 +1212,7 @@ class _$LinkContentBlockImpl extends LinkContentBlock {
             const DeepCollectionEquality().equals(other._poster, _poster));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, url, title, description, author,
       siteName, displayUrl, const DeepCollectionEquality().hash(_poster));
@@ -1209,7 +1279,7 @@ class _$LinkContentBlockImpl extends LinkContentBlock {
     required TResult Function(String subtype, String url, String? title,
             String text, String? color, bool? isVisible)
         paywall,
-    required TResult Function(String type, Map<String, dynamic> originalJson)
+    required TResult Function(String type, Map<String, dynamic>? originalJson)
         generic,
   }) {
     return link(url, title, description, author, siteName, displayUrl, poster);
@@ -1268,7 +1338,7 @@ class _$LinkContentBlockImpl extends LinkContentBlock {
     TResult? Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult? Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult? Function(String type, Map<String, dynamic>? originalJson)? generic,
   }) {
     return link?.call(
         url, title, description, author, siteName, displayUrl, poster);
@@ -1327,7 +1397,7 @@ class _$LinkContentBlockImpl extends LinkContentBlock {
     TResult Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult Function(String type, Map<String, dynamic>? originalJson)? generic,
     required TResult orElse(),
   }) {
     if (link != null) {
@@ -1382,6 +1452,13 @@ class _$LinkContentBlockImpl extends LinkContentBlock {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$LinkContentBlockImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class LinkContentBlock extends ContentBlock {
@@ -1394,6 +1471,9 @@ abstract class LinkContentBlock extends ContentBlock {
       final String? displayUrl,
       final List<MediaObject>? poster}) = _$LinkContentBlockImpl;
   const LinkContentBlock._() : super._();
+
+  factory LinkContentBlock.fromJson(Map<String, dynamic> json) =
+      _$LinkContentBlockImpl.fromJson;
 
   String get url;
   String? get title;
@@ -1505,7 +1585,7 @@ class __$$AudioContentBlockImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$AudioContentBlockImpl extends AudioContentBlock {
   const _$AudioContentBlockImpl(
       {this.url,
@@ -1518,10 +1598,15 @@ class _$AudioContentBlockImpl extends AudioContentBlock {
       this.embedHtml,
       this.embedUrl,
       final Map<String, dynamic>? metadata,
-      this.attribution})
+      this.attribution,
+      final String? $type})
       : _poster = poster,
         _metadata = metadata,
+        $type = $type ?? 'audio',
         super._();
+
+  factory _$AudioContentBlockImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AudioContentBlockImplFromJson(json);
 
   @override
   final String? url;
@@ -1562,6 +1647,9 @@ class _$AudioContentBlockImpl extends AudioContentBlock {
   @override
   final AttributionObject? attribution;
 
+  @JsonKey(name: 'type')
+  final String $type;
+
   @override
   String toString() {
     return 'ContentBlock.audio(url: $url, media: $media, provider: $provider, title: $title, artist: $artist, album: $album, poster: $poster, embedHtml: $embedHtml, embedUrl: $embedUrl, metadata: $metadata, attribution: $attribution)';
@@ -1589,6 +1677,7 @@ class _$AudioContentBlockImpl extends AudioContentBlock {
                 other.attribution == attribution));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -1666,7 +1755,7 @@ class _$AudioContentBlockImpl extends AudioContentBlock {
     required TResult Function(String subtype, String url, String? title,
             String text, String? color, bool? isVisible)
         paywall,
-    required TResult Function(String type, Map<String, dynamic> originalJson)
+    required TResult Function(String type, Map<String, dynamic>? originalJson)
         generic,
   }) {
     return audio(url, media, provider, title, artist, album, poster, embedHtml,
@@ -1726,7 +1815,7 @@ class _$AudioContentBlockImpl extends AudioContentBlock {
     TResult? Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult? Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult? Function(String type, Map<String, dynamic>? originalJson)? generic,
   }) {
     return audio?.call(url, media, provider, title, artist, album, poster,
         embedHtml, embedUrl, metadata, attribution);
@@ -1785,7 +1874,7 @@ class _$AudioContentBlockImpl extends AudioContentBlock {
     TResult Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult Function(String type, Map<String, dynamic>? originalJson)? generic,
     required TResult orElse(),
   }) {
     if (audio != null) {
@@ -1840,6 +1929,13 @@ class _$AudioContentBlockImpl extends AudioContentBlock {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AudioContentBlockImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class AudioContentBlock extends ContentBlock {
@@ -1856,6 +1952,9 @@ abstract class AudioContentBlock extends ContentBlock {
       final Map<String, dynamic>? metadata,
       final AttributionObject? attribution}) = _$AudioContentBlockImpl;
   const AudioContentBlock._() : super._();
+
+  factory AudioContentBlock.fromJson(Map<String, dynamic> json) =
+      _$AudioContentBlockImpl.fromJson;
 
   String? get url;
   MediaObject? get media;
@@ -1971,7 +2070,7 @@ class __$$VideoContentBlockImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$VideoContentBlockImpl extends VideoContentBlock {
   const _$VideoContentBlockImpl(
       {this.url,
@@ -1984,10 +2083,15 @@ class _$VideoContentBlockImpl extends VideoContentBlock {
       final Map<String, dynamic>? metadata,
       this.attribution,
       this.canAutoplayOnCellular,
-      this.duration})
+      this.duration,
+      final String? $type})
       : _poster = poster,
         _metadata = metadata,
+        $type = $type ?? 'video',
         super._();
+
+  factory _$VideoContentBlockImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VideoContentBlockImplFromJson(json);
 
   @override
   final String? url;
@@ -2028,6 +2132,9 @@ class _$VideoContentBlockImpl extends VideoContentBlock {
   @override
   final int? duration;
 
+  @JsonKey(name: 'type')
+  final String $type;
+
   @override
   String toString() {
     return 'ContentBlock.video(url: $url, media: $media, provider: $provider, embedHtml: $embedHtml, embedIframe: $embedIframe, embedUrl: $embedUrl, poster: $poster, metadata: $metadata, attribution: $attribution, canAutoplayOnCellular: $canAutoplayOnCellular, duration: $duration)';
@@ -2058,6 +2165,7 @@ class _$VideoContentBlockImpl extends VideoContentBlock {
                 other.duration == duration));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -2135,7 +2243,7 @@ class _$VideoContentBlockImpl extends VideoContentBlock {
     required TResult Function(String subtype, String url, String? title,
             String text, String? color, bool? isVisible)
         paywall,
-    required TResult Function(String type, Map<String, dynamic> originalJson)
+    required TResult Function(String type, Map<String, dynamic>? originalJson)
         generic,
   }) {
     return video(url, media, provider, embedHtml, embedIframe, embedUrl, poster,
@@ -2195,7 +2303,7 @@ class _$VideoContentBlockImpl extends VideoContentBlock {
     TResult? Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult? Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult? Function(String type, Map<String, dynamic>? originalJson)? generic,
   }) {
     return video?.call(url, media, provider, embedHtml, embedIframe, embedUrl,
         poster, metadata, attribution, canAutoplayOnCellular, duration);
@@ -2254,7 +2362,7 @@ class _$VideoContentBlockImpl extends VideoContentBlock {
     TResult Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult Function(String type, Map<String, dynamic>? originalJson)? generic,
     required TResult orElse(),
   }) {
     if (video != null) {
@@ -2309,6 +2417,13 @@ class _$VideoContentBlockImpl extends VideoContentBlock {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$VideoContentBlockImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class VideoContentBlock extends ContentBlock {
@@ -2325,6 +2440,9 @@ abstract class VideoContentBlock extends ContentBlock {
       final bool? canAutoplayOnCellular,
       final int? duration}) = _$VideoContentBlockImpl;
   const VideoContentBlock._() : super._();
+
+  factory VideoContentBlock.fromJson(Map<String, dynamic> json) =
+      _$VideoContentBlockImpl.fromJson;
 
   String? get url;
   MediaObject? get media;
@@ -2410,7 +2528,7 @@ class __$$PaywallContentBlockImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$PaywallContentBlockImpl extends PaywallContentBlock {
   const _$PaywallContentBlockImpl(
       {required this.subtype,
@@ -2418,8 +2536,13 @@ class _$PaywallContentBlockImpl extends PaywallContentBlock {
       this.title,
       required this.text,
       this.color,
-      this.isVisible})
-      : super._();
+      this.isVisible,
+      final String? $type})
+      : $type = $type ?? 'paywall',
+        super._();
+
+  factory _$PaywallContentBlockImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PaywallContentBlockImplFromJson(json);
 
   @override
   final String subtype;
@@ -2433,6 +2556,9 @@ class _$PaywallContentBlockImpl extends PaywallContentBlock {
   final String? color;
   @override
   final bool? isVisible;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -2453,6 +2579,7 @@ class _$PaywallContentBlockImpl extends PaywallContentBlock {
                 other.isVisible == isVisible));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, subtype, url, title, text, color, isVisible);
@@ -2519,7 +2646,7 @@ class _$PaywallContentBlockImpl extends PaywallContentBlock {
     required TResult Function(String subtype, String url, String? title,
             String text, String? color, bool? isVisible)
         paywall,
-    required TResult Function(String type, Map<String, dynamic> originalJson)
+    required TResult Function(String type, Map<String, dynamic>? originalJson)
         generic,
   }) {
     return paywall(subtype, url, title, this.text, color, isVisible);
@@ -2578,7 +2705,7 @@ class _$PaywallContentBlockImpl extends PaywallContentBlock {
     TResult? Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult? Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult? Function(String type, Map<String, dynamic>? originalJson)? generic,
   }) {
     return paywall?.call(subtype, url, title, this.text, color, isVisible);
   }
@@ -2636,7 +2763,7 @@ class _$PaywallContentBlockImpl extends PaywallContentBlock {
     TResult Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult Function(String type, Map<String, dynamic>? originalJson)? generic,
     required TResult orElse(),
   }) {
     if (paywall != null) {
@@ -2690,6 +2817,13 @@ class _$PaywallContentBlockImpl extends PaywallContentBlock {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PaywallContentBlockImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class PaywallContentBlock extends ContentBlock {
@@ -2701,6 +2835,9 @@ abstract class PaywallContentBlock extends ContentBlock {
       final String? color,
       final bool? isVisible}) = _$PaywallContentBlockImpl;
   const PaywallContentBlock._() : super._();
+
+  factory PaywallContentBlock.fromJson(Map<String, dynamic> json) =
+      _$PaywallContentBlockImpl.fromJson;
 
   String get subtype;
   String get url;
@@ -2722,7 +2859,7 @@ abstract class _$$GenericContentBlockImplCopyWith<$Res> {
           $Res Function(_$GenericContentBlockImpl) then) =
       __$$GenericContentBlockImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String type, Map<String, dynamic> originalJson});
+  $Res call({String type, Map<String, dynamic>? originalJson});
 }
 
 /// @nodoc
@@ -2739,37 +2876,42 @@ class __$$GenericContentBlockImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? type = null,
-    Object? originalJson = null,
+    Object? originalJson = freezed,
   }) {
     return _then(_$GenericContentBlockImpl(
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      originalJson: null == originalJson
+      originalJson: freezed == originalJson
           ? _value._originalJson
           : originalJson // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>,
+              as Map<String, dynamic>?,
     ));
   }
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$GenericContentBlockImpl extends GenericContentBlock {
   const _$GenericContentBlockImpl(
-      {required this.type, required final Map<String, dynamic> originalJson})
+      {required this.type, required final Map<String, dynamic>? originalJson})
       : _originalJson = originalJson,
         super._();
 
+  factory _$GenericContentBlockImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GenericContentBlockImplFromJson(json);
+
   @override
   final String type;
-  final Map<String, dynamic> _originalJson;
+  final Map<String, dynamic>? _originalJson;
   @override
-  Map<String, dynamic> get originalJson {
+  Map<String, dynamic>? get originalJson {
+    final value = _originalJson;
+    if (value == null) return null;
     if (_originalJson is EqualUnmodifiableMapView) return _originalJson;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_originalJson);
+    return EqualUnmodifiableMapView(value);
   }
 
   @override
@@ -2787,6 +2929,7 @@ class _$GenericContentBlockImpl extends GenericContentBlock {
                 .equals(other._originalJson, _originalJson));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, type, const DeepCollectionEquality().hash(_originalJson));
@@ -2853,7 +2996,7 @@ class _$GenericContentBlockImpl extends GenericContentBlock {
     required TResult Function(String subtype, String url, String? title,
             String text, String? color, bool? isVisible)
         paywall,
-    required TResult Function(String type, Map<String, dynamic> originalJson)
+    required TResult Function(String type, Map<String, dynamic>? originalJson)
         generic,
   }) {
     return generic(type, originalJson);
@@ -2912,7 +3055,7 @@ class _$GenericContentBlockImpl extends GenericContentBlock {
     TResult? Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult? Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult? Function(String type, Map<String, dynamic>? originalJson)? generic,
   }) {
     return generic?.call(type, originalJson);
   }
@@ -2970,7 +3113,7 @@ class _$GenericContentBlockImpl extends GenericContentBlock {
     TResult Function(String subtype, String url, String? title, String text,
             String? color, bool? isVisible)?
         paywall,
-    TResult Function(String type, Map<String, dynamic> originalJson)? generic,
+    TResult Function(String type, Map<String, dynamic>? originalJson)? generic,
     required TResult orElse(),
   }) {
     if (generic != null) {
@@ -3024,17 +3167,27 @@ class _$GenericContentBlockImpl extends GenericContentBlock {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$GenericContentBlockImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class GenericContentBlock extends ContentBlock {
   const factory GenericContentBlock(
           {required final String type,
-          required final Map<String, dynamic> originalJson}) =
+          required final Map<String, dynamic>? originalJson}) =
       _$GenericContentBlockImpl;
   const GenericContentBlock._() : super._();
 
+  factory GenericContentBlock.fromJson(Map<String, dynamic> json) =
+      _$GenericContentBlockImpl.fromJson;
+
   String get type;
-  Map<String, dynamic> get originalJson;
+  Map<String, dynamic>? get originalJson;
 
   /// Create a copy of ContentBlock
   /// with the given fields replaced by the non-null parameter values.
@@ -3254,12 +3407,9 @@ LayoutBlock _$LayoutBlockFromJson(Map<String, dynamic> json) {
       return CondensedLayoutBlock.fromJson(json);
     case 'ask':
       return AskLayoutBlock.fromJson(json);
-    case 'generic':
-      return GenericLayoutBlock.fromJson(json);
 
     default:
-      throw CheckedFromJsonException(
-          json, 'type', 'LayoutBlock', 'Invalid union type "${json['type']}"!');
+      return GenericLayoutBlock.fromJson(json);
   }
 }
 

@@ -7,7 +7,7 @@ part 'content_block_model.freezed.dart';
 part 'content_block_model.g.dart';
 
 /// Base class for all content blocks
-@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.snake)
+@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.snake, fallbackUnion: 'generic')
 class ContentBlock with _$ContentBlock {
   const ContentBlock._();
 
@@ -91,29 +91,10 @@ class ContentBlock with _$ContentBlock {
   @FreezedUnionValue('generic')
   const factory ContentBlock.generic({
     required String type,
-    required Map<String, dynamic> originalJson,
+    required Map<String, dynamic>? originalJson,
   }) = GenericContentBlock;
 
-  factory ContentBlock.fromJson(Map<String, dynamic> json) {
-    try {
-      final String type = json['type'] as String? ?? '';
-      
-      // List of supported content types
-      const supportedTypes = ['text', 'image', 'link', 'audio', 'video', 'paywall'];
-      
-      // Check if this is a supported type
-      if (!supportedTypes.contains(type)) {
-        // Return a generic block for unsupported types
-        return ContentBlock.generic(type: type, originalJson: json);
-      }
-      
-      // Use the generated fromJson method
-      return _$ContentBlockFromJson(json);
-    } catch (e) {
-      // Return a fallback if parsing fails
-      return ContentBlock.text(text: "Error parsing content");
-    }
-  }
+  factory ContentBlock.fromJson(Map<String, dynamic> json) => _$ContentBlockFromJson(json);
 }
 
 /// Text formatting for inline styles
@@ -131,7 +112,7 @@ class TextFormatting with _$TextFormatting {
 }
 
 /// Base class for layout blocks
-@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.snake)
+@Freezed(unionKey: 'type', unionValueCase: FreezedUnionCase.snake, fallbackUnion: 'generic')
 class LayoutBlock with _$LayoutBlock {
   const LayoutBlock._();
 
@@ -163,8 +144,7 @@ class LayoutBlock with _$LayoutBlock {
     required Map<String, dynamic> originalJson,
   }) = GenericLayoutBlock;
 
-  factory LayoutBlock.fromJson(Map<String, dynamic> json) =>
-      _$LayoutBlockFromJson(json);
+  factory LayoutBlock.fromJson(Map<String, dynamic> json) => _$LayoutBlockFromJson(json);
 }
 
 /// Display object for RowsLayoutBlock
