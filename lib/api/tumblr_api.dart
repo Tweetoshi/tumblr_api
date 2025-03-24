@@ -25,7 +25,6 @@ class _TumblrApi implements TumblrApi {
         tag = TagService(accessToken: accessToken);
 
   @override
-  @override
   final UserService user;
 
   @override
