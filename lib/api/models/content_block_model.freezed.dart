@@ -652,6 +652,8 @@ abstract class _$$ImageContentBlockImplCopyWith<$Res> {
       AttributionObject? attribution,
       String? altText,
       String? caption});
+
+  $AttributionObjectCopyWith<$Res>? get attribution;
 }
 
 /// @nodoc
@@ -705,6 +707,20 @@ class __$$ImageContentBlockImplCopyWithImpl<$Res>
           : caption // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
+  }
+
+  /// Create a copy of ContentBlock
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AttributionObjectCopyWith<$Res>? get attribution {
+    if (_value.attribution == null) {
+      return null;
+    }
+
+    return $AttributionObjectCopyWith<$Res>(_value.attribution!, (value) {
+      return _then(_value.copyWith(attribution: value));
+    });
   }
 }
 
@@ -1510,6 +1526,7 @@ abstract class _$$AudioContentBlockImplCopyWith<$Res> {
       AttributionObject? attribution});
 
   $MediaObjectCopyWith<$Res>? get media;
+  $AttributionObjectCopyWith<$Res>? get attribution;
 }
 
 /// @nodoc
@@ -1596,6 +1613,20 @@ class __$$AudioContentBlockImplCopyWithImpl<$Res>
 
     return $MediaObjectCopyWith<$Res>(_value.media!, (value) {
       return _then(_value.copyWith(media: value));
+    });
+  }
+
+  /// Create a copy of ContentBlock
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AttributionObjectCopyWith<$Res>? get attribution {
+    if (_value.attribution == null) {
+      return null;
+    }
+
+    return $AttributionObjectCopyWith<$Res>(_value.attribution!, (value) {
+      return _then(_value.copyWith(attribution: value));
     });
   }
 }
@@ -2012,6 +2043,7 @@ abstract class _$$VideoContentBlockImplCopyWith<$Res> {
 
   $MediaObjectCopyWith<$Res>? get media;
   $EmbedIframeObjectCopyWith<$Res>? get embedIframe;
+  $AttributionObjectCopyWith<$Res>? get attribution;
 }
 
 /// @nodoc
@@ -2112,6 +2144,20 @@ class __$$VideoContentBlockImplCopyWithImpl<$Res>
 
     return $EmbedIframeObjectCopyWith<$Res>(_value.embedIframe!, (value) {
       return _then(_value.copyWith(embedIframe: value));
+    });
+  }
+
+  /// Create a copy of ContentBlock
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AttributionObjectCopyWith<$Res>? get attribution {
+    if (_value.attribution == null) {
+      return null;
+    }
+
+    return $AttributionObjectCopyWith<$Res>(_value.attribution!, (value) {
+      return _then(_value.copyWith(attribution: value));
     });
   }
 }
@@ -3946,6 +3992,8 @@ abstract class _$$AskLayoutBlockImplCopyWith<$Res> {
       __$$AskLayoutBlockImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<int> blocks, AttributionObject? attribution});
+
+  $AttributionObjectCopyWith<$Res>? get attribution;
 }
 
 /// @nodoc
@@ -3974,6 +4022,20 @@ class __$$AskLayoutBlockImplCopyWithImpl<$Res>
           : attribution // ignore: cast_nullable_to_non_nullable
               as AttributionObject?,
     ));
+  }
+
+  /// Create a copy of LayoutBlock
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AttributionObjectCopyWith<$Res>? get attribution {
+    if (_value.attribution == null) {
+      return null;
+    }
+
+    return $AttributionObjectCopyWith<$Res>(_value.attribution!, (value) {
+      return _then(_value.copyWith(attribution: value));
+    });
   }
 }
 
@@ -4669,5 +4731,336 @@ abstract class _DisplayMode implements DisplayMode {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DisplayModeImplCopyWith<_$DisplayModeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+AttributionObject _$AttributionObjectFromJson(Map<String, dynamic> json) {
+  return _AttributionObject.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AttributionObject {
+  String get type => throw _privateConstructorUsedError;
+  String? get url => throw _privateConstructorUsedError;
+  PostDetails? get post => throw _privateConstructorUsedError;
+  TumblrBlog? get blog => throw _privateConstructorUsedError;
+  String? get appName => throw _privateConstructorUsedError;
+  String? get displayText => throw _privateConstructorUsedError;
+  MediaObject? get logo => throw _privateConstructorUsedError;
+
+  /// Serializes this AttributionObject to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of AttributionObject
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AttributionObjectCopyWith<AttributionObject> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AttributionObjectCopyWith<$Res> {
+  factory $AttributionObjectCopyWith(
+          AttributionObject value, $Res Function(AttributionObject) then) =
+      _$AttributionObjectCopyWithImpl<$Res, AttributionObject>;
+  @useResult
+  $Res call(
+      {String type,
+      String? url,
+      PostDetails? post,
+      TumblrBlog? blog,
+      String? appName,
+      String? displayText,
+      MediaObject? logo});
+
+  $PostDetailsCopyWith<$Res>? get post;
+  $TumblrBlogCopyWith<$Res>? get blog;
+  $MediaObjectCopyWith<$Res>? get logo;
+}
+
+/// @nodoc
+class _$AttributionObjectCopyWithImpl<$Res, $Val extends AttributionObject>
+    implements $AttributionObjectCopyWith<$Res> {
+  _$AttributionObjectCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of AttributionObject
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = null,
+    Object? url = freezed,
+    Object? post = freezed,
+    Object? blog = freezed,
+    Object? appName = freezed,
+    Object? displayText = freezed,
+    Object? logo = freezed,
+  }) {
+    return _then(_value.copyWith(
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      post: freezed == post
+          ? _value.post
+          : post // ignore: cast_nullable_to_non_nullable
+              as PostDetails?,
+      blog: freezed == blog
+          ? _value.blog
+          : blog // ignore: cast_nullable_to_non_nullable
+              as TumblrBlog?,
+      appName: freezed == appName
+          ? _value.appName
+          : appName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      displayText: freezed == displayText
+          ? _value.displayText
+          : displayText // ignore: cast_nullable_to_non_nullable
+              as String?,
+      logo: freezed == logo
+          ? _value.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as MediaObject?,
+    ) as $Val);
+  }
+
+  /// Create a copy of AttributionObject
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PostDetailsCopyWith<$Res>? get post {
+    if (_value.post == null) {
+      return null;
+    }
+
+    return $PostDetailsCopyWith<$Res>(_value.post!, (value) {
+      return _then(_value.copyWith(post: value) as $Val);
+    });
+  }
+
+  /// Create a copy of AttributionObject
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TumblrBlogCopyWith<$Res>? get blog {
+    if (_value.blog == null) {
+      return null;
+    }
+
+    return $TumblrBlogCopyWith<$Res>(_value.blog!, (value) {
+      return _then(_value.copyWith(blog: value) as $Val);
+    });
+  }
+
+  /// Create a copy of AttributionObject
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MediaObjectCopyWith<$Res>? get logo {
+    if (_value.logo == null) {
+      return null;
+    }
+
+    return $MediaObjectCopyWith<$Res>(_value.logo!, (value) {
+      return _then(_value.copyWith(logo: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$AttributionObjectImplCopyWith<$Res>
+    implements $AttributionObjectCopyWith<$Res> {
+  factory _$$AttributionObjectImplCopyWith(_$AttributionObjectImpl value,
+          $Res Function(_$AttributionObjectImpl) then) =
+      __$$AttributionObjectImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String type,
+      String? url,
+      PostDetails? post,
+      TumblrBlog? blog,
+      String? appName,
+      String? displayText,
+      MediaObject? logo});
+
+  @override
+  $PostDetailsCopyWith<$Res>? get post;
+  @override
+  $TumblrBlogCopyWith<$Res>? get blog;
+  @override
+  $MediaObjectCopyWith<$Res>? get logo;
+}
+
+/// @nodoc
+class __$$AttributionObjectImplCopyWithImpl<$Res>
+    extends _$AttributionObjectCopyWithImpl<$Res, _$AttributionObjectImpl>
+    implements _$$AttributionObjectImplCopyWith<$Res> {
+  __$$AttributionObjectImplCopyWithImpl(_$AttributionObjectImpl _value,
+      $Res Function(_$AttributionObjectImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AttributionObject
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = null,
+    Object? url = freezed,
+    Object? post = freezed,
+    Object? blog = freezed,
+    Object? appName = freezed,
+    Object? displayText = freezed,
+    Object? logo = freezed,
+  }) {
+    return _then(_$AttributionObjectImpl(
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      post: freezed == post
+          ? _value.post
+          : post // ignore: cast_nullable_to_non_nullable
+              as PostDetails?,
+      blog: freezed == blog
+          ? _value.blog
+          : blog // ignore: cast_nullable_to_non_nullable
+              as TumblrBlog?,
+      appName: freezed == appName
+          ? _value.appName
+          : appName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      displayText: freezed == displayText
+          ? _value.displayText
+          : displayText // ignore: cast_nullable_to_non_nullable
+              as String?,
+      logo: freezed == logo
+          ? _value.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as MediaObject?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AttributionObjectImpl extends _AttributionObject {
+  const _$AttributionObjectImpl(
+      {required this.type,
+      this.url,
+      this.post,
+      this.blog,
+      this.appName,
+      this.displayText,
+      this.logo})
+      : super._();
+
+  factory _$AttributionObjectImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AttributionObjectImplFromJson(json);
+
+  @override
+  final String type;
+  @override
+  final String? url;
+  @override
+  final PostDetails? post;
+  @override
+  final TumblrBlog? blog;
+  @override
+  final String? appName;
+  @override
+  final String? displayText;
+  @override
+  final MediaObject? logo;
+
+  @override
+  String toString() {
+    return 'AttributionObject(type: $type, url: $url, post: $post, blog: $blog, appName: $appName, displayText: $displayText, logo: $logo)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AttributionObjectImpl &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.post, post) || other.post == post) &&
+            (identical(other.blog, blog) || other.blog == blog) &&
+            (identical(other.appName, appName) || other.appName == appName) &&
+            (identical(other.displayText, displayText) ||
+                other.displayText == displayText) &&
+            (identical(other.logo, logo) || other.logo == logo));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, type, url, post, blog, appName, displayText, logo);
+
+  /// Create a copy of AttributionObject
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AttributionObjectImplCopyWith<_$AttributionObjectImpl> get copyWith =>
+      __$$AttributionObjectImplCopyWithImpl<_$AttributionObjectImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AttributionObjectImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AttributionObject extends AttributionObject {
+  const factory _AttributionObject(
+      {required final String type,
+      final String? url,
+      final PostDetails? post,
+      final TumblrBlog? blog,
+      final String? appName,
+      final String? displayText,
+      final MediaObject? logo}) = _$AttributionObjectImpl;
+  const _AttributionObject._() : super._();
+
+  factory _AttributionObject.fromJson(Map<String, dynamic> json) =
+      _$AttributionObjectImpl.fromJson;
+
+  @override
+  String get type;
+  @override
+  String? get url;
+  @override
+  PostDetails? get post;
+  @override
+  TumblrBlog? get blog;
+  @override
+  String? get appName;
+  @override
+  String? get displayText;
+  @override
+  MediaObject? get logo;
+
+  /// Create a copy of AttributionObject
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AttributionObjectImplCopyWith<_$AttributionObjectImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

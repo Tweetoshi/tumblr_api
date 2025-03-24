@@ -1,3 +1,4 @@
+import 'package:tumblr_api/api/models/blog_model.dart';
 import 'package:tumblr_api/api/models/embed_iframe_object.dart';
 import 'package:tumblr_api/api/models/media_object.dart';
 import 'package:tumblr_api/api/models/tumblr_post_model.dart';
@@ -176,4 +177,23 @@ class DisplayMode with _$DisplayMode {
 
   factory DisplayMode.fromJson(Map<String, dynamic> json) =>
       _$DisplayModeFromJson(json);
+}
+
+/// Attribution object for content that references other content
+@freezed
+class AttributionObject with _$AttributionObject {
+  const AttributionObject._();
+
+  const factory AttributionObject({
+    required String type,
+    String? url,
+    PostDetails? post,
+    TumblrBlog? blog,
+    String? appName,
+    String? displayText,
+    MediaObject? logo,
+  }) = _AttributionObject;
+
+  factory AttributionObject.fromJson(Map<String, dynamic> json) =>
+      _$AttributionObjectFromJson(json);
 }

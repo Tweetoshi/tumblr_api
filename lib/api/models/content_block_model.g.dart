@@ -326,3 +326,33 @@ Map<String, dynamic> _$$DisplayModeImplToJson(_$DisplayModeImpl instance) =>
     <String, dynamic>{
       'type': instance.type,
     };
+
+_$AttributionObjectImpl _$$AttributionObjectImplFromJson(
+        Map<String, dynamic> json) =>
+    _$AttributionObjectImpl(
+      type: json['type'] as String,
+      url: json['url'] as String?,
+      post: json['post'] == null
+          ? null
+          : PostDetails.fromJson(json['post'] as Map<String, dynamic>),
+      blog: json['blog'] == null
+          ? null
+          : TumblrBlog.fromJson(json['blog'] as Map<String, dynamic>),
+      appName: json['app_name'] as String?,
+      displayText: json['display_text'] as String?,
+      logo: json['logo'] == null
+          ? null
+          : MediaObject.fromJson(json['logo'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$AttributionObjectImplToJson(
+        _$AttributionObjectImpl instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'url': instance.url,
+      'post': instance.post,
+      'blog': instance.blog,
+      'app_name': instance.appName,
+      'display_text': instance.displayText,
+      'logo': instance.logo,
+    };

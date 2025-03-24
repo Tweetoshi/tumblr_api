@@ -49,6 +49,7 @@ abstract class $ReblogTrailItemCopyWith<$Res> {
       List<LayoutBlock>? layout,
       String? brokenBlogName});
 
+  $PostDetailsCopyWith<$Res>? get post;
   $TumblrBlogCopyWith<$Res>? get blog;
 }
 
@@ -101,6 +102,20 @@ class _$ReblogTrailItemCopyWithImpl<$Res, $Val extends ReblogTrailItem>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
+  $PostDetailsCopyWith<$Res>? get post {
+    if (_value.post == null) {
+      return null;
+    }
+
+    return $PostDetailsCopyWith<$Res>(_value.post!, (value) {
+      return _then(_value.copyWith(post: value) as $Val);
+    });
+  }
+
+  /// Create a copy of ReblogTrailItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
   $TumblrBlogCopyWith<$Res>? get blog {
     if (_value.blog == null) {
       return null;
@@ -127,6 +142,8 @@ abstract class _$$ReblogTrailItemImplCopyWith<$Res>
       List<LayoutBlock>? layout,
       String? brokenBlogName});
 
+  @override
+  $PostDetailsCopyWith<$Res>? get post;
   @override
   $TumblrBlogCopyWith<$Res>? get blog;
 }
