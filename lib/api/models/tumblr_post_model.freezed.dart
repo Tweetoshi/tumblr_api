@@ -30,7 +30,7 @@ mixin _$TumblrPost {
   int get timestamp => throw _privateConstructorUsedError;
   String get postUrl => throw _privateConstructorUsedError;
   List<String>? get tags => throw _privateConstructorUsedError;
-  bool get isReblog => throw _privateConstructorUsedError;
+  String? get reblogKey => throw _privateConstructorUsedError;
   String? get summary => throw _privateConstructorUsedError;
   bool? get isPaywalled => throw _privateConstructorUsedError;
   String? get paywallAccess => throw _privateConstructorUsedError;
@@ -66,7 +66,7 @@ abstract class $TumblrPostCopyWith<$Res> {
       int timestamp,
       String postUrl,
       List<String>? tags,
-      bool isReblog,
+      String? reblogKey,
       String? summary,
       bool? isPaywalled,
       String? paywallAccess,
@@ -102,7 +102,7 @@ class _$TumblrPostCopyWithImpl<$Res, $Val extends TumblrPost>
     Object? timestamp = null,
     Object? postUrl = null,
     Object? tags = freezed,
-    Object? isReblog = null,
+    Object? reblogKey = freezed,
     Object? summary = freezed,
     Object? isPaywalled = freezed,
     Object? paywallAccess = freezed,
@@ -147,10 +147,10 @@ class _$TumblrPostCopyWithImpl<$Res, $Val extends TumblrPost>
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      isReblog: null == isReblog
-          ? _value.isReblog
-          : isReblog // ignore: cast_nullable_to_non_nullable
-              as bool,
+      reblogKey: freezed == reblogKey
+          ? _value.reblogKey
+          : reblogKey // ignore: cast_nullable_to_non_nullable
+              as String?,
       summary: freezed == summary
           ? _value.summary
           : summary // ignore: cast_nullable_to_non_nullable
@@ -221,7 +221,7 @@ abstract class _$$TumblrPostImplCopyWith<$Res>
       int timestamp,
       String postUrl,
       List<String>? tags,
-      bool isReblog,
+      String? reblogKey,
       String? summary,
       bool? isPaywalled,
       String? paywallAccess,
@@ -257,7 +257,7 @@ class __$$TumblrPostImplCopyWithImpl<$Res>
     Object? timestamp = null,
     Object? postUrl = null,
     Object? tags = freezed,
-    Object? isReblog = null,
+    Object? reblogKey = freezed,
     Object? summary = freezed,
     Object? isPaywalled = freezed,
     Object? paywallAccess = freezed,
@@ -302,10 +302,10 @@ class __$$TumblrPostImplCopyWithImpl<$Res>
           ? _value._tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      isReblog: null == isReblog
-          ? _value.isReblog
-          : isReblog // ignore: cast_nullable_to_non_nullable
-              as bool,
+      reblogKey: freezed == reblogKey
+          ? _value.reblogKey
+          : reblogKey // ignore: cast_nullable_to_non_nullable
+              as String?,
       summary: freezed == summary
           ? _value.summary
           : summary // ignore: cast_nullable_to_non_nullable
@@ -347,7 +347,7 @@ class _$TumblrPostImpl extends _TumblrPost {
       required this.timestamp,
       required this.postUrl,
       final List<String>? tags,
-      this.isReblog = false,
+      this.reblogKey,
       this.summary,
       this.isPaywalled,
       this.paywallAccess,
@@ -415,8 +415,7 @@ class _$TumblrPostImpl extends _TumblrPost {
   }
 
   @override
-  @JsonKey()
-  final bool isReblog;
+  final String? reblogKey;
   @override
   final String? summary;
   @override
@@ -448,7 +447,7 @@ class _$TumblrPostImpl extends _TumblrPost {
 
   @override
   String toString() {
-    return 'TumblrPost(id: $id, blog: $blog, authorBlog: $authorBlog, content: $content, layout: $layout, trail: $trail, timestamp: $timestamp, postUrl: $postUrl, tags: $tags, isReblog: $isReblog, summary: $summary, isPaywalled: $isPaywalled, paywallAccess: $paywallAccess, noteCount: $noteCount, paywallReblogView: $paywallReblogView, subscriptionPlan: $subscriptionPlan)';
+    return 'TumblrPost(id: $id, blog: $blog, authorBlog: $authorBlog, content: $content, layout: $layout, trail: $trail, timestamp: $timestamp, postUrl: $postUrl, tags: $tags, reblogKey: $reblogKey, summary: $summary, isPaywalled: $isPaywalled, paywallAccess: $paywallAccess, noteCount: $noteCount, paywallReblogView: $paywallReblogView, subscriptionPlan: $subscriptionPlan)';
   }
 
   @override
@@ -467,8 +466,8 @@ class _$TumblrPostImpl extends _TumblrPost {
                 other.timestamp == timestamp) &&
             (identical(other.postUrl, postUrl) || other.postUrl == postUrl) &&
             const DeepCollectionEquality().equals(other._tags, _tags) &&
-            (identical(other.isReblog, isReblog) ||
-                other.isReblog == isReblog) &&
+            (identical(other.reblogKey, reblogKey) ||
+                other.reblogKey == reblogKey) &&
             (identical(other.summary, summary) || other.summary == summary) &&
             (identical(other.isPaywalled, isPaywalled) ||
                 other.isPaywalled == isPaywalled) &&
@@ -495,7 +494,7 @@ class _$TumblrPostImpl extends _TumblrPost {
       timestamp,
       postUrl,
       const DeepCollectionEquality().hash(_tags),
-      isReblog,
+      reblogKey,
       summary,
       isPaywalled,
       paywallAccess,
@@ -530,7 +529,7 @@ abstract class _TumblrPost extends TumblrPost {
       required final int timestamp,
       required final String postUrl,
       final List<String>? tags,
-      final bool isReblog,
+      final String? reblogKey,
       final String? summary,
       final bool? isPaywalled,
       final String? paywallAccess,
@@ -562,7 +561,7 @@ abstract class _TumblrPost extends TumblrPost {
   @override
   List<String>? get tags;
   @override
-  bool get isReblog;
+  String? get reblogKey;
   @override
   String? get summary;
   @override

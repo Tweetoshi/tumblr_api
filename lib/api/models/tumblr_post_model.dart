@@ -31,7 +31,7 @@ class TumblrPost with _$TumblrPost {
     required int timestamp,
     required String postUrl,
     List<String>? tags,
-    @Default(false) bool isReblog,
+    String? reblogKey,
     String? summary,
     bool? isPaywalled,
     String? paywallAccess,
