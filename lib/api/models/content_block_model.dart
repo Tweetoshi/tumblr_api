@@ -110,6 +110,7 @@ class TextFormatting with _$TextFormatting {
     required int end,
     required String type,
     String? url,
+    final Map<String, dynamic>? blog,
   }) = _TextFormatting;
 
   factory TextFormatting.fromJson(Map<String, dynamic> json) =>

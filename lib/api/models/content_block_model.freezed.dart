@@ -3299,6 +3299,7 @@ mixin _$TextFormatting {
   int get end => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get blog => throw _privateConstructorUsedError;
 
   /// Serializes this TextFormatting to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -3316,7 +3317,12 @@ abstract class $TextFormattingCopyWith<$Res> {
           TextFormatting value, $Res Function(TextFormatting) then) =
       _$TextFormattingCopyWithImpl<$Res, TextFormatting>;
   @useResult
-  $Res call({int start, int end, String type, String? url});
+  $Res call(
+      {int start,
+      int end,
+      String type,
+      String? url,
+      Map<String, dynamic>? blog});
 }
 
 /// @nodoc
@@ -3338,6 +3344,7 @@ class _$TextFormattingCopyWithImpl<$Res, $Val extends TextFormatting>
     Object? end = null,
     Object? type = null,
     Object? url = freezed,
+    Object? blog = freezed,
   }) {
     return _then(_value.copyWith(
       start: null == start
@@ -3356,6 +3363,10 @@ class _$TextFormattingCopyWithImpl<$Res, $Val extends TextFormatting>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      blog: freezed == blog
+          ? _value.blog
+          : blog // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
     ) as $Val);
   }
 }
@@ -3368,7 +3379,12 @@ abstract class _$$TextFormattingImplCopyWith<$Res>
       __$$TextFormattingImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int start, int end, String type, String? url});
+  $Res call(
+      {int start,
+      int end,
+      String type,
+      String? url,
+      Map<String, dynamic>? blog});
 }
 
 /// @nodoc
@@ -3388,6 +3404,7 @@ class __$$TextFormattingImplCopyWithImpl<$Res>
     Object? end = null,
     Object? type = null,
     Object? url = freezed,
+    Object? blog = freezed,
   }) {
     return _then(_$TextFormattingImpl(
       start: null == start
@@ -3406,6 +3423,10 @@ class __$$TextFormattingImplCopyWithImpl<$Res>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      blog: freezed == blog
+          ? _value._blog
+          : blog // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
     ));
   }
 }
@@ -3414,7 +3435,12 @@ class __$$TextFormattingImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TextFormattingImpl implements _TextFormatting {
   _$TextFormattingImpl(
-      {required this.start, required this.end, required this.type, this.url});
+      {required this.start,
+      required this.end,
+      required this.type,
+      this.url,
+      final Map<String, dynamic>? blog})
+      : _blog = blog;
 
   factory _$TextFormattingImpl.fromJson(Map<String, dynamic> json) =>
       _$$TextFormattingImplFromJson(json);
@@ -3427,10 +3453,19 @@ class _$TextFormattingImpl implements _TextFormatting {
   final String type;
   @override
   final String? url;
+  final Map<String, dynamic>? _blog;
+  @override
+  Map<String, dynamic>? get blog {
+    final value = _blog;
+    if (value == null) return null;
+    if (_blog is EqualUnmodifiableMapView) return _blog;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
-    return 'TextFormatting(start: $start, end: $end, type: $type, url: $url)';
+    return 'TextFormatting(start: $start, end: $end, type: $type, url: $url, blog: $blog)';
   }
 
   @override
@@ -3441,12 +3476,14 @@ class _$TextFormattingImpl implements _TextFormatting {
             (identical(other.start, start) || other.start == start) &&
             (identical(other.end, end) || other.end == end) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.url, url) || other.url == url));
+            (identical(other.url, url) || other.url == url) &&
+            const DeepCollectionEquality().equals(other._blog, _blog));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, start, end, type, url);
+  int get hashCode => Object.hash(runtimeType, start, end, type, url,
+      const DeepCollectionEquality().hash(_blog));
 
   /// Create a copy of TextFormatting
   /// with the given fields replaced by the non-null parameter values.
@@ -3470,7 +3507,8 @@ abstract class _TextFormatting implements TextFormatting {
       {required final int start,
       required final int end,
       required final String type,
-      final String? url}) = _$TextFormattingImpl;
+      final String? url,
+      final Map<String, dynamic>? blog}) = _$TextFormattingImpl;
 
   factory _TextFormatting.fromJson(Map<String, dynamic> json) =
       _$TextFormattingImpl.fromJson;
@@ -3483,6 +3521,8 @@ abstract class _TextFormatting implements TextFormatting {
   String get type;
   @override
   String? get url;
+  @override
+  Map<String, dynamic>? get blog;
 
   /// Create a copy of TextFormatting
   /// with the given fields replaced by the non-null parameter values.

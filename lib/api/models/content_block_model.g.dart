@@ -220,6 +220,7 @@ _$TextFormattingImpl _$$TextFormattingImplFromJson(Map<String, dynamic> json) =>
       end: (json['end'] as num).toInt(),
       type: json['type'] as String,
       url: json['url'] as String?,
+      blog: json['blog'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$TextFormattingImplToJson(
@@ -229,6 +230,7 @@ Map<String, dynamic> _$$TextFormattingImplToJson(
       'end': instance.end,
       'type': instance.type,
       'url': instance.url,
+      'blog': instance.blog,
     };
 
 _$RowsLayoutBlockImpl _$$RowsLayoutBlockImplFromJson(
