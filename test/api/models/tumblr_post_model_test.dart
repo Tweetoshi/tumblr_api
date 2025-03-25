@@ -43,7 +43,7 @@ void main() {
       expect(post.summary, 'submitted by @local-robotgirlthing');
 
       // Verify default values
-      expect(post.isReblog, false);
+      expect(post.reblogKey, null);
     });
 
     test('toJson serializes Tumblr post correctly', () {

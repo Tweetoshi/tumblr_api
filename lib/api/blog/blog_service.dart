@@ -1,6 +1,7 @@
 import 'package:tumblr_api/api/models/blog_model.dart';
 import 'package:tumblr_api/api/models/content_block_model.dart';
 import 'package:tumblr_api/api/models/notes_model.dart';
+import 'package:tumblr_api/api/models/notification_response.dart';
 import 'package:tumblr_api/api/models/tumblr_post_model.dart';
 import 'package:tumblr_api/base_api.dart';
 
@@ -86,6 +87,23 @@ abstract class BlogService {
     int? beforeTimestamp,
     NoteMode? mode,
     List<String>? types,
+  });
+
+  /// Retrieves a blog's activity feed notifications
+  /// Required parameters:
+  /// - blogIdentifier: The blog identifier (name, hostname, or UUID)
+  ///
+  /// Optional parameters:
+  /// - types: List of notification types to include
+  /// - beforeTime: Return notifications before this timestamp
+  /// - cursor: Pagination cursor for subsequent requests
+  /// - limit: Number of notifications to return (max 50)
+  Future<NotificationResponse> getNotifications(
+    String blogIdentifier, {
+    List<String>? types,
+    int? beforeTime,
+    String? cursor,
+    int limit = 20,
   });
 }
 
@@ -251,6 +269,42 @@ class _BlogService extends BaseService implements BlogService {
       return NotesResponse.fromJson(responseData);
     } catch (e) {
       throw Exception('Failed to get notes for post: $e');
+    }
+  }
+
+  @override
+  Future<NotificationResponse> getNotifications(
+    String blogIdentifier, {
+    List<String>? types,
+    int? beforeTime,
+    String? cursor,
+    int limit = 20,
+  }) async {
+    try {
+      // Validate limit
+      if (limit < 1 || limit > 50) {
+        throw ArgumentError('Limit must be between 1 and 50');
+      }
+
+      final queryParams = <String, dynamic>{
+        'limit': limit,
+      };
+
+      if (types != null && types.isNotEmpty) {
+        queryParams['types'] = types.join(',');
+      }
+      if (beforeTime != null) queryParams['before_time'] = beforeTime;
+      if (cursor != null) queryParams['cursor'] = cursor;
+
+      final response = await get(
+        'blog/$blogIdentifier/notifications',
+        queryParameters: queryParams,
+      );
+
+      final responseData = response.data['response'] as Map<String, dynamic>;
+      return NotificationResponse.fromJson(responseData);
+    } catch (e) {
+      throw Exception('Failed to get notifications: $e');
     }
   }
 }

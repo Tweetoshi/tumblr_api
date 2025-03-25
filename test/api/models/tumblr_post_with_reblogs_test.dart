@@ -30,7 +30,7 @@ void main() {
           'https://www.tumblr.com/blog/view/teaboot/778875291559968768');
 
       // Verify reblog status
-      expect(post.isReblog, false); // This is the root post
+      expect(post.reblogKey, null); // This is the root post
 
       // Verify reblog trail
       expect(post.trail, isNotNull);

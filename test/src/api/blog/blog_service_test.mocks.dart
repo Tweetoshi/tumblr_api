@@ -254,4 +254,27 @@ class MockBlogService extends _i1.Mock implements _i8.BlogService {
             ),
           )
           as _i7.Future<_i5.NotesResponse>);
+
+  @override
+  _i7.Future<dynamic> getNotifications(
+    String? blogIdentifier, {
+    List<String>? types,
+    int? beforeTime,
+    String? cursor,
+    int? limit = 20,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #getNotifications,
+              [blogIdentifier],
+              {
+                #types: types,
+                #beforeTime: beforeTime,
+                #cursor: cursor,
+                #limit: limit,
+              },
+            ),
+            returnValue: _i7.Future<dynamic>.value(),
+          )
+          as _i7.Future<dynamic>);
 }
