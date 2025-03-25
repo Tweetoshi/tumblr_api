@@ -98,8 +98,20 @@ class ContentBlock with _$ContentBlock {
     required Map<String, dynamic>? originalJson,
   }) = GenericContentBlock;
 
-  factory ContentBlock.fromJson(Map<String, dynamic> json) =>
-      _$ContentBlockFromJson(json);
+  factory ContentBlock.fromJson(Map<String, dynamic> json) {
+    // Handle the case where attribution is a List, the API sometimes returns a List
+    // for some reason
+    if (json['type'] == 'image' || json['type'] == 'audio' || json['type'] == 'video') {
+      if (json['attribution'] is List) {
+        // Convert to null or extract first item if needed
+        json = Map<String, dynamic>.from(json);
+        json['attribution'] = json['attribution'] is List && (json['attribution'] as List).isNotEmpty 
+            ? (json['attribution'] as List).first 
+            : null;
+      }
+    }
+    return _$ContentBlockFromJson(json);
+  }
 }
 
 /// Text formatting for inline styles
