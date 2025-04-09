@@ -22,6 +22,7 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) {
 mixin _$Notification {
 // Common fields for all notification types
   String get id => throw _privateConstructorUsedError;
+  @NotificationTypeConverter()
   NotificationType get type => throw _privateConstructorUsedError;
   int get timestamp => throw _privateConstructorUsedError;
   bool get unread =>
@@ -51,7 +52,7 @@ abstract class $NotificationCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      NotificationType type,
+      @NotificationTypeConverter() NotificationType type,
       int timestamp,
       bool unread,
       String? targetPostId,
@@ -143,7 +144,7 @@ abstract class _$$NotificationImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      NotificationType type,
+      @NotificationTypeConverter() NotificationType type,
       int timestamp,
       bool unread,
       String? targetPostId,
@@ -228,7 +229,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
 class _$NotificationImpl extends _Notification {
   const _$NotificationImpl(
       {required this.id,
-      required this.type,
+      @NotificationTypeConverter() required this.type,
       required this.timestamp,
       required this.unread,
       this.targetPostId,
@@ -247,6 +248,7 @@ class _$NotificationImpl extends _Notification {
   @override
   final String id;
   @override
+  @NotificationTypeConverter()
   final NotificationType type;
   @override
   final int timestamp;
@@ -335,7 +337,7 @@ class _$NotificationImpl extends _Notification {
 abstract class _Notification extends Notification {
   const factory _Notification(
       {required final String id,
-      required final NotificationType type,
+      @NotificationTypeConverter() required final NotificationType type,
       required final int timestamp,
       required final bool unread,
       final String? targetPostId,
@@ -353,6 +355,7 @@ abstract class _Notification extends Notification {
   @override
   String get id;
   @override
+  @NotificationTypeConverter()
   NotificationType get type;
   @override
   int get timestamp;
