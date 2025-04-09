@@ -53,4 +53,6 @@ const _$NotificationTypeEnumMap = {
   NotificationType.postAppealRejected: 'post_appeal_rejected',
   NotificationType.whatYouMissed: 'what_you_missed',
   NotificationType.conversationalNote: 'conversational_note',
+  NotificationType.milestonePost: 'milestone_post',
+  NotificationType.unknown: 'unknown',
 };

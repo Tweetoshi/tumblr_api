@@ -52,13 +52,24 @@ enum NotificationType {
   whatYouMissed,
 
   @JsonValue('conversational_note')
-  conversationalNote;
+  conversationalNote,
+  
+  @JsonValue('milestone_post')
+  milestonePost,
+  
+  @JsonValue('unknown')
+  unknown;
 
   /// Helper method to convert string to enum value
-  static NotificationType? fromString(String value) {
-    return NotificationType.values.firstWhere(
-      (type) => type.toString().split('.').last == value,
-    );
+  static NotificationType fromString(String value) {
+    try {
+      return NotificationType.values.firstWhere(
+        (type) => type.toString().split('.').last == value,
+      );
+    } catch (e) {
+      // Return unknown for any notification type not listed in the enum
+      return NotificationType.unknown;
+    }
   }
 }
 
