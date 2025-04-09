@@ -3,6 +3,31 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'notification_model.freezed.dart';
 part 'notification_model.g.dart';
 
+/// Custom JSON converter for NotificationType to handle unknown types
+class NotificationTypeConverter implements JsonConverter<NotificationType, String> {
+  const NotificationTypeConverter();
+
+  @override
+  NotificationType fromJson(String value) {
+    // Try to find a matching enum value, fallback to unknown
+    for (final type in NotificationType.values) {
+      final valueString = type.toString().split('.').last;
+      if (valueString == value) {
+        return type;
+      }
+    }
+    return NotificationType.unknown;
+  }
+
+  @override
+  String toJson(NotificationType type) {
+    // Don't use toString() as it includes the enum type name
+    return type == NotificationType.unknown 
+        ? 'unknown'
+        : type.toString().split('.').last;
+  }
+}
+
 /// Enum representing the different notification types from Tumblr API
 /// See: https://www.tumblr.com/docs/en/api/v2#notifications--retrieve-blogs-activity-feed
 enum NotificationType {
@@ -57,6 +82,9 @@ enum NotificationType {
   @JsonValue('milestone_post')
   milestonePost,
   
+  @JsonValue('community_reaction_count')
+  communityReactionCount,
+  
   @JsonValue('unknown')
   unknown;
 
@@ -80,7 +108,7 @@ class Notification with _$Notification {
   const factory Notification({
     // Common fields for all notification types
     required String id,
-    required NotificationType type,
+    @NotificationTypeConverter() required NotificationType type,
     required int timestamp,
     required bool unread,
     // Fields that are present in specific notification types
