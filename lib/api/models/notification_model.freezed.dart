@@ -22,7 +22,7 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) {
 mixin _$Notification {
 // Common fields for all notification types
   String get id => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
+  NotificationType get type => throw _privateConstructorUsedError;
   int get timestamp => throw _privateConstructorUsedError;
   bool get unread =>
       throw _privateConstructorUsedError; // Fields that are present in specific notification types
@@ -51,7 +51,7 @@ abstract class $NotificationCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String type,
+      NotificationType type,
       int timestamp,
       bool unread,
       String? targetPostId,
@@ -96,7 +96,7 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as NotificationType,
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -143,7 +143,7 @@ abstract class _$$NotificationImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String type,
+      NotificationType type,
       int timestamp,
       bool unread,
       String? targetPostId,
@@ -186,7 +186,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as NotificationType,
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -247,7 +247,7 @@ class _$NotificationImpl extends _Notification {
   @override
   final String id;
   @override
-  final String type;
+  final NotificationType type;
   @override
   final int timestamp;
   @override
@@ -335,7 +335,7 @@ class _$NotificationImpl extends _Notification {
 abstract class _Notification extends Notification {
   const factory _Notification(
       {required final String id,
-      required final String type,
+      required final NotificationType type,
       required final int timestamp,
       required final bool unread,
       final String? targetPostId,
@@ -353,7 +353,7 @@ abstract class _Notification extends Notification {
   @override
   String get id;
   @override
-  String get type;
+  NotificationType get type;
   @override
   int get timestamp;
   @override
