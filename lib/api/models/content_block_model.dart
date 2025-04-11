@@ -11,7 +11,9 @@ part 'content_block_model.g.dart';
 @Freezed(
     unionKey: 'type',
     unionValueCase: FreezedUnionCase.snake,
-    fallbackUnion: 'generic')
+    fallbackUnion: 'generic',
+    fromJson: true,
+    toJson: true)
 class ContentBlock with _$ContentBlock {
   const ContentBlock._();
 
