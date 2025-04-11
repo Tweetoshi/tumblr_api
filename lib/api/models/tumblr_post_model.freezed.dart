@@ -34,6 +34,8 @@ mixin _$TumblrPost {
   String? get summary => throw _privateConstructorUsedError;
   bool? get isPaywalled => throw _privateConstructorUsedError;
   String? get paywallAccess => throw _privateConstructorUsedError;
+  bool get liked => throw _privateConstructorUsedError;
+  bool get followed => throw _privateConstructorUsedError;
   int? get noteCount => throw _privateConstructorUsedError;
   Map<String, dynamic>? get paywallReblogView =>
       throw _privateConstructorUsedError;
@@ -70,6 +72,8 @@ abstract class $TumblrPostCopyWith<$Res> {
       String? summary,
       bool? isPaywalled,
       String? paywallAccess,
+      bool liked,
+      bool followed,
       int? noteCount,
       Map<String, dynamic>? paywallReblogView,
       Map<String, dynamic>? subscriptionPlan});
@@ -106,6 +110,8 @@ class _$TumblrPostCopyWithImpl<$Res, $Val extends TumblrPost>
     Object? summary = freezed,
     Object? isPaywalled = freezed,
     Object? paywallAccess = freezed,
+    Object? liked = null,
+    Object? followed = null,
     Object? noteCount = freezed,
     Object? paywallReblogView = freezed,
     Object? subscriptionPlan = freezed,
@@ -163,6 +169,14 @@ class _$TumblrPostCopyWithImpl<$Res, $Val extends TumblrPost>
           ? _value.paywallAccess
           : paywallAccess // ignore: cast_nullable_to_non_nullable
               as String?,
+      liked: null == liked
+          ? _value.liked
+          : liked // ignore: cast_nullable_to_non_nullable
+              as bool,
+      followed: null == followed
+          ? _value.followed
+          : followed // ignore: cast_nullable_to_non_nullable
+              as bool,
       noteCount: freezed == noteCount
           ? _value.noteCount
           : noteCount // ignore: cast_nullable_to_non_nullable
@@ -225,6 +239,8 @@ abstract class _$$TumblrPostImplCopyWith<$Res>
       String? summary,
       bool? isPaywalled,
       String? paywallAccess,
+      bool liked,
+      bool followed,
       int? noteCount,
       Map<String, dynamic>? paywallReblogView,
       Map<String, dynamic>? subscriptionPlan});
@@ -261,6 +277,8 @@ class __$$TumblrPostImplCopyWithImpl<$Res>
     Object? summary = freezed,
     Object? isPaywalled = freezed,
     Object? paywallAccess = freezed,
+    Object? liked = null,
+    Object? followed = null,
     Object? noteCount = freezed,
     Object? paywallReblogView = freezed,
     Object? subscriptionPlan = freezed,
@@ -318,6 +336,14 @@ class __$$TumblrPostImplCopyWithImpl<$Res>
           ? _value.paywallAccess
           : paywallAccess // ignore: cast_nullable_to_non_nullable
               as String?,
+      liked: null == liked
+          ? _value.liked
+          : liked // ignore: cast_nullable_to_non_nullable
+              as bool,
+      followed: null == followed
+          ? _value.followed
+          : followed // ignore: cast_nullable_to_non_nullable
+              as bool,
       noteCount: freezed == noteCount
           ? _value.noteCount
           : noteCount // ignore: cast_nullable_to_non_nullable
@@ -351,6 +377,8 @@ class _$TumblrPostImpl extends _TumblrPost {
       this.summary,
       this.isPaywalled,
       this.paywallAccess,
+      this.liked = false,
+      this.followed = false,
       this.noteCount,
       final Map<String, dynamic>? paywallReblogView,
       final Map<String, dynamic>? subscriptionPlan})
@@ -423,6 +451,12 @@ class _$TumblrPostImpl extends _TumblrPost {
   @override
   final String? paywallAccess;
   @override
+  @JsonKey()
+  final bool liked;
+  @override
+  @JsonKey()
+  final bool followed;
+  @override
   final int? noteCount;
   final Map<String, dynamic>? _paywallReblogView;
   @override
@@ -447,7 +481,7 @@ class _$TumblrPostImpl extends _TumblrPost {
 
   @override
   String toString() {
-    return 'TumblrPost(id: $id, blog: $blog, authorBlog: $authorBlog, content: $content, layout: $layout, trail: $trail, timestamp: $timestamp, postUrl: $postUrl, tags: $tags, reblogKey: $reblogKey, summary: $summary, isPaywalled: $isPaywalled, paywallAccess: $paywallAccess, noteCount: $noteCount, paywallReblogView: $paywallReblogView, subscriptionPlan: $subscriptionPlan)';
+    return 'TumblrPost(id: $id, blog: $blog, authorBlog: $authorBlog, content: $content, layout: $layout, trail: $trail, timestamp: $timestamp, postUrl: $postUrl, tags: $tags, reblogKey: $reblogKey, summary: $summary, isPaywalled: $isPaywalled, paywallAccess: $paywallAccess, liked: $liked, followed: $followed, noteCount: $noteCount, paywallReblogView: $paywallReblogView, subscriptionPlan: $subscriptionPlan)';
   }
 
   @override
@@ -473,6 +507,9 @@ class _$TumblrPostImpl extends _TumblrPost {
                 other.isPaywalled == isPaywalled) &&
             (identical(other.paywallAccess, paywallAccess) ||
                 other.paywallAccess == paywallAccess) &&
+            (identical(other.liked, liked) || other.liked == liked) &&
+            (identical(other.followed, followed) ||
+                other.followed == followed) &&
             (identical(other.noteCount, noteCount) ||
                 other.noteCount == noteCount) &&
             const DeepCollectionEquality()
@@ -498,6 +535,8 @@ class _$TumblrPostImpl extends _TumblrPost {
       summary,
       isPaywalled,
       paywallAccess,
+      liked,
+      followed,
       noteCount,
       const DeepCollectionEquality().hash(_paywallReblogView),
       const DeepCollectionEquality().hash(_subscriptionPlan));
@@ -533,6 +572,8 @@ abstract class _TumblrPost extends TumblrPost {
       final String? summary,
       final bool? isPaywalled,
       final String? paywallAccess,
+      final bool liked,
+      final bool followed,
       final int? noteCount,
       final Map<String, dynamic>? paywallReblogView,
       final Map<String, dynamic>? subscriptionPlan}) = _$TumblrPostImpl;
@@ -568,6 +609,10 @@ abstract class _TumblrPost extends TumblrPost {
   bool? get isPaywalled;
   @override
   String? get paywallAccess;
+  @override
+  bool get liked;
+  @override
+  bool get followed;
   @override
   int? get noteCount;
   @override

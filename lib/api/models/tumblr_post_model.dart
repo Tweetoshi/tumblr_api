@@ -35,6 +35,8 @@ class TumblrPost with _$TumblrPost {
     String? summary,
     bool? isPaywalled,
     String? paywallAccess,
+    @Default(false) bool liked,
+    @Default(false) bool followed,
     int? noteCount,
     Map<String, dynamic>? paywallReblogView,
     Map<String, dynamic>? subscriptionPlan,
