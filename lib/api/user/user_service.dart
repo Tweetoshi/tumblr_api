@@ -55,7 +55,7 @@ abstract class UserService {
   /// - reblogKey: The reblog key for the post
   ///
   /// Returns a Map containing the response data
-  Future<Map<String, dynamic>> likePost(String id, String reblogKey);
+  Future<Map<String, dynamic>> likePost(String id, String? reblogKey);
 
   /// Unlike a post
   ///
@@ -64,7 +64,7 @@ abstract class UserService {
   /// - reblogKey: The reblog key for the post
   ///
   /// Returns a Map containing the response data
-  Future<Map<String, dynamic>> unlikePost(String id, String reblogKey);
+  Future<Map<String, dynamic>> unlikePost(String id, String? reblogKey);
 }
 
 class _UserService extends BaseService implements UserService {
@@ -138,11 +138,11 @@ class _UserService extends BaseService implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> likePost(String id, String reblogKey) async {
+  Future<Map<String, dynamic>> likePost(String id, String? reblogKey) async {
     try {
       final response = await super.post('user/like', body: {
         'id': id,
-        'reblog_key': reblogKey,
+        if (reblogKey != null) 'reblog_key': reblogKey,
       });
 
       return response.data as Map<String, dynamic>;
@@ -152,11 +152,11 @@ class _UserService extends BaseService implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> unlikePost(String id, String reblogKey) async {
+  Future<Map<String, dynamic>> unlikePost(String id, String? reblogKey) async {
     try {
       final response = await super.post('user/unlike', body: {
         'id': id,
-        'reblog_key': reblogKey,
+        if (reblogKey != null) 'reblog_key': reblogKey,
       });
 
       return response.data as Map<String, dynamic>;
