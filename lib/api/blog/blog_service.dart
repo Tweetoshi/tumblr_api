@@ -63,7 +63,8 @@ abstract class BlogService {
     required String blogIdentifier,
     required List<ContentBlock> content,
     String? parentPostId,
-    String? parentBlogUuid,
+    String? parentTumblelogUuid,
+    String? reblogKey,
     List<LayoutBlock>? layout,
     String state = 'published',
     List<String>? tags,
@@ -166,7 +167,8 @@ class _BlogService extends BaseService implements BlogService {
     required String blogIdentifier,
     required List<ContentBlock> content,
     String? parentPostId,
-    String? parentBlogUuid,
+    String? parentTumblelogUuid,
+    String? reblogKey,
     List<LayoutBlock>? layout,
     String state = 'published',
     List<String>? tags,
@@ -186,16 +188,16 @@ class _BlogService extends BaseService implements BlogService {
       if (layout != null) {
         body['layout'] = layout.map((block) => block.toJson()).toList();
       }
-      if (tags != null && tags.isNotEmpty) body['tags'] = tags;
+      if (tags != null && tags.isNotEmpty) body['tags'] = tags.join(',');
       if (publishOn != null) body['publish_on'] = publishOn;
       if (date != null) body['date'] = date;
       if (state != 'published') body['state'] = state;
 
       // Handle reblog vs new post
-      if (parentPostId != null && parentBlogUuid != null) {
+      if (parentPostId != null && parentTumblelogUuid != null) {
         body['parent_post_id'] = parentPostId;
-        body['parent_blog_uuid'] = parentBlogUuid;
-        body['reblog_key'] = 'reblog'; // This is a fixed value for NPF
+        body['parent_tumblelog_uuid'] = parentTumblelogUuid;
+        body['reblog_key'] = reblogKey;
       }
 
       // Make the POST request
