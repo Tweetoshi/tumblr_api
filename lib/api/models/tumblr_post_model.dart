@@ -40,6 +40,9 @@ class TumblrPost with _$TumblrPost {
     int? noteCount,
     Map<String, dynamic>? paywallReblogView,
     Map<String, dynamic>? subscriptionPlan,
+    @Default(true) bool canLike,
+    @Default(true) bool canReblog,
+    @Default(false) bool canSendInMessage,
   }) = _TumblrPost;
 
   factory TumblrPost.fromJson(Map<String, dynamic> json) =>

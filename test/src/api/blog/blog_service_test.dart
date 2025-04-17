@@ -217,7 +217,7 @@ void main() {
             blogIdentifier: 'test-blog',
             content: content,
             parentPostId: '12345',
-            parentBlogUuid: 'abc-123-def-456',
+            parentTumblelogUuid: 'abc-123-def-456',
             tags: ['reblog', 'comment'])).thenAnswer((_) async => '67890');
 
         // Act
@@ -225,7 +225,7 @@ void main() {
             blogIdentifier: 'test-blog',
             content: content,
             parentPostId: '12345',
-            parentBlogUuid: 'abc-123-def-456',
+            parentTumblelogUuid: 'abc-123-def-456',
             tags: ['reblog', 'comment']);
 
         // Assert
@@ -235,7 +235,7 @@ void main() {
             blogIdentifier: 'test-blog',
             content: content,
             parentPostId: '12345',
-            parentBlogUuid: 'abc-123-def-456',
+            parentTumblelogUuid: 'abc-123-def-456',
             tags: ['reblog', 'comment'])).called(1);
       });
 

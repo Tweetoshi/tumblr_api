@@ -34,6 +34,9 @@ _$TumblrPostImpl _$$TumblrPostImplFromJson(Map<String, dynamic> json) =>
       noteCount: (json['note_count'] as num?)?.toInt(),
       paywallReblogView: json['paywall_reblog_view'] as Map<String, dynamic>?,
       subscriptionPlan: json['subscription_plan'] as Map<String, dynamic>?,
+      canLike: json['can_like'] as bool? ?? true,
+      canReblog: json['can_reblog'] as bool? ?? true,
+      canSendInMessage: json['can_send_in_message'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$TumblrPostImplToJson(_$TumblrPostImpl instance) =>
@@ -56,6 +59,9 @@ Map<String, dynamic> _$$TumblrPostImplToJson(_$TumblrPostImpl instance) =>
       'note_count': instance.noteCount,
       'paywall_reblog_view': instance.paywallReblogView,
       'subscription_plan': instance.subscriptionPlan,
+      'can_like': instance.canLike,
+      'can_reblog': instance.canReblog,
+      'can_send_in_message': instance.canSendInMessage,
     };
 
 _$PostDetailsImpl _$$PostDetailsImplFromJson(Map<String, dynamic> json) =>

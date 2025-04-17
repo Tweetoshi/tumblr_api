@@ -41,6 +41,9 @@ mixin _$TumblrPost {
       throw _privateConstructorUsedError;
   Map<String, dynamic>? get subscriptionPlan =>
       throw _privateConstructorUsedError;
+  bool get canLike => throw _privateConstructorUsedError;
+  bool get canReblog => throw _privateConstructorUsedError;
+  bool get canSendInMessage => throw _privateConstructorUsedError;
 
   /// Serializes this TumblrPost to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -76,7 +79,10 @@ abstract class $TumblrPostCopyWith<$Res> {
       bool followed,
       int? noteCount,
       Map<String, dynamic>? paywallReblogView,
-      Map<String, dynamic>? subscriptionPlan});
+      Map<String, dynamic>? subscriptionPlan,
+      bool canLike,
+      bool canReblog,
+      bool canSendInMessage});
 
   $TumblrBlogCopyWith<$Res> get blog;
   $TumblrBlogCopyWith<$Res>? get authorBlog;
@@ -115,6 +121,9 @@ class _$TumblrPostCopyWithImpl<$Res, $Val extends TumblrPost>
     Object? noteCount = freezed,
     Object? paywallReblogView = freezed,
     Object? subscriptionPlan = freezed,
+    Object? canLike = null,
+    Object? canReblog = null,
+    Object? canSendInMessage = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -189,6 +198,18 @@ class _$TumblrPostCopyWithImpl<$Res, $Val extends TumblrPost>
           ? _value.subscriptionPlan
           : subscriptionPlan // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
+      canLike: null == canLike
+          ? _value.canLike
+          : canLike // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canReblog: null == canReblog
+          ? _value.canReblog
+          : canReblog // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canSendInMessage: null == canSendInMessage
+          ? _value.canSendInMessage
+          : canSendInMessage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -243,7 +264,10 @@ abstract class _$$TumblrPostImplCopyWith<$Res>
       bool followed,
       int? noteCount,
       Map<String, dynamic>? paywallReblogView,
-      Map<String, dynamic>? subscriptionPlan});
+      Map<String, dynamic>? subscriptionPlan,
+      bool canLike,
+      bool canReblog,
+      bool canSendInMessage});
 
   @override
   $TumblrBlogCopyWith<$Res> get blog;
@@ -282,6 +306,9 @@ class __$$TumblrPostImplCopyWithImpl<$Res>
     Object? noteCount = freezed,
     Object? paywallReblogView = freezed,
     Object? subscriptionPlan = freezed,
+    Object? canLike = null,
+    Object? canReblog = null,
+    Object? canSendInMessage = null,
   }) {
     return _then(_$TumblrPostImpl(
       id: null == id
@@ -356,6 +383,18 @@ class __$$TumblrPostImplCopyWithImpl<$Res>
           ? _value._subscriptionPlan
           : subscriptionPlan // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
+      canLike: null == canLike
+          ? _value.canLike
+          : canLike // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canReblog: null == canReblog
+          ? _value.canReblog
+          : canReblog // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canSendInMessage: null == canSendInMessage
+          ? _value.canSendInMessage
+          : canSendInMessage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -381,7 +420,10 @@ class _$TumblrPostImpl extends _TumblrPost {
       this.followed = false,
       this.noteCount,
       final Map<String, dynamic>? paywallReblogView,
-      final Map<String, dynamic>? subscriptionPlan})
+      final Map<String, dynamic>? subscriptionPlan,
+      this.canLike = true,
+      this.canReblog = true,
+      this.canSendInMessage = false})
       : _content = content,
         _layout = layout,
         _trail = trail,
@@ -480,8 +522,18 @@ class _$TumblrPostImpl extends _TumblrPost {
   }
 
   @override
+  @JsonKey()
+  final bool canLike;
+  @override
+  @JsonKey()
+  final bool canReblog;
+  @override
+  @JsonKey()
+  final bool canSendInMessage;
+
+  @override
   String toString() {
-    return 'TumblrPost(id: $id, blog: $blog, authorBlog: $authorBlog, content: $content, layout: $layout, trail: $trail, timestamp: $timestamp, postUrl: $postUrl, tags: $tags, reblogKey: $reblogKey, summary: $summary, isPaywalled: $isPaywalled, paywallAccess: $paywallAccess, liked: $liked, followed: $followed, noteCount: $noteCount, paywallReblogView: $paywallReblogView, subscriptionPlan: $subscriptionPlan)';
+    return 'TumblrPost(id: $id, blog: $blog, authorBlog: $authorBlog, content: $content, layout: $layout, trail: $trail, timestamp: $timestamp, postUrl: $postUrl, tags: $tags, reblogKey: $reblogKey, summary: $summary, isPaywalled: $isPaywalled, paywallAccess: $paywallAccess, liked: $liked, followed: $followed, noteCount: $noteCount, paywallReblogView: $paywallReblogView, subscriptionPlan: $subscriptionPlan, canLike: $canLike, canReblog: $canReblog, canSendInMessage: $canSendInMessage)';
   }
 
   @override
@@ -515,31 +567,40 @@ class _$TumblrPostImpl extends _TumblrPost {
             const DeepCollectionEquality()
                 .equals(other._paywallReblogView, _paywallReblogView) &&
             const DeepCollectionEquality()
-                .equals(other._subscriptionPlan, _subscriptionPlan));
+                .equals(other._subscriptionPlan, _subscriptionPlan) &&
+            (identical(other.canLike, canLike) || other.canLike == canLike) &&
+            (identical(other.canReblog, canReblog) ||
+                other.canReblog == canReblog) &&
+            (identical(other.canSendInMessage, canSendInMessage) ||
+                other.canSendInMessage == canSendInMessage));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      blog,
-      authorBlog,
-      const DeepCollectionEquality().hash(_content),
-      const DeepCollectionEquality().hash(_layout),
-      const DeepCollectionEquality().hash(_trail),
-      timestamp,
-      postUrl,
-      const DeepCollectionEquality().hash(_tags),
-      reblogKey,
-      summary,
-      isPaywalled,
-      paywallAccess,
-      liked,
-      followed,
-      noteCount,
-      const DeepCollectionEquality().hash(_paywallReblogView),
-      const DeepCollectionEquality().hash(_subscriptionPlan));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        blog,
+        authorBlog,
+        const DeepCollectionEquality().hash(_content),
+        const DeepCollectionEquality().hash(_layout),
+        const DeepCollectionEquality().hash(_trail),
+        timestamp,
+        postUrl,
+        const DeepCollectionEquality().hash(_tags),
+        reblogKey,
+        summary,
+        isPaywalled,
+        paywallAccess,
+        liked,
+        followed,
+        noteCount,
+        const DeepCollectionEquality().hash(_paywallReblogView),
+        const DeepCollectionEquality().hash(_subscriptionPlan),
+        canLike,
+        canReblog,
+        canSendInMessage
+      ]);
 
   /// Create a copy of TumblrPost
   /// with the given fields replaced by the non-null parameter values.
@@ -576,7 +637,10 @@ abstract class _TumblrPost extends TumblrPost {
       final bool followed,
       final int? noteCount,
       final Map<String, dynamic>? paywallReblogView,
-      final Map<String, dynamic>? subscriptionPlan}) = _$TumblrPostImpl;
+      final Map<String, dynamic>? subscriptionPlan,
+      final bool canLike,
+      final bool canReblog,
+      final bool canSendInMessage}) = _$TumblrPostImpl;
   const _TumblrPost._() : super._();
 
   factory _TumblrPost.fromJson(Map<String, dynamic> json) =
@@ -619,6 +683,12 @@ abstract class _TumblrPost extends TumblrPost {
   Map<String, dynamic>? get paywallReblogView;
   @override
   Map<String, dynamic>? get subscriptionPlan;
+  @override
+  bool get canLike;
+  @override
+  bool get canReblog;
+  @override
+  bool get canSendInMessage;
 
   /// Create a copy of TumblrPost
   /// with the given fields replaced by the non-null parameter values.
