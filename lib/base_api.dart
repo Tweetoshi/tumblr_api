@@ -54,12 +54,45 @@ abstract class BaseService {
   Future<Response<dynamic>> post(
     String unencodedPath, {
     Map<String, dynamic> queryParameters = const {},
-    Map<String, dynamic> body = const {},
+    dynamic data,
   }) async =>
       _helper.post(
         unencodedPath,
         queryParameters: queryParameters,
-        body: body,
+        data: data,
+      );
+
+  Future<Response<dynamic>> put(
+    String unencodedPath, {
+    Map<String, dynamic> queryParameters = const {},
+    dynamic data,
+  }) async =>
+      _helper.put(
+        unencodedPath,
+        queryParameters: queryParameters,
+        data: data,
+      );
+
+  Future<Response<dynamic>> postFormData(
+    String unencodedPath, {
+    Map<String, dynamic> queryParameters = const {},
+    required FormData data,
+  }) async =>
+      _helper.postFormData(
+        unencodedPath,
+        queryParameters: queryParameters,
+        data: data,
+      );
+
+  Future<Response<dynamic>> delete(
+    String unencodedPath, {
+    Map<String, dynamic> queryParameters = const {},
+    dynamic data,
+  }) async =>
+      _helper.delete(
+        unencodedPath,
+        queryParameters: queryParameters,
+        data: data,
       );
 }
 
@@ -92,7 +125,7 @@ class ServiceHelper {
   Future<Response<dynamic>> post(
     String unencodedPath, {
     Map<String, dynamic> queryParameters = const {},
-    Map<String, dynamic> body = const {},
+    dynamic data,
   }) async {
     try {
       final dio = Dio();
@@ -101,12 +134,88 @@ class ServiceHelper {
       final response = await dio.post(
         '$baseUrl$unencodedPath',
         queryParameters: queryParameters,
-        data: body,
+        data: data,
       );
 
       return response;
     } catch (e) {
+      if (e is DioException) {
+        throw Exception('Failed to post data: ${e.response?.data}');
+      }
       throw Exception('Failed to post data: $e');
+    }
+  }
+
+  Future<Response<dynamic>> put(
+    String unencodedPath, {
+    Map<String, dynamic> queryParameters = const {},
+    dynamic data,
+  }) async {
+    try {
+      final dio = Dio();
+      dio.options.headers['Authorization'] = 'Bearer $accessToken';
+
+      final response = await dio.put(
+        '$baseUrl$unencodedPath',
+        queryParameters: queryParameters,
+        data: data,
+      );
+
+      return response;
+    } catch (e) {
+      if (e is DioException) {
+        throw Exception('Failed to put data: ${e.response?.data}');
+      }
+      throw Exception('Failed to put data: $e');
+    }
+  }
+
+  Future<Response<dynamic>> postFormData(
+    String unencodedPath, {
+    Map<String, dynamic> queryParameters = const {},
+    required FormData data,
+  }) async {
+    try {
+      final dio = Dio();
+      dio.options.headers['Authorization'] = 'Bearer $accessToken';
+      dio.options.headers['Content-Type'] = 'multipart/form-data';
+
+      final response = await dio.post(
+        '$baseUrl$unencodedPath',
+        queryParameters: queryParameters,
+        data: data,
+      );
+
+      return response;
+    } catch (e) {
+      if (e is DioException && e.response != null) {
+        print('Error response: ${e.response!.data}');
+      }
+      throw Exception('Failed to post form data: $e');
+    }
+  }
+
+  Future<Response<dynamic>> delete(
+    String unencodedPath, {
+    Map<String, dynamic> queryParameters = const {},
+    dynamic data,
+  }) async {
+    try {
+      final dio = Dio();
+      dio.options.headers['Authorization'] = 'Bearer $accessToken';
+
+      final response = await dio.delete(
+        '$baseUrl$unencodedPath',
+        queryParameters: queryParameters,
+        data: data,
+      );
+
+      return response;
+    } catch (e) {
+      if (e is DioException) {
+        throw Exception('Failed to delete data: ${e.response?.data}');
+      }
+      throw Exception('Failed to delete data: $e');
     }
   }
 }

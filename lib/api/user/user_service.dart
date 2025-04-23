@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:tumblr_api/api/models/tumblr_post_model.dart';
 import 'package:tumblr_api/api/models/user_model.dart';
 import 'package:tumblr_api/base_api.dart';
@@ -65,6 +64,15 @@ abstract class UserService {
   ///
   /// Returns a Map containing the response data
   Future<Map<String, dynamic>> unlikePost(String id, String? reblogKey);
+  
+  /// Delete a post
+  ///
+  /// This method allows the user to delete a post from their blog.
+  /// - blogIdentifier: The blog identifier from which to delete the post
+  /// - id: The ID of the post to delete
+  ///
+  /// Returns a Map containing the response data
+  Future<Map<String, dynamic>> deletePost(String blogIdentifier, String id);
 }
 
 class _UserService extends BaseService implements UserService {
@@ -114,7 +122,7 @@ class _UserService extends BaseService implements UserService {
   @override
   Future<Map<String, dynamic>> followBlog(String blogIdentifier) async {
     try {
-      final response = await super.post('user/follow', body: {
+      final response = await super.post('user/follow', data: {
         'url': blogIdentifier,
       });
 
@@ -127,7 +135,7 @@ class _UserService extends BaseService implements UserService {
   @override
   Future<Map<String, dynamic>> unfollowBlog(String blogIdentifier) async {
     try {
-      final response = await super.post('user/unfollow', body: {
+      final response = await super.post('user/unfollow', data: {
         'url': blogIdentifier,
       });
 
@@ -140,7 +148,7 @@ class _UserService extends BaseService implements UserService {
   @override
   Future<Map<String, dynamic>> likePost(String id, String? reblogKey) async {
     try {
-      final response = await super.post('user/like', body: {
+      final response = await super.post('user/like', data: {
         'id': id,
         if (reblogKey != null) 'reblog_key': reblogKey,
       });
@@ -154,10 +162,25 @@ class _UserService extends BaseService implements UserService {
   @override
   Future<Map<String, dynamic>> unlikePost(String id, String? reblogKey) async {
     try {
-      final response = await super.post('user/unlike', body: {
+      final response = await super.post('user/unlike', data: {
         'id': id,
         if (reblogKey != null) 'reblog_key': reblogKey,
       });
+
+      return response.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<Map<String, dynamic>> deletePost(
+      String blogIdentifier, String id) async {
+    try {
+      final response = await super.post(
+        'blog/$blogIdentifier/post/delete',
+        data: {'id': id},
+      );
 
       return response.data as Map<String, dynamic>;
     } catch (e) {

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:tumblr_api/api/models/blog_model.dart';
 import 'package:tumblr_api/api/models/content_block_model.dart';
 import 'package:tumblr_api/api/models/notes_model.dart';
@@ -176,39 +179,128 @@ class _BlogService extends BaseService implements BlogService {
     String? date,
   }) async {
     try {
-      // Convert content blocks to JSON
-      final contentJson = content.map((block) => block.toJson()).toList();
+      // Check if there are any image blocks with local file paths
+      final hasLocalImages = content.any((block) => 
+          block is ImageContentBlock && 
+          block.media.isNotEmpty && 
+          block.media.first.url.startsWith('file://'));
 
-      // Prepare the request body
-      final Map<String, dynamic> body = {
-        'content': contentJson,
-      };
+      if (hasLocalImages) {
+        // Create FormData for multipart request
+        final formData = FormData();
+        
+        // Track image blocks with local files and their placeholders
+        final Map<String, String> placeholders = {};
+        
+        // Prepare the JSON payload with placeholders
+        final Map<String, dynamic> jsonPayload = {
+          'content': content.map((block) {
+            if (block is ImageContentBlock && block.media.isNotEmpty) {
+              final media = block.media.first;
+              if (media.url.startsWith('file://')) {
+                // Create a unique placeholder ID
+                final placeholderId = 'img_${DateTime.now().millisecondsSinceEpoch}_${placeholders.length}';
+                
+                // Store mapping of file path to placeholder
+                placeholders[media.url] = placeholderId;
+                
+                // Return the block with placeholder
+                return {
+                  'type': 'image',
+                  'upload_placeholder': placeholderId,
+                  if (block.altText != null) 'alt_text': block.altText,
+                };
+              }
+            }
+            return block.toJson();
+          }).toList(),
+        };
 
-      // Add optional parameters if present
-      if (layout != null) {
-        body['layout'] = layout.map((block) => block.toJson()).toList();
+        // Add optional parameters
+        if (layout != null) {
+          jsonPayload['layout'] = layout.map((block) => block.toJson()).toList();
+        }
+        if (tags != null && tags.isNotEmpty) 
+          jsonPayload['tags'] = tags.join(',');
+        if (publishOn != null) jsonPayload['publish_on'] = publishOn;
+        if (date != null) jsonPayload['date'] = date;
+        if (state != 'published') jsonPayload['state'] = state;
+
+        // Handle reblog
+        if (parentPostId != null && parentTumblelogUuid != null) {
+          jsonPayload['parent_post_id'] = parentPostId;
+          jsonPayload['parent_tumblelog_uuid'] = parentTumblelogUuid;
+          jsonPayload['reblog_key'] = reblogKey;
+        }
+
+        // Add JSON payload to the form
+        formData.fields.add(MapEntry('json', json.encode(jsonPayload)));
+
+        // Add image files with placeholder IDs as field names
+        for (final entry in placeholders.entries) {
+          final filePath = entry.key.replaceFirst('file://', '');
+          final placeholderId = entry.value;
+          
+          formData.files.add(MapEntry(
+            placeholderId, // Field name matches the placeholder ID in JSON
+            await MultipartFile.fromFile(
+              filePath,
+              contentType: MediaType.parse(_getContentType(filePath)),
+              filename: filePath.split('/').last,
+            ),
+          ));
+        }
+
+        // Print request details for debugging
+        print('FormData fields: ${formData.fields.map((f) => f.key).toList()}');
+        print('FormData files: ${formData.files.map((f) => '${f.key}: ${f.value.filename}').toList()}');
+        
+        // Send the request with FormData
+        final response = await post(
+          'blog/$blogIdentifier/posts',
+          data: formData, // Use the regular post method with FormData
+        );
+
+        if (response.statusCode != 201) {
+          throw Exception('Failed to create post: ${response.data}');
+        }
+
+        return response.data['response']['id'];
+      } else {
+        // Standard JSON request for posts without local image uploads
+        final contentJson = content.map((block) => block.toJson()).toList();
+
+        // Prepare the request body
+        final Map<String, dynamic> body = {
+          'content': contentJson,
+        };
+
+        // Add optional parameters if present
+        if (layout != null) {
+          body['layout'] = layout.map((block) => block.toJson()).toList();
+        }
+        if (tags != null && tags.isNotEmpty) body['tags'] = tags.join(',');
+        if (publishOn != null) body['publish_on'] = publishOn;
+        if (date != null) body['date'] = date;
+        if (state != 'published') body['state'] = state;
+
+        // Handle reblog vs new post
+        if (parentPostId != null && parentTumblelogUuid != null) {
+          body['parent_post_id'] = parentPostId;
+          body['parent_tumblelog_uuid'] = parentTumblelogUuid;
+          body['reblog_key'] = reblogKey;
+        }
+
+        // Make the POST request
+        final response = await post(
+          'blog/$blogIdentifier/posts',
+          data: body,
+        );
+
+        // Parse the response
+        final postData = response.data['response'] as Map<String, dynamic>;
+        return postData['id'];
       }
-      if (tags != null && tags.isNotEmpty) body['tags'] = tags.join(',');
-      if (publishOn != null) body['publish_on'] = publishOn;
-      if (date != null) body['date'] = date;
-      if (state != 'published') body['state'] = state;
-
-      // Handle reblog vs new post
-      if (parentPostId != null && parentTumblelogUuid != null) {
-        body['parent_post_id'] = parentPostId;
-        body['parent_tumblelog_uuid'] = parentTumblelogUuid;
-        body['reblog_key'] = reblogKey;
-      }
-
-      // Make the POST request
-      final response = await post(
-        'blog/$blogIdentifier/posts',
-        body: body,
-      );
-
-      // Parse the response
-      final postData = response.data['response'] as Map<String, dynamic>;
-      return postData['id'];
     } catch (e) {
       throw Exception('Failed to create post: $e');
     }
@@ -307,6 +399,21 @@ class _BlogService extends BaseService implements BlogService {
       return NotificationResponse.fromJson(responseData);
     } catch (e) {
       throw Exception('Failed to get notifications: $e');
+    }
+  }
+
+  String _getContentType(String filePath) {
+    final extension = filePath.split('.').last.toLowerCase();
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'gif':
+        return 'image/gif';
+      default:
+        return 'image/jpeg';
     }
   }
 }

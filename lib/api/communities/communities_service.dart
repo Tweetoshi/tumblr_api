@@ -26,6 +26,34 @@ abstract class CommunitiesService {
   /// @param communityHandle: The unique handle of the community
   Future<CommunityTimelineResponse> getCommunityTimeline(
       String communityHandle);
+      
+  /// Add a reaction to a post in a community
+  ///
+  /// Uses the PUT /v2/communities/{community-handle}/posts/{post-id}/reactions endpoint
+  /// https://www.tumblr.com/docs/en/api/v2#put-v2communitiescommunity-handlepostspost-idreactions---add-reaction-to-post
+  ///
+  /// @param communityHandle: The unique handle of the community
+  /// @param postId: The ID of the post to add a reaction to
+  /// @param reactionId: The ID of the reaction to add
+  Future<Map<String, dynamic>> addReactionToPost(
+    String communityHandle,
+    String postId,
+    String grapheme,
+  );
+  
+  /// Remove a reaction from a post in a community
+  ///
+  /// Uses the DELETE /v2/communities/{community-handle}/posts/{post-id}/reactions/{reaction-id} endpoint
+  /// https://www.tumblr.com/docs/en/api/v2#delete-v2communitiescommunity-handlepostspost-idreactionsreaction-id---remove-reaction-from-post
+  ///
+  /// @param communityHandle: The unique handle of the community
+  /// @param postId: The ID of the post to remove the reaction from
+  /// @param reactionId: The ID of the reaction to remove
+  Future<Map<String, dynamic>> removeReactionFromPost(
+    String communityHandle,
+    String postId,
+    String grapheme,
+  );
 }
 
 class _CommunitiesService extends BaseService implements CommunitiesService {
@@ -59,6 +87,41 @@ class _CommunitiesService extends BaseService implements CommunitiesService {
       return processedResponse;
     } catch (e) {
       throw Exception('Failed to get communities $e');
+    }
+  }
+  
+  @override
+  Future<Map<String, dynamic>> addReactionToPost(
+    String communityHandle,
+    String postId,
+    String grapheme,
+  ) async {
+    try {
+      final response = await put(
+        'communities/$communityHandle/posts/$postId/reactions',
+        data: {'grapheme': grapheme},
+      );
+
+      return response.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<Map<String, dynamic>> removeReactionFromPost(
+    String communityHandle,
+    String postId,
+    String grapheme,
+  ) async {
+    try {
+      final response = await delete(
+        'communities/$communityHandle/posts/$postId/reactions/$grapheme',
+      );
+
+      return response.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
     }
   }
 }
