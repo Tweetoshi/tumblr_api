@@ -93,13 +93,13 @@ class MockBaseService extends _i1.Mock implements _i7.BaseService {
   _i8.Future<_i2.Response<dynamic>> post(
     String? unencodedPath, {
     Map<String, dynamic>? queryParameters = const {},
-    Map<String, dynamic>? body = const {},
+    dynamic data,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
               #post,
               [unencodedPath],
-              {#queryParameters: queryParameters, #body: body},
+              {#queryParameters: queryParameters, #data: data},
             ),
             returnValue: _i8.Future<_i2.Response<dynamic>>.value(
               _FakeResponse_0<dynamic>(
@@ -107,7 +107,82 @@ class MockBaseService extends _i1.Mock implements _i7.BaseService {
                 Invocation.method(
                   #post,
                   [unencodedPath],
-                  {#queryParameters: queryParameters, #body: body},
+                  {#queryParameters: queryParameters, #data: data},
+                ),
+              ),
+            ),
+          )
+          as _i8.Future<_i2.Response<dynamic>>);
+
+  @override
+  _i8.Future<_i2.Response<dynamic>> put(
+    String? unencodedPath, {
+    Map<String, dynamic>? queryParameters = const {},
+    dynamic data,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #put,
+              [unencodedPath],
+              {#queryParameters: queryParameters, #data: data},
+            ),
+            returnValue: _i8.Future<_i2.Response<dynamic>>.value(
+              _FakeResponse_0<dynamic>(
+                this,
+                Invocation.method(
+                  #put,
+                  [unencodedPath],
+                  {#queryParameters: queryParameters, #data: data},
+                ),
+              ),
+            ),
+          )
+          as _i8.Future<_i2.Response<dynamic>>);
+
+  @override
+  _i8.Future<_i2.Response<dynamic>> postFormData(
+    String? unencodedPath, {
+    Map<String, dynamic>? queryParameters = const {},
+    required _i2.FormData? data,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #postFormData,
+              [unencodedPath],
+              {#queryParameters: queryParameters, #data: data},
+            ),
+            returnValue: _i8.Future<_i2.Response<dynamic>>.value(
+              _FakeResponse_0<dynamic>(
+                this,
+                Invocation.method(
+                  #postFormData,
+                  [unencodedPath],
+                  {#queryParameters: queryParameters, #data: data},
+                ),
+              ),
+            ),
+          )
+          as _i8.Future<_i2.Response<dynamic>>);
+
+  @override
+  _i8.Future<_i2.Response<dynamic>> delete(
+    String? unencodedPath, {
+    Map<String, dynamic>? queryParameters = const {},
+    dynamic data,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #delete,
+              [unencodedPath],
+              {#queryParameters: queryParameters, #data: data},
+            ),
+            returnValue: _i8.Future<_i2.Response<dynamic>>.value(
+              _FakeResponse_0<dynamic>(
+                this,
+                Invocation.method(
+                  #delete,
+                  [unencodedPath],
+                  {#queryParameters: queryParameters, #data: data},
                 ),
               ),
             ),

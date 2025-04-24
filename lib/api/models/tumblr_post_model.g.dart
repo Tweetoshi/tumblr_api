@@ -37,6 +37,11 @@ _$TumblrPostImpl _$$TumblrPostImplFromJson(Map<String, dynamic> json) =>
       canLike: json['can_like'] as bool? ?? true,
       canReblog: json['can_reblog'] as bool? ?? true,
       canSendInMessage: json['can_send_in_message'] as bool? ?? false,
+      reactions: (json['reactions'] as List<dynamic>?)
+              ?.map((e) => Reaction.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      canReact: json['can_react'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$TumblrPostImplToJson(_$TumblrPostImpl instance) =>
@@ -62,6 +67,8 @@ Map<String, dynamic> _$$TumblrPostImplToJson(_$TumblrPostImpl instance) =>
       'can_like': instance.canLike,
       'can_reblog': instance.canReblog,
       'can_send_in_message': instance.canSendInMessage,
+      'reactions': instance.reactions,
+      'can_react': instance.canReact,
     };
 
 _$PostDetailsImpl _$$PostDetailsImplFromJson(Map<String, dynamic> json) =>

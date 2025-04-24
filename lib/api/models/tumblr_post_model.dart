@@ -1,6 +1,7 @@
 import 'package:tumblr_api/api/models/blog_model.dart';
 import 'package:tumblr_api/api/models/content_block_model.dart';
 import 'package:tumblr_api/api/models/reblog_trail_item_model.dart';
+import 'package:tumblr_api/api/models/reaction_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'tumblr_post_model.freezed.dart';
@@ -43,6 +44,8 @@ class TumblrPost with _$TumblrPost {
     @Default(true) bool canLike,
     @Default(true) bool canReblog,
     @Default(false) bool canSendInMessage,
+    @Default([]) List<Reaction> reactions,
+    @Default(false) bool canReact,
   }) = _TumblrPost;
 
   factory TumblrPost.fromJson(Map<String, dynamic> json) =>

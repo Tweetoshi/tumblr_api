@@ -44,6 +44,8 @@ mixin _$TumblrPost {
   bool get canLike => throw _privateConstructorUsedError;
   bool get canReblog => throw _privateConstructorUsedError;
   bool get canSendInMessage => throw _privateConstructorUsedError;
+  List<Reaction> get reactions => throw _privateConstructorUsedError;
+  bool get canReact => throw _privateConstructorUsedError;
 
   /// Serializes this TumblrPost to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -82,7 +84,9 @@ abstract class $TumblrPostCopyWith<$Res> {
       Map<String, dynamic>? subscriptionPlan,
       bool canLike,
       bool canReblog,
-      bool canSendInMessage});
+      bool canSendInMessage,
+      List<Reaction> reactions,
+      bool canReact});
 
   $TumblrBlogCopyWith<$Res> get blog;
   $TumblrBlogCopyWith<$Res>? get authorBlog;
@@ -124,6 +128,8 @@ class _$TumblrPostCopyWithImpl<$Res, $Val extends TumblrPost>
     Object? canLike = null,
     Object? canReblog = null,
     Object? canSendInMessage = null,
+    Object? reactions = null,
+    Object? canReact = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -210,6 +216,14 @@ class _$TumblrPostCopyWithImpl<$Res, $Val extends TumblrPost>
           ? _value.canSendInMessage
           : canSendInMessage // ignore: cast_nullable_to_non_nullable
               as bool,
+      reactions: null == reactions
+          ? _value.reactions
+          : reactions // ignore: cast_nullable_to_non_nullable
+              as List<Reaction>,
+      canReact: null == canReact
+          ? _value.canReact
+          : canReact // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -267,7 +281,9 @@ abstract class _$$TumblrPostImplCopyWith<$Res>
       Map<String, dynamic>? subscriptionPlan,
       bool canLike,
       bool canReblog,
-      bool canSendInMessage});
+      bool canSendInMessage,
+      List<Reaction> reactions,
+      bool canReact});
 
   @override
   $TumblrBlogCopyWith<$Res> get blog;
@@ -309,6 +325,8 @@ class __$$TumblrPostImplCopyWithImpl<$Res>
     Object? canLike = null,
     Object? canReblog = null,
     Object? canSendInMessage = null,
+    Object? reactions = null,
+    Object? canReact = null,
   }) {
     return _then(_$TumblrPostImpl(
       id: null == id
@@ -395,6 +413,14 @@ class __$$TumblrPostImplCopyWithImpl<$Res>
           ? _value.canSendInMessage
           : canSendInMessage // ignore: cast_nullable_to_non_nullable
               as bool,
+      reactions: null == reactions
+          ? _value._reactions
+          : reactions // ignore: cast_nullable_to_non_nullable
+              as List<Reaction>,
+      canReact: null == canReact
+          ? _value.canReact
+          : canReact // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -423,13 +449,16 @@ class _$TumblrPostImpl extends _TumblrPost {
       final Map<String, dynamic>? subscriptionPlan,
       this.canLike = true,
       this.canReblog = true,
-      this.canSendInMessage = false})
+      this.canSendInMessage = false,
+      final List<Reaction> reactions = const [],
+      this.canReact = false})
       : _content = content,
         _layout = layout,
         _trail = trail,
         _tags = tags,
         _paywallReblogView = paywallReblogView,
         _subscriptionPlan = subscriptionPlan,
+        _reactions = reactions,
         super._();
 
   factory _$TumblrPostImpl.fromJson(Map<String, dynamic> json) =>
@@ -530,10 +559,22 @@ class _$TumblrPostImpl extends _TumblrPost {
   @override
   @JsonKey()
   final bool canSendInMessage;
+  final List<Reaction> _reactions;
+  @override
+  @JsonKey()
+  List<Reaction> get reactions {
+    if (_reactions is EqualUnmodifiableListView) return _reactions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_reactions);
+  }
+
+  @override
+  @JsonKey()
+  final bool canReact;
 
   @override
   String toString() {
-    return 'TumblrPost(id: $id, blog: $blog, authorBlog: $authorBlog, content: $content, layout: $layout, trail: $trail, timestamp: $timestamp, postUrl: $postUrl, tags: $tags, reblogKey: $reblogKey, summary: $summary, isPaywalled: $isPaywalled, paywallAccess: $paywallAccess, liked: $liked, followed: $followed, noteCount: $noteCount, paywallReblogView: $paywallReblogView, subscriptionPlan: $subscriptionPlan, canLike: $canLike, canReblog: $canReblog, canSendInMessage: $canSendInMessage)';
+    return 'TumblrPost(id: $id, blog: $blog, authorBlog: $authorBlog, content: $content, layout: $layout, trail: $trail, timestamp: $timestamp, postUrl: $postUrl, tags: $tags, reblogKey: $reblogKey, summary: $summary, isPaywalled: $isPaywalled, paywallAccess: $paywallAccess, liked: $liked, followed: $followed, noteCount: $noteCount, paywallReblogView: $paywallReblogView, subscriptionPlan: $subscriptionPlan, canLike: $canLike, canReblog: $canReblog, canSendInMessage: $canSendInMessage, reactions: $reactions, canReact: $canReact)';
   }
 
   @override
@@ -572,7 +613,11 @@ class _$TumblrPostImpl extends _TumblrPost {
             (identical(other.canReblog, canReblog) ||
                 other.canReblog == canReblog) &&
             (identical(other.canSendInMessage, canSendInMessage) ||
-                other.canSendInMessage == canSendInMessage));
+                other.canSendInMessage == canSendInMessage) &&
+            const DeepCollectionEquality()
+                .equals(other._reactions, _reactions) &&
+            (identical(other.canReact, canReact) ||
+                other.canReact == canReact));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -599,7 +644,9 @@ class _$TumblrPostImpl extends _TumblrPost {
         const DeepCollectionEquality().hash(_subscriptionPlan),
         canLike,
         canReblog,
-        canSendInMessage
+        canSendInMessage,
+        const DeepCollectionEquality().hash(_reactions),
+        canReact
       ]);
 
   /// Create a copy of TumblrPost
@@ -640,7 +687,9 @@ abstract class _TumblrPost extends TumblrPost {
       final Map<String, dynamic>? subscriptionPlan,
       final bool canLike,
       final bool canReblog,
-      final bool canSendInMessage}) = _$TumblrPostImpl;
+      final bool canSendInMessage,
+      final List<Reaction> reactions,
+      final bool canReact}) = _$TumblrPostImpl;
   const _TumblrPost._() : super._();
 
   factory _TumblrPost.fromJson(Map<String, dynamic> json) =
@@ -689,6 +738,10 @@ abstract class _TumblrPost extends TumblrPost {
   bool get canReblog;
   @override
   bool get canSendInMessage;
+  @override
+  List<Reaction> get reactions;
+  @override
+  bool get canReact;
 
   /// Create a copy of TumblrPost
   /// with the given fields replaced by the non-null parameter values.
