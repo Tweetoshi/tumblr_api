@@ -192,6 +192,7 @@ class _BlogService extends BaseService implements BlogService {
         // Make a copy of content to modify with identifiers
         final processedContent = <Map<String, dynamic>>[];
         final Map<String, String> filePathToIdentifier = {};
+        int imageCounter = 0; // Counter to ensure unique identifiers
 
         // First pass: Process content and generate identifiers
         for (final block in content) {
@@ -199,7 +200,8 @@ class _BlogService extends BaseService implements BlogService {
             final media = block.media.first;
             if (media.url.startsWith('file://')) {
               // Generate a simple identifier without timestamp
-              final identifier = 'img_${DateTime.now().millisecondsSinceEpoch}';
+              final identifier =
+                  'img_${DateTime.now().millisecondsSinceEpoch}_${imageCounter++}';
               filePathToIdentifier[media.url] = identifier;
 
               // Add image block with identifier
