@@ -180,85 +180,94 @@ class _BlogService extends BaseService implements BlogService {
   }) async {
     try {
       // Check if there are any image blocks with local file paths
-      final hasLocalImages = content.any((block) => 
-          block is ImageContentBlock && 
-          block.media.isNotEmpty && 
+      final hasLocalImages = content.any((block) =>
+          block is ImageContentBlock &&
+          block.media.isNotEmpty &&
           block.media.first.url.startsWith('file://'));
 
       if (hasLocalImages) {
         // Create FormData for multipart request
         final formData = FormData();
-        
-        // Track image blocks with local files and their placeholders
-        final Map<String, String> placeholders = {};
-        
-        // Prepare the JSON payload with placeholders
-        final Map<String, dynamic> jsonPayload = {
-          'content': content.map((block) {
-            if (block is ImageContentBlock && block.media.isNotEmpty) {
-              final media = block.media.first;
-              if (media.url.startsWith('file://')) {
-                // Create a unique placeholder ID
-                final placeholderId = 'img_${DateTime.now().millisecondsSinceEpoch}_${placeholders.length}';
-                
-                // Store mapping of file path to placeholder
-                placeholders[media.url] = placeholderId;
-                
-                // Return the block with placeholder
-                return {
-                  'type': 'image',
-                  'upload_placeholder': placeholderId,
-                  if (block.altText != null) 'alt_text': block.altText,
-                };
-              }
+
+        // Make a copy of content to modify with identifiers
+        final processedContent = <Map<String, dynamic>>[];
+        final Map<String, String> filePathToIdentifier = {};
+
+        // First pass: Process content and generate identifiers
+        for (final block in content) {
+          if (block is ImageContentBlock && block.media.isNotEmpty) {
+            final media = block.media.first;
+            if (media.url.startsWith('file://')) {
+              // Generate a simple identifier without timestamp
+              final identifier = 'img_${DateTime.now().millisecondsSinceEpoch}';
+              filePathToIdentifier[media.url] = identifier;
+
+              // Add image block with identifier
+              processedContent.add({
+                'type': 'image',
+                'media': [
+                  {
+                    'identifier': identifier,
+                    'type': _getContentType(media.url),
+                  }
+                ],
+                if (block.altText != null) 'alt_text': block.altText,
+              });
+            } else {
+              // Regular remote URL
+              processedContent.add(block.toJson());
             }
-            return block.toJson();
-          }).toList(),
+          } else {
+            // Non-image blocks
+            processedContent.add(block.toJson());
+          }
+        }
+
+        // Prepare the JSON payload
+        final Map<String, dynamic> jsonPayload = {
+          'content': processedContent,
         };
 
         // Add optional parameters
         if (layout != null) {
-          jsonPayload['layout'] = layout.map((block) => block.toJson()).toList();
+          jsonPayload['layout'] =
+              layout.map((block) => block.toJson()).toList();
         }
-        if (tags != null && tags.isNotEmpty) 
+        if (tags != null && tags.isNotEmpty)
           jsonPayload['tags'] = tags.join(',');
         if (publishOn != null) jsonPayload['publish_on'] = publishOn;
         if (date != null) jsonPayload['date'] = date;
         if (state != 'published') jsonPayload['state'] = state;
 
-        // Handle reblog
+        // Handle reblog parameters
         if (parentPostId != null && parentTumblelogUuid != null) {
           jsonPayload['parent_post_id'] = parentPostId;
           jsonPayload['parent_tumblelog_uuid'] = parentTumblelogUuid;
-          jsonPayload['reblog_key'] = reblogKey;
+          if (reblogKey != null) jsonPayload['reblog_key'] = reblogKey;
         }
 
-        // Add JSON payload to the form
+        // Add JSON payload to the form - THIS IS CRITICAL
         formData.fields.add(MapEntry('json', json.encode(jsonPayload)));
 
-        // Add image files with placeholder IDs as field names
-        for (final entry in placeholders.entries) {
+        // Add image files with the same identifier used in the JSON content
+        for (final entry in filePathToIdentifier.entries) {
           final filePath = entry.key.replaceFirst('file://', '');
-          final placeholderId = entry.value;
-          
+          final identifier = entry.value;
+
           formData.files.add(MapEntry(
-            placeholderId, // Field name matches the placeholder ID in JSON
+            identifier, // Field name MUST match the identifier in JSON
             await MultipartFile.fromFile(
               filePath,
               contentType: MediaType.parse(_getContentType(filePath)),
-              filename: filePath.split('/').last,
+              filename: identifier + '.' + filePath.split('.').last,
             ),
           ));
         }
 
-        // Print request details for debugging
-        print('FormData fields: ${formData.fields.map((f) => f.key).toList()}');
-        print('FormData files: ${formData.files.map((f) => '${f.key}: ${f.value.filename}').toList()}');
-        
         // Send the request with FormData
         final response = await post(
           'blog/$blogIdentifier/posts',
-          data: formData, // Use the regular post method with FormData
+          data: formData,
         );
 
         if (response.statusCode != 201) {
