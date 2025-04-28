@@ -25,8 +25,11 @@ abstract class CommunitiesService {
   ///
   /// @param communityHandle: The unique handle of the community
   Future<CommunityTimelineResponse> getCommunityTimeline(
-      String communityHandle);
-      
+    String communityHandle, {
+    bool npf = true,
+    String? cursor,
+  });
+
   /// Add a reaction to a post in a community
   ///
   /// Uses the PUT /v2/communities/{community-handle}/posts/{post-id}/reactions endpoint
@@ -77,10 +80,11 @@ class _CommunitiesService extends BaseService implements CommunitiesService {
   Future<CommunityTimelineResponse> getCommunityTimeline(
     String communityHandle, {
     bool npf = true,
+    String? cursor,
   }) async {
     try {
       final response = await get('communities/$communityHandle/timeline',
-          queryParameters: {'npf': npf});
+          queryParameters: {'npf': npf, 'cursor': cursor});
 
       final processedResponse =
           CommunityTimelineResponse.fromJson(response.data);
