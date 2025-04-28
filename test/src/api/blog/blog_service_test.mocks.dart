@@ -376,4 +376,36 @@ class MockBlogService extends _i1.Mock implements _i9.BlogService {
             ),
           )
           as _i8.Future<_i6.NotificationResponse>);
+
+  @override
+  _i8.Future<bool> blockBlog(
+    String? blogIdentifier,
+    String? blockedBlogIdentifier,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#blockBlog, [
+              blogIdentifier,
+              blockedBlogIdentifier,
+            ]),
+            returnValue: _i8.Future<bool>.value(false),
+          )
+          as _i8.Future<bool>);
+
+  @override
+  _i8.Future<List<_i3.TumblrBlog>> getBlocks(
+    String? blogIdentifier, {
+    int? offset = 0,
+    int? limit = 20,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #getBlocks,
+              [blogIdentifier],
+              {#offset: offset, #limit: limit},
+            ),
+            returnValue: _i8.Future<List<_i3.TumblrBlog>>.value(
+              <_i3.TumblrBlog>[],
+            ),
+          )
+          as _i8.Future<List<_i3.TumblrBlog>>);
 }

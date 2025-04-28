@@ -16,6 +16,7 @@ class TumblrBlog with _$TumblrBlog {
     required String? url,
     List<AvatarImage>? avatar,
     String? description,
+    @Default(false) bool? isBlockedFromPrimary,
     int? followers,
     bool? followed,
     @Default(false) bool? primary,

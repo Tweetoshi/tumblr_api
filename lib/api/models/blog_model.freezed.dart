@@ -26,6 +26,7 @@ mixin _$TumblrBlog {
   String? get url => throw _privateConstructorUsedError;
   List<AvatarImage>? get avatar => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  bool? get isBlockedFromPrimary => throw _privateConstructorUsedError;
   int? get followers => throw _privateConstructorUsedError;
   bool? get followed => throw _privateConstructorUsedError;
   bool? get primary => throw _privateConstructorUsedError;
@@ -53,6 +54,7 @@ abstract class $TumblrBlogCopyWith<$Res> {
       String? url,
       List<AvatarImage>? avatar,
       String? description,
+      bool? isBlockedFromPrimary,
       int? followers,
       bool? followed,
       bool? primary});
@@ -79,6 +81,7 @@ class _$TumblrBlogCopyWithImpl<$Res, $Val extends TumblrBlog>
     Object? url = freezed,
     Object? avatar = freezed,
     Object? description = freezed,
+    Object? isBlockedFromPrimary = freezed,
     Object? followers = freezed,
     Object? followed = freezed,
     Object? primary = freezed,
@@ -108,6 +111,10 @@ class _$TumblrBlogCopyWithImpl<$Res, $Val extends TumblrBlog>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      isBlockedFromPrimary: freezed == isBlockedFromPrimary
+          ? _value.isBlockedFromPrimary
+          : isBlockedFromPrimary // ignore: cast_nullable_to_non_nullable
+              as bool?,
       followers: freezed == followers
           ? _value.followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -139,6 +146,7 @@ abstract class _$$TumblrBlogImplCopyWith<$Res>
       String? url,
       List<AvatarImage>? avatar,
       String? description,
+      bool? isBlockedFromPrimary,
       int? followers,
       bool? followed,
       bool? primary});
@@ -163,6 +171,7 @@ class __$$TumblrBlogImplCopyWithImpl<$Res>
     Object? url = freezed,
     Object? avatar = freezed,
     Object? description = freezed,
+    Object? isBlockedFromPrimary = freezed,
     Object? followers = freezed,
     Object? followed = freezed,
     Object? primary = freezed,
@@ -192,6 +201,10 @@ class __$$TumblrBlogImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      isBlockedFromPrimary: freezed == isBlockedFromPrimary
+          ? _value.isBlockedFromPrimary
+          : isBlockedFromPrimary // ignore: cast_nullable_to_non_nullable
+              as bool?,
       followers: freezed == followers
           ? _value.followers
           : followers // ignore: cast_nullable_to_non_nullable
@@ -218,6 +231,7 @@ class _$TumblrBlogImpl extends _TumblrBlog {
       required this.url,
       final List<AvatarImage>? avatar,
       this.description,
+      this.isBlockedFromPrimary = false,
       this.followers,
       this.followed,
       this.primary = false})
@@ -248,6 +262,9 @@ class _$TumblrBlogImpl extends _TumblrBlog {
   @override
   final String? description;
   @override
+  @JsonKey()
+  final bool? isBlockedFromPrimary;
+  @override
   final int? followers;
   @override
   final bool? followed;
@@ -257,7 +274,7 @@ class _$TumblrBlogImpl extends _TumblrBlog {
 
   @override
   String toString() {
-    return 'TumblrBlog(uuid: $uuid, name: $name, title: $title, url: $url, avatar: $avatar, description: $description, followers: $followers, followed: $followed, primary: $primary)';
+    return 'TumblrBlog(uuid: $uuid, name: $name, title: $title, url: $url, avatar: $avatar, description: $description, isBlockedFromPrimary: $isBlockedFromPrimary, followers: $followers, followed: $followed, primary: $primary)';
   }
 
   @override
@@ -272,6 +289,8 @@ class _$TumblrBlogImpl extends _TumblrBlog {
             const DeepCollectionEquality().equals(other._avatar, _avatar) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.isBlockedFromPrimary, isBlockedFromPrimary) ||
+                other.isBlockedFromPrimary == isBlockedFromPrimary) &&
             (identical(other.followers, followers) ||
                 other.followers == followers) &&
             (identical(other.followed, followed) ||
@@ -289,6 +308,7 @@ class _$TumblrBlogImpl extends _TumblrBlog {
       url,
       const DeepCollectionEquality().hash(_avatar),
       description,
+      isBlockedFromPrimary,
       followers,
       followed,
       primary);
@@ -317,6 +337,7 @@ abstract class _TumblrBlog extends TumblrBlog {
       required final String? url,
       final List<AvatarImage>? avatar,
       final String? description,
+      final bool? isBlockedFromPrimary,
       final int? followers,
       final bool? followed,
       final bool? primary}) = _$TumblrBlogImpl;
@@ -337,6 +358,8 @@ abstract class _TumblrBlog extends TumblrBlog {
   List<AvatarImage>? get avatar;
   @override
   String? get description;
+  @override
+  bool? get isBlockedFromPrimary;
   @override
   int? get followers;
   @override

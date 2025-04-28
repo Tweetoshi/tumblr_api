@@ -16,6 +16,7 @@ _$TumblrBlogImpl _$$TumblrBlogImplFromJson(Map<String, dynamic> json) =>
           ?.map((e) => AvatarImage.fromJson(e as Map<String, dynamic>))
           .toList(),
       description: json['description'] as String?,
+      isBlockedFromPrimary: json['is_blocked_from_primary'] as bool? ?? false,
       followers: (json['followers'] as num?)?.toInt(),
       followed: json['followed'] as bool?,
       primary: json['primary'] as bool? ?? false,
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$TumblrBlogImplToJson(_$TumblrBlogImpl instance) =>
       'url': instance.url,
       'avatar': instance.avatar,
       'description': instance.description,
+      'is_blocked_from_primary': instance.isBlockedFromPrimary,
       'followers': instance.followers,
       'followed': instance.followed,
       'primary': instance.primary,

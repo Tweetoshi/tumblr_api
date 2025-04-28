@@ -109,6 +109,43 @@ abstract class BlogService {
     String? cursor,
     int limit = 20,
   });
+
+  /// Blocks a blog
+  /// Required parameters:
+  /// - blogIdentifier: The identifier of your blog
+  /// - blockedBlogIdentifier: The identifier of the blog to block
+  ///
+  /// See: https://www.tumblr.com/docs/en/api/v2#blocks--block-a-blog
+  Future<bool> blockBlog(
+    String blogIdentifier,
+    String blockedBlogIdentifier,
+  );
+
+  /// Retrieves a list of blogs blocked by the specified blog
+  /// Required parameters:
+  /// - blogIdentifier: The identifier of your blog
+  /// 
+  /// Optional parameters:
+  /// - offset: Result number to start at (default 0)
+  /// - limit: Number of results to return (default 20, max 20)
+  ///
+  /// See: https://www.tumblr.com/docs/en/api/v2#blocks--retrieve-blogs-blocks
+  Future<List<TumblrBlog>> getBlocks(
+    String blogIdentifier, {
+    int offset = 0,
+    int limit = 20,
+  });
+
+  /// Removes a block on a blog
+  /// Required parameters:
+  /// - blogIdentifier: The identifier of your blog
+  /// - blockedBlogIdentifier: The identifier of the blog to unblock
+  ///
+  /// See: https://www.tumblr.com/docs/en/api/v2#blocks--remove-a-block
+  Future<bool> removeBlock(
+    String blogIdentifier,
+    String blockedBlogIdentifier,
+  );
 }
 
 class _BlogService extends BaseService implements BlogService {
@@ -410,6 +447,73 @@ class _BlogService extends BaseService implements BlogService {
       return NotificationResponse.fromJson(responseData);
     } catch (e) {
       throw Exception('Failed to get notifications: $e');
+    }
+  }
+
+  @override
+  Future<bool> blockBlog(
+    String blogIdentifier,
+    String blockedBlogIdentifier,
+  ) async {
+    try {
+      final response = await post(
+        'blog/$blogIdentifier/blocks',
+        data: {'blocked_tumblelog': blockedBlogIdentifier},
+      );
+      
+      return response.statusCode == 201;
+    } catch (e) {
+      throw Exception('Failed to block blog: $e');
+    }
+  }
+
+  @override
+  Future<List<TumblrBlog>> getBlocks(
+    String blogIdentifier, {
+    int offset = 0,
+    int limit = 20,
+  }) async {
+    try {
+      // Validate limit is within allowed range
+      if (limit < 1 || limit > 20) {
+        throw ArgumentError('Limit must be between 1 and 20');
+      }
+
+      final queryParams = <String, dynamic>{
+        'offset': offset,
+        'limit': limit,
+      };
+
+      final response = await get(
+        'blog/$blogIdentifier/blocks',
+        queryParameters: queryParams,
+      );
+
+      final blockedBlogs = response.data['response']['blocked_tumblelogs'] as List<dynamic>;
+      final blockedBlogsList = blockedBlogs
+          .map((blog) => TumblrBlog.fromJson(blog as Map<String, dynamic>))
+          .toList();
+      
+      return blockedBlogsList;
+    } catch (e) {
+      throw Exception('Failed to get blog blocks: $e');
+    }
+  }
+
+  @override
+  Future<bool> removeBlock(
+    String blogIdentifier,
+    String blockedBlogIdentifier,
+  ) async {
+    try {
+      final response = await delete(
+        'blog/$blogIdentifier/blocks',
+        data: {'blocked_tumblelog': blockedBlogIdentifier},
+      );
+      
+      return response.statusCode == 200;
+    } catch (e) {
+      throw Exception('Failed to remove blog block: $e');
     }
   }
 
