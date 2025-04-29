@@ -5,8 +5,10 @@ import 'package:tumblr_api/api/models/blog_model.dart';
 import 'package:tumblr_api/api/models/content_block_model.dart';
 import 'package:tumblr_api/api/models/notes_model.dart';
 import 'package:tumblr_api/api/models/notification_response.dart';
+import 'package:tumblr_api/api/models/tumblr_api_exception.dart';
 import 'package:tumblr_api/api/models/tumblr_post_model.dart';
 import 'package:tumblr_api/base_api.dart';
+
 
 abstract class BlogService {
   factory BlogService({required String accessToken}) =>
@@ -222,21 +224,33 @@ class _BlogService extends BaseService implements BlogService {
           block.media.isNotEmpty &&
           block.media.first.url.startsWith('file://'));
 
+      // Get common fields for the payload
+      final commonFields = _getCommonPayloadFields(
+        layout, 
+        tags, 
+        publishOn, 
+        date, 
+        state, 
+        parentPostId, 
+        parentTumblelogUuid, 
+        reblogKey
+      );
+      
       if (hasLocalImages) {
         // Create FormData for multipart request
         final formData = FormData();
 
-        // Make a copy of content to modify with identifiers
+        // Process content for local images
         final processedContent = <Map<String, dynamic>>[];
         final Map<String, String> filePathToIdentifier = {};
-        int imageCounter = 0; // Counter to ensure unique identifiers
+        int imageCounter = 0;
 
-        // First pass: Process content and generate identifiers
+        // Process content and generate identifiers for local images
         for (final block in content) {
           if (block is ImageContentBlock && block.media.isNotEmpty) {
             final media = block.media.first;
             if (media.url.startsWith('file://')) {
-              // Generate a simple identifier without timestamp
+              // Generate identifier for local image
               final identifier =
                   'img_${DateTime.now().millisecondsSinceEpoch}_${imageCounter++}';
               filePathToIdentifier[media.url] = identifier;
@@ -261,40 +275,23 @@ class _BlogService extends BaseService implements BlogService {
             processedContent.add(block.toJson());
           }
         }
-
+        
         // Prepare the JSON payload
-        final Map<String, dynamic> jsonPayload = {
+        final Map<String, dynamic> payload = {
           'content': processedContent,
+          ...commonFields,
         };
+        
+        // Convert payload to JSON and add to FormData
+        formData.fields.add(MapEntry('json', json.encode(payload)));
 
-        // Add optional parameters
-        if (layout != null) {
-          jsonPayload['layout'] =
-              layout.map((block) => block.toJson()).toList();
-        }
-        if (tags != null && tags.isNotEmpty)
-          jsonPayload['tags'] = tags.join(',');
-        if (publishOn != null) jsonPayload['publish_on'] = publishOn;
-        if (date != null) jsonPayload['date'] = date;
-        if (state != 'published') jsonPayload['state'] = state;
-
-        // Handle reblog parameters
-        if (parentPostId != null && parentTumblelogUuid != null) {
-          jsonPayload['parent_post_id'] = parentPostId;
-          jsonPayload['parent_tumblelog_uuid'] = parentTumblelogUuid;
-          if (reblogKey != null) jsonPayload['reblog_key'] = reblogKey;
-        }
-
-        // Add JSON payload to the form - THIS IS CRITICAL
-        formData.fields.add(MapEntry('json', json.encode(jsonPayload)));
-
-        // Add image files with the same identifier used in the JSON content
+        // Add image files with matching identifiers
         for (final entry in filePathToIdentifier.entries) {
           final filePath = entry.key.replaceFirst('file://', '');
           final identifier = entry.value;
 
           formData.files.add(MapEntry(
-            identifier, // Field name MUST match the identifier in JSON
+            identifier,
             await MultipartFile.fromFile(
               filePath,
               contentType: MediaType.parse(_getContentType(filePath)),
@@ -302,56 +299,166 @@ class _BlogService extends BaseService implements BlogService {
             ),
           ));
         }
-
-        // Send the request with FormData
+        
+        // Send multipart request
         final response = await post(
           'blog/$blogIdentifier/posts',
           data: formData,
         );
-
-        if (response.statusCode != 201) {
-          throw Exception('Failed to create post: ${response.data}');
-        }
-
-        return response.data['response']['id'];
+        
+        return _handlePostResponse(response);
       } else {
         // Standard JSON request for posts without local image uploads
-        final contentJson = content.map((block) => block.toJson()).toList();
-
-        // Prepare the request body
-        final Map<String, dynamic> body = {
-          'content': contentJson,
+        final Map<String, dynamic> payload = {
+          'content': content.map((block) => block.toJson()).toList(),
+          ...commonFields,
         };
-
-        // Add optional parameters if present
-        if (layout != null) {
-          body['layout'] = layout.map((block) => block.toJson()).toList();
-        }
-        if (tags != null && tags.isNotEmpty) body['tags'] = tags.join(',');
-        if (publishOn != null) body['publish_on'] = publishOn;
-        if (date != null) body['date'] = date;
-        if (state != 'published') body['state'] = state;
-
-        // Handle reblog vs new post
-        if (parentPostId != null && parentTumblelogUuid != null) {
-          body['parent_post_id'] = parentPostId;
-          body['parent_tumblelog_uuid'] = parentTumblelogUuid;
-          body['reblog_key'] = reblogKey;
-        }
-
-        // Make the POST request
+        
+        // Send JSON request
         final response = await post(
           'blog/$blogIdentifier/posts',
-          data: body,
+          data: payload,
         );
-
-        // Parse the response
-        final postData = response.data['response'] as Map<String, dynamic>;
-        return postData['id'];
+        
+        return _handlePostResponse(response);
       }
     } catch (e) {
+      if (e is DioException) {
+        _handlePostError(e);
+      }
       throw Exception('Failed to create post: $e');
     }
+  }
+
+  // Helper method to get common payload fields
+  Map<String, dynamic> _getCommonPayloadFields(
+    List<LayoutBlock>? layout,
+    List<String>? tags,
+    String? publishOn,
+    String? date,
+    String state,
+    String? parentPostId,
+    String? parentTumblelogUuid,
+    String? reblogKey,
+  ) {
+    final Map<String, dynamic> fields = {};
+    
+    // Add optional parameters
+    if (layout != null) {
+      fields['layout'] = layout.map((block) => block.toJson()).toList();
+    }
+    if (tags != null && tags.isNotEmpty) fields['tags'] = tags.join(',');
+    if (publishOn != null) fields['publish_on'] = publishOn;
+    if (date != null) fields['date'] = date;
+    if (state != 'published') fields['state'] = state;
+
+    // Handle reblog parameters
+    if (parentPostId != null && parentTumblelogUuid != null) {
+      fields['parent_post_id'] = parentPostId;
+      fields['parent_tumblelog_uuid'] = parentTumblelogUuid;
+      if (reblogKey != null) fields['reblog_key'] = reblogKey;
+    }
+    
+    return fields;
+  }
+
+  // Helper method to handle post response
+  String _handlePostResponse(Response response) {
+    if (response.statusCode != 201) {
+      throw TumblrApiException(
+        statusCode: response.statusCode ?? 500,
+        message: 'Failed to create post',
+        response: response.data,
+      );
+    }
+    
+    return response.data['response']['id'];
+  }
+
+  // Helper method to handle post errors
+  Never _handlePostError(DioException e) {
+    if (e.response != null) {
+      final statusCode = e.response!.statusCode ?? 500;
+      final responseData = e.response!.data;
+      
+      int? subcode;
+      String message = 'An error occurred';
+      
+      // Try to extract the subcode and detailed message
+      if (responseData is Map && responseData.containsKey('meta')) {
+        final meta = responseData['meta'] as Map<String, dynamic>;
+        if (meta.containsKey('status_code')) {
+          subcode = meta['status_code'] as int?;
+        }
+        if (meta.containsKey('msg')) {
+          message = meta['msg'] as String;
+        }
+      }
+      
+      // Create specific error messages based on status codes
+      switch (statusCode) {
+        case 400:
+          if (subcode == 8001) {
+            message = 'Invalid NPF JSON parameter format';
+          } else if (subcode == 8002) {
+            message = 'Invalid reblog parent post or blog';
+          } else if (subcode == 8005) {
+            message = 'Uploaded media is in an invalid format';
+          } else if (subcode == 8016) {
+            message = 'Invalid answer content or layout format';
+          }
+          break;
+        case 401:
+          message = 'Unauthorized client';
+          break;
+        case 403:
+          if (subcode == 8004) {
+            message = 'Daily media upload limit reached';
+          } else if (subcode == 8008) {
+            message = 'Video uploads are not allowed in reblogs';
+          } else if (subcode == 8010) {
+            message = 'A video is still transcoding, please wait before uploading another';
+          } else if (subcode == 8011) {
+            message = 'Daily video upload limit reached';
+          } else if (subcode == 8022) {
+            message = 'Blog queue limit has been reached';
+          } else if (subcode == 8023) {
+            message = 'Blog daily posting limit has been reached';
+          } else {
+            message = 'Not allowed to perform this action';
+          }
+          break;
+        case 404:
+          message = 'Resource not found';
+          break;
+        case 500:
+          if (subcode == 8006) {
+            message = 'Unknown media upload error';
+          } else if (subcode == 8009) {
+            message = 'Unknown video upload error';
+          } else {
+            message = 'Internal server error';
+          }
+          break;
+        case 503:
+          message = 'API posting is currently disabled';
+          break;
+      }
+      
+      throw TumblrApiException(
+        statusCode: statusCode,
+        subcode: subcode,
+        message: message,
+        response: responseData,
+      );
+    }
+    
+    // For network errors or other non-response errors
+    throw TumblrApiException(
+      statusCode: 0,
+      message: e.message ?? 'Network error occurred',
+      response: null,
+    );
   }
 
   @override
@@ -513,6 +620,13 @@ class _BlogService extends BaseService implements BlogService {
       
       return response.statusCode == 200;
     } catch (e) {
+      if (e is DioException && e.response != null) {
+        throw TumblrApiException(
+          statusCode: e.response!.statusCode ?? 500,
+          message: 'Failed to remove blog block',
+          response: e.response!.data,
+        );
+      }
       throw Exception('Failed to remove blog block: $e');
     }
   }
