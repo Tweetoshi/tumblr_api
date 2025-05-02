@@ -118,6 +118,9 @@ class ServiceHelper {
 
       return response;
     } catch (e) {
+      if (e is DioException) {
+        rethrow;
+      }
       throw Exception('Failed to get data: $e');
     }
   }
@@ -140,7 +143,7 @@ class ServiceHelper {
       return response;
     } catch (e) {
       if (e is DioException) {
-        throw Exception('Failed to post data: ${e.response?.data}');
+        rethrow;
       }
       throw Exception('Failed to post data: $e');
     }
@@ -164,7 +167,7 @@ class ServiceHelper {
       return response;
     } catch (e) {
       if (e is DioException) {
-        throw Exception('Failed to put data: ${e.response?.data}');
+        rethrow;
       }
       throw Exception('Failed to put data: $e');
     }
@@ -188,8 +191,11 @@ class ServiceHelper {
 
       return response;
     } catch (e) {
-      if (e is DioException && e.response != null) {
-        print('Error response: ${e.response!.data}');
+      if (e is DioException) {
+        if (e.response != null) {
+          print('Error response: ${e.response!.data}');
+        }
+        rethrow;
       }
       throw Exception('Failed to post form data: $e');
     }
@@ -213,7 +219,7 @@ class ServiceHelper {
       return response;
     } catch (e) {
       if (e is DioException) {
-        throw Exception('Failed to delete data: ${e.response?.data}');
+        rethrow;
       }
       throw Exception('Failed to delete data: $e');
     }

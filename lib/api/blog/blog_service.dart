@@ -326,7 +326,9 @@ class _BlogService extends BaseService implements BlogService {
       if (e is DioException) {
         _handlePostError(e);
       }
-      throw Exception('Failed to create post: $e');
+      // If we get here, it means e is not a DioException
+      // or _handlePostError didn't throw (which shouldn't happen)
+      rethrow;
     }
   }
 
